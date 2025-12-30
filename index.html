@@ -1,200 +1,189 @@
 <!doctype html>
 <html lang="en">
-    <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Your Name — Portfolio</title>
-    <style>
-      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; margin: 0; padding: 48px; }
-      .wrap { max-width: 960px; margin: 0 auto; }
-      .card { padding: 20px; border: 1px solid #eee; border-radius: 16px; margin-top: 16px; }
-      a { text-decoration: none; }
-      section {
-        h2 {
-  font-size: 28px;
-  margin-top: 48px;
-  margin-bottom: 16px;
-}
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tawfik Manham — Portfolio</title>
 
-ul {
-  list-style: none;
-  padding: 0;
-}
+  <style>
+    /* ---------- Base ---------- */
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: #fff;
+      color: #111;
+      margin: 0;
+      padding: 48px;
+    }
 
-ul li {
-  margin-bottom: 12px;
-}
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
 
-ul li a {
-  text-decoration: none;
-  font-size: 20px;
-  color: #0070f3;
-}
+    /* ---------- Layout ---------- */
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+    }
 
-ul li a:hover {
-  opacity: 0.7;
-}
+    section {
+      margin-top: 120px;
+    }
 
-}
-max-width: 900px;
-margin-top: 120px;
-    </style>
-    <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: white;
-    color: #111;
-    margin: 0;
-    padding: 48px;
-  }
+    /* ---------- Typography ---------- */
+    h1 {
+      font-size: 48px;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
 
-  h1 {
-    font-size: 48px;
-    font-weight: 500;
-    margin-bottom: 16px;
-  }
+    h2 {
+      font-size: 20px;
+      font-weight: 500;
+      margin: 0 0 16px 0;
+    }
 
-  p {
-    font-size: 18px;
-    color: #444;
-    line-height: 1.6;
-    max-width: 640px;
-  }
-      .work {
-  margin-top: 64px;
-  max-width: 980px;
-}
+    p {
+      font-size: 18px;
+      color: #444;
+      line-height: 1.6;
+      max-width: 640px;
+    }
 
-.work h2 {
-  font-size: 20px;
-  font-weight: 500;
-  margin: 0 0 16px 0;
-  color: #111;
-}
+    /* ---------- Simple cards ---------- */
+    .card {
+      padding: 20px;
+      border: 1px solid #eee;
+      border-radius: 16px;
+      margin-top: 24px;
+    }
 
-.project-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 14px;
-}
+    /* ---------- Project list (BIG cards) ---------- */
+    .project-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
 
-.project-card {
-  display: grid;
-  grid-template-columns: 160px 1fr;
-  gap: 16px;
-  padding: 14px;
-  border: 1px solid #eee;
-  border-radius: 16px;
-  text-decoration: none;
-  color: inherit;
-  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-}
+    .project-card {
+      display: block;
+      border: 1px solid #eee;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #fff;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
 
-.project-card:hover {
-  transform: translateY(-2px);
-  border-color: #e5e5e5;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-}
+    .project-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 45px rgba(0,0,0,0.08);
+    }
 
-.project-thumb {
-  width: 160px;
-  height: 110px;
-  object-fit: cover;
-  border-radius: 12px;
-  border: 1px solid #f0f0f0;
-}
+    .project-thumb {
+      width: 100%;
+      height: 340px;
+      object-fit: cover;
+      display: block;
+      background: #f6f6f6;
+    }
 
-.project-title {
-  font-size: 18px;
-  font-weight: 500;
-  margin: 2px 0 6px 0;
-  letter-spacing: -0.01em;
-}
+    .project-meta {
+      padding: 18px 20px 22px;
+    }
 
-.project-subtitle {
-  margin: 0;
-  color: #555;
-  line-height: 1.5;
-  font-size: 14px;
-}
-@media (max-width: 640px) {
-  .project-card {
-    grid-template-columns: 1fr;
-  }
-  .project-thumb {
-    width: 100%;
-    height: 180px;
-  }
-}
-max-width: 900px;
-margin-top: 120px;
-</style>
-  </head>
-  <body>
-    <div class="wrap">
+    .project-title {
+      font-size: 20px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .project-subtitle {
+      font-size: 15px;
+      color: #555;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* ---------- Mobile ---------- */
+    @media (max-width: 640px) {
+      body {
+        padding: 24px;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      .project-thumb {
+        height: 220px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <!-- Hero -->
+    <section>
       <h1>Tawfik Manham</h1>
-      <p>Product Designer in London with 9+yrs crafting B2B SaaS experiences.</p>
+      <p>Product Designer in London with 9+ years crafting B2B SaaS experiences.</p>
+    </section>
 
-      <div class="card">
-        <h2>Selected work</h2>
-        <ul>
-          <li><a href="https://tawfikmanham.com/project/ai-health-check-for-seis-eis-advance-assurance-applications/">AI Application Health Check</a></li>
-          <li><a href="https://tawfikmanham.com/project/naza-care-connect-web/">Naza Care Connect</a></li>
-          <li><a href="https://tawfikmanham.com/project/trimble-app-manager/">Trimble App Manager</a></li>
-          <li><a href="https://tawfikmanham.com/project/driver-workflow/">Driver Workflow (Mobile)</a></li>
-          <li><a href="https://tawfikmanham.com/project/trimble-modus/">Trimble Modus (Design System)</a></li>
-        </ul>
-      </div>
+    <!-- Selected work (text) -->
+    <section class="card">
+      <h2>Selected work</h2>
+      <ul>
+        <li>AI Application Health Check</li>
+        <li>Naza Care Connect</li>
+        <li>Trimble App Manager</li>
+        <li>Driver Workflow (Mobile)</li>
+        <li>Trimble Modus (Design System)</li>
+      </ul>
+    </section>
 
-      <div class="card">
-        <h2>Contact</h2>
-        <p><a href="mailto:tawfik.manham@gmail.com">tawfik.manham@gmail.com</a></p>
-      </div>
-    </div>
-    <section class="work">
-  <h2>Selected Projects</h2>
+    <!-- Projects (visual) -->
+    <section>
+      <h2>Selected Projects</h2>
 
-  <div class="project-grid">
-    <a class="project-card" href="https://tawfikmanham.com/project/ai-health-check-for-seis-eis-advance-assurance-applications/" target="_blank" rel="noopener">
-      <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/12/AI-Hero-1.jpg" alt="AI Application Health Check thumbnail">
-      <div>
-        <div class="project-title">AI Application Health Check</div>
-        <p class="project-subtitle">AI-powered eligibility check to reduce SEIS/EIS application risk.</p>
-      </div>
-    </a>
+      <div class="project-grid">
+        <a class="project-card" href="https://tawfikmanham.com/project/ai-health-check-for-seis-eis-advance-assurance-applications/" target="_blank">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/12/AI-Hero-1.jpg" alt="">
+          <div class="project-meta">
+            <div class="project-title">AI Application Health Check</div>
+            <p class="project-subtitle">AI-powered eligibility check to reduce SEIS/EIS application risk.</p>
+          </div>
+        </a>
 
-    <a class="project-card" href="https://tawfikmanham.com/project/naza-care-connect-web/" target="_blank" rel="noopener">
-      <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/03/Desktop-14-1x.png" alt="Naza Care Connect thumbnail">
-      <div>
-        <div class="project-title">Naza Care Connect</div>
-        <p class="project-subtitle">Streamlining care homes to better support young people.</p>
-      </div>
-    </a>
+        <a class="project-card" href="https://tawfikmanham.com/project/naza-care-connect-web/" target="_blank">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/03/Desktop-14-1x.png" alt="">
+          <div class="project-meta">
+            <div class="project-title">Naza Care Connect</div>
+            <p class="project-subtitle">Streamlining care homes to better support young people.</p>
+          </div>
+        </a>
 
-    <a class="project-card" href="https://tawfikmanham.com/project/trimble-app-manager/" target="_blank" rel="noopener">
-      <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-App-Hero-Image.png" alt="Trimble App Manager thumbnail">
-      <div>
-        <div class="project-title">Trimble App Manager</div>
-        <p class="project-subtitle">Enroll, customize, and secure devices remotely.</p>
-      </div>
-    </a>
+        <a class="project-card" href="https://tawfikmanham.com/project/trimble-app-manager/" target="_blank">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-App-Hero-Image.png" alt="">
+          <div class="project-meta">
+            <div class="project-title">Trimble App Manager</div>
+            <p class="project-subtitle">Enroll, customize, and secure devices remotely.</p>
+          </div>
+        </a>
 
-    <a class="project-card" href="https://tawfikmanham.com/project/driver-workflow/" target="_blank" rel="noopener">
-      <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/SG-Tab-9.png" alt="Driver Workflow thumbnail">
-      <div>
-        <div class="project-title">Driver Workflow (Mobile)</div>
-        <p class="project-subtitle">Trips, forms, and messaging for truck drivers.</p>
-      </div>
-    </a>
+        <a class="project-card" href="https://tawfikmanham.com/project/driver-workflow/" target="_blank">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/SG-Tab-9.png" alt="">
+          <div class="project-meta">
+            <div class="project-title">Driver Workflow (Mobile)</div>
+            <p class="project-subtitle">Trips, forms, and messaging for truck drivers.</p>
+          </div>
+        </a>
 
-    <a class="project-card" href="https://tawfikmanham.com/project/trimble-modus/" target="_blank" rel="noopener">
-      <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-Design-System-Hero-2.png" alt="Trimble Modus thumbnail">
-      <div>
-        <div class="project-title">Trimble Modus (Design System)</div>
-        <p class="project-subtitle">Unified design system and micro-interactions at scale.</p>
+        <a class="project-card" href="https://tawfikmanham.com/project/trimble-modus/" target="_blank">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-Design-System-Hero-2.png" alt="">
+          <div class="project-meta">
+            <div class="project-title">Trimble Modus (Design System)</div>
+            <p class="project-subtitle">Unified design system and micro-interactions at scale.</p>
+          </div>
+        </a>
       </div>
-    </a>
-  </div>
-</section>
-  </body>
-</html>
+    <
