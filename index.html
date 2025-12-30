@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-  <head>
+    <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Your Name — Portfolio</title>
@@ -60,6 +60,73 @@ ul li a:hover {
     line-height: 1.6;
     max-width: 640px;
   }
+      .work {
+  margin-top: 64px;
+  max-width: 980px;
+}
+
+.work h2 {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 16px 0;
+  color: #111;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+.project-card {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 16px;
+  padding: 14px;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-2px);
+  border-color: #e5e5e5;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+}
+
+.project-thumb {
+  width: 160px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid #f0f0f0;
+}
+
+.project-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 2px 0 6px 0;
+  letter-spacing: -0.01em;
+}
+
+.project-subtitle {
+  margin: 0;
+  color: #555;
+  line-height: 1.5;
+  font-size: 14px;
+}
+@media (max-width: 640px) {
+  .project-card {
+    grid-template-columns: 1fr;
+  }
+  .project-thumb {
+    width: 100%;
+    height: 180px;
+  }
+}
+
 </style>
   </head>
   <body>
@@ -83,5 +150,50 @@ ul li a:hover {
         <p><a href="mailto:tawfik.manham@gmail.com">tawfik.manham@gmail.com</a></p>
       </div>
     </div>
+    <section class="work">
+  <h2>Selected Projects</h2>
+
+  <div class="project-grid">
+    <a class="project-card" href="https://tawfikmanham.com/project/ai-health-check-for-seis-eis-advance-assurance-applications/" target="_blank" rel="noopener">
+      <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/12/AI-Hero-1.jpg" alt="AI Application Health Check thumbnail">
+      <div>
+        <div class="project-title">AI Application Health Check</div>
+        <p class="project-subtitle">AI-powered eligibility check to reduce SEIS/EIS application risk.</p>
+      </div>
+    </a>
+
+    <a class="project-card" href="https://tawfikmanham.com/project/naza-care-connect-web/" target="_blank" rel="noopener">
+      <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/03/Desktop-14-1x.png" alt="Naza Care Connect thumbnail">
+      <div>
+        <div class="project-title">Naza Care Connect</div>
+        <p class="project-subtitle">Streamlining care homes to better support young people.</p>
+      </div>
+    </a>
+
+    <a class="project-card" href="https://tawfikmanham.com/project/trimble-app-manager/" target="_blank" rel="noopener">
+      <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-App-Hero-Image.png" alt="Trimble App Manager thumbnail">
+      <div>
+        <div class="project-title">Trimble App Manager</div>
+        <p class="project-subtitle">Enroll, customize, and secure devices remotely.</p>
+      </div>
+    </a>
+
+    <a class="project-card" href="https://tawfikmanham.com/project/driver-workflow/" target="_blank" rel="noopener">
+      <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/SG-Tab-9.png" alt="Driver Workflow thumbnail">
+      <div>
+        <div class="project-title">Driver Workflow (Mobile)</div>
+        <p class="project-subtitle">Trips, forms, and messaging for truck drivers.</p>
+      </div>
+    </a>
+
+    <a class="project-card" href="https://tawfikmanham.com/project/trimble-modus/" target="_blank" rel="noopener">
+      <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-Design-System-Hero-2.png" alt="Trimble Modus thumbnail">
+      <div>
+        <div class="project-title">Trimble Modus (Design System)</div>
+        <p class="project-subtitle">Unified design system and micro-interactions at scale.</p>
+      </div>
+    </a>
+  </div>
+</section>
   </body>
 </html>
