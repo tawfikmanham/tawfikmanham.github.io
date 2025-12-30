@@ -6,11 +6,32 @@
   <title>Tawfik Manham — Portfolio</title>
 
   <style>
+    /* ---------- Theme tokens ---------- */
+    :root {
+      --bg: #ffffff;
+      --text: #111111;
+      --muted: #4a4a4a;
+      --border: #eaeaea;
+      --card: #ffffff;
+      --shadow: rgba(0,0,0,0.08);
+      --thumbBg: #f6f6f6;
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #0b0b0c;
+      --text: #f2f2f2;
+      --muted: #b5b5b5;
+      --border: #222225;
+      --card: #121214;
+      --shadow: rgba(0,0,0,0.55);
+      --thumbBg: #1a1a1d;
+    }
+
     /* ---------- Base ---------- */
     body {
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: #fff;
-      color: #111;
+      background: var(--bg);
+      color: var(--text);
       margin: 0;
       padding: 48px;
     }
@@ -34,28 +55,23 @@
     h1 {
       font-size: 48px;
       font-weight: 500;
-      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+      margin: 0 0 16px 0;
     }
 
     h2 {
       font-size: 20px;
       font-weight: 500;
       margin: 0 0 16px 0;
+      color: var(--text);
     }
 
     p {
       font-size: 18px;
-      color: #444;
+      color: var(--muted);
       line-height: 1.6;
       max-width: 640px;
-    }
-
-    /* ---------- Simple cards ---------- */
-    .card {
-      padding: 20px;
-      border: 1px solid #eee;
-      border-radius: 16px;
-      margin-top: 24px;
+      margin: 0;
     }
 
     /* ---------- Project list (BIG cards) ---------- */
@@ -67,16 +83,17 @@
 
     .project-card {
       display: block;
-      border: 1px solid #eee;
+      border: 1px solid var(--border);
       border-radius: 20px;
       overflow: hidden;
-      background: #fff;
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      background: var(--card);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      will-change: transform;
     }
 
     .project-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 18px 45px rgba(0,0,0,0.08);
+      transform: translateY(-4px);
+      box-shadow: 0 18px 45px var(--shadow);
     }
 
     .project-thumb {
@@ -84,7 +101,8 @@
       height: 340px;
       object-fit: cover;
       display: block;
-      background: #f6f6f6;
+      background: var(--thumbBg);
+      border-bottom: 1px solid var(--border);
     }
 
     .project-meta {
@@ -94,142 +112,72 @@
     .project-title {
       font-size: 20px;
       font-weight: 500;
-      margin-bottom: 8px;
+      margin: 0 0 8px 0;
+      letter-spacing: -0.01em;
     }
 
     .project-subtitle {
       font-size: 15px;
-      color: #555;
+      color: var(--muted);
       line-height: 1.6;
       margin: 0;
+      max-width: 72ch;
     }
+
+    /* ---------- Theme toggle button ---------- */
+    .theme-toggle {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+    }
+
+    /* ---------- Subtle page load animation ---------- */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    section {
+      animation: fadeUp 0.6s ease both;
+    }
+
+    section:nth-of-type(1) { animation-delay: 0.00s; }
+    section:nth-of-type(2) { animation-delay: 0.08s; }
+    section:nth-of-type(3) { animation-delay: 0.16s; }
+    section:nth-of-type(4) { animation-delay: 0.24s; }
+    section:nth-of-type(5) { animation-delay: 0.32s; }
 
     /* ---------- Mobile ---------- */
     @media (max-width: 640px) {
-      body {
-        padding: 24px;
-      }
-
-      h1 {
-        font-size: 36px;
-      }
-
-      .project-thumb {
-        height: 220px;
-      }
+      body { padding: 24px; }
+      h1 { font-size: 36px; }
+      section { margin-top: 72px; }
+      .project-thumb { height: 220px; }
     }
-    /* ---------- Subtle page load animation ---------- */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-/* Animate sections on load */
-section {
-  animation: fadeUp 0.6s ease both;
-}
-
-/* Stagger: each section animates slightly after the previous */
-section:nth-of-type(1) { animation-delay: 0.00s; }
-section:nth-of-type(2) { animation-delay: 0.08s; }
-section:nth-of-type(3) { animation-delay: 0.16s; }
-section:nth-of-type(4) { animation-delay: 0.24s; }
-section:nth-of-type(5) { animation-delay: 0.32s; }
-
-/* ---------- Refined hover animation for project cards ---------- */
-.project-card {
-  will-change: transform;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-}
-
-.project-card:hover {
-  transform: translateY(-4px);
-}
-
-/* ---------- Accessibility: respect reduced motion ---------- */
-@media (prefers-reduced-motion: reduce) {
-  section {
-    animation: none;
-  }
-  .project-card {
-    transition: none;
-  }
-}
-    /* ---------- Theme tokens ---------- */
-:root {
-  --bg: #ffffff;
-  --text: #111111;
-  --muted: #4a4a4a;
-  --border: #eaeaea;
-  --card: #ffffff;
-  --shadow: rgba(0,0,0,0.08);
-  --thumbBg: #f6f6f6;
-}
-
-:root[data-theme="dark"] {
-  --bg: #0b0b0c;
-  --text: #f2f2f2;
-  --muted: #b5b5b5;
-  --border: #222225;
-  --card: #121214;
-  --shadow: rgba(0,0,0,0.55);
-  --thumbBg: #1a1a1d;
-}
-
-/* Use the variables */
-body {
-  background: var(--bg);
-  color: var(--text);
-}
-
-p { color: var(--muted); }
-
-.card,
-.project-card {
-  background: var(--card);
-  border-color: var(--border);
-}
-
-.project-card:hover {
-  box-shadow: 0 18px 45px var(--shadow);
-}
-
-.project-thumb {
-  background: var(--thumbBg);
-  border-color: var(--border);
-}
-
-h2 { color: var(--text); }
-
-/* ---------- Theme toggle button ---------- */
-.theme-toggle {
-  position: fixed;
-  top: 18px;
-  right: 18px;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text);
-  border-radius: 999px;
-  padding: 10px 12px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: transform 0.15s ease;
-}
-
-.theme-toggle:hover {
-  transform: translateY(-1px);
-}
+    /* ---------- Accessibility: respect reduced motion ---------- */
+    @media (prefers-reduced-motion: reduce) {
+      section { animation: none; }
+      .project-card { transition: none; }
+    }
   </style>
 </head>
 
 <body>
   <button class="theme-toggle" id="themeToggle" type="button">Dark</button>
+
   <div class="wrap">
     <!-- Hero -->
     <section>
@@ -237,61 +185,75 @@ h2 { color: var(--text); }
       <p>Product Designer in London with 9+ years crafting B2B SaaS experiences.</p>
     </section>
 
-    <!-- Selected work (text) -->
-    <section class="card">
-      <h2>Selected work</h2>
-      <ul>
-        <li>AI Application Health Check</li>
-        <li>Naza Care Connect</li>
-        <li>Trimble App Manager</li>
-        <li>Driver Workflow (Mobile)</li>
-        <li>Trimble Modus (Design System)</li>
-      </ul>
-    </section>
-
-    <!-- Projects (visual) -->
+    <!-- Projects -->
     <section>
       <h2>Selected Projects</h2>
 
       <div class="project-grid">
-        <a class="project-card" href="https://tawfikmanham.com/project/ai-health-check-for-seis-eis-advance-assurance-applications/" target="_blank">
-          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/12/AI-Hero-1.jpg" alt="">
+        <a class="project-card" href="https://tawfikmanham.com/project/ai-health-check-for-seis-eis-advance-assurance-applications/" target="_blank" rel="noopener">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/12/AI-Hero-1.jpg" alt="AI Application Health Check thumbnail">
           <div class="project-meta">
             <div class="project-title">AI Application Health Check</div>
             <p class="project-subtitle">AI-powered eligibility check to reduce SEIS/EIS application risk.</p>
           </div>
         </a>
 
-        <a class="project-card" href="https://tawfikmanham.com/project/naza-care-connect-web/" target="_blank">
-          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/03/Desktop-14-1x.png" alt="">
+        <a class="project-card" href="https://tawfikmanham.com/project/naza-care-connect-web/" target="_blank" rel="noopener">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/03/Desktop-14-1x.png" alt="Naza Care Connect thumbnail">
           <div class="project-meta">
             <div class="project-title">Naza Care Connect</div>
             <p class="project-subtitle">Streamlining care homes to better support young people.</p>
           </div>
         </a>
 
-        <a class="project-card" href="https://tawfikmanham.com/project/trimble-app-manager/" target="_blank">
-          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-App-Hero-Image.png" alt="">
+        <a class="project-card" href="https://tawfikmanham.com/project/trimble-app-manager/" target="_blank" rel="noopener">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-App-Hero-Image.png" alt="Trimble App Manager thumbnail">
           <div class="project-meta">
             <div class="project-title">Trimble App Manager</div>
             <p class="project-subtitle">Enroll, customize, and secure devices remotely.</p>
           </div>
         </a>
 
-        <a class="project-card" href="https://tawfikmanham.com/project/driver-workflow/" target="_blank">
-          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/SG-Tab-9.png" alt="">
+        <a class="project-card" href="https://tawfikmanham.com/project/driver-workflow/" target="_blank" rel="noopener">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/SG-Tab-9.png" alt="Driver Workflow thumbnail">
           <div class="project-meta">
             <div class="project-title">Driver Workflow (Mobile)</div>
             <p class="project-subtitle">Trips, forms, and messaging for truck drivers.</p>
           </div>
         </a>
 
-        <a class="project-card" href="https://tawfikmanham.com/project/trimble-modus/" target="_blank">
-          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-Design-System-Hero-2.png" alt="">
+        <a class="project-card" href="https://tawfikmanham.com/project/trimble-modus/" target="_blank" rel="noopener">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-Design-System-Hero-2.png" alt="Trimble Modus thumbnail">
           <div class="project-meta">
             <div class="project-title">Trimble Modus (Design System)</div>
             <p class="project-subtitle">Unified design system and micro-interactions at scale.</p>
           </div>
         </a>
       </div>
-    <
+    </section>
+  </div>
+
+  <script>
+    // Use saved theme if available, otherwise use system preference
+    const saved = localStorage.getItem("theme");
+    const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const initial = saved || (systemDark ? "dark" : "light");
+
+    document.documentElement.setAttribute("data-theme", initial);
+
+    const btn = document.getElementById("themeToggle");
+    function setLabel(theme) {
+      btn.textContent = theme === "dark" ? "Light" : "Dark";
+    }
+    setLabel(initial);
+
+    btn.addEventListener("click", () => {
+      const current = document.documentElement.getAttribute("data-theme") || "light";
+      const next = current === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+      setLabel(next);
+    });
+  </script>
+</body>
+</html>
