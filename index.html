@@ -123,25 +123,71 @@
       margin: 0;
       max-width: 72ch;
     }
+/* ---------- Hover tooltip: "View case study →" ---------- */
+.project-card {
+  position: relative;
+}
 
-    /* ---------- Theme toggle button ---------- */
-    .theme-toggle {
-      position: fixed;
-      top: 18px;
-      right: 18px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text);
-      border-radius: 999px;
-      padding: 10px 12px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: transform 0.15s ease;
-    }
+.project-card::after {
+  content: "View case study →";
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  padding: 8px 10px;
+  font-size: 13px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  border-radius: 999px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  pointer-events: none;
+}
 
-    .theme-toggle:hover {
-      transform: translateY(-1px);
-    }
+.project-card:hover::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+    /* ---------- Theme toggle (icon-only) ---------- */
+.theme-toggle {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 26px var(--shadow);
+}
+
+.theme-toggle .icon {
+  position: absolute;
+  font-size: 16px;
+  line-height: 1;
+  transform: scale(1);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+/* Light theme: show moon (to switch to dark) */
+:root[data-theme="light"] .icon-moon { opacity: 1; transform: scale(1); }
+:root[data-theme="light"] .icon-sun  { opacity: 0; transform: scale(0.85); }
+
+/* Dark theme: show sun (to switch to light) */
+:root[data-theme="dark"] .icon-sun  { opacity: 1; transform: scale(1); }
+:root[data-theme="dark"] .icon-moon { opacity: 0; transform: scale(0.85); }
+
 
     /* ---------- Subtle page load animation ---------- */
     @keyframes fadeUp {
@@ -176,7 +222,10 @@
 </head>
 
 <body>
-  <button class="theme-toggle" id="themeToggle" type="button">Dark</button>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+  <span class="icon icon-sun" aria-hidden="true">☀️</span>
+  <span class="icon icon-moon" aria-hidden="true">🌙</span>
+</button>
 
   <div class="wrap">
     <!-- Hero -->
@@ -234,26 +283,19 @@
   </div>
 
   <script>
-    // Use saved theme if available, otherwise use system preference
-    const saved = localStorage.getItem("theme");
-    const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const initial = saved || (systemDark ? "dark" : "light");
+  const saved = localStorage.getItem("theme");
+  const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const initial = saved || (systemDark ? "dark" : "light");
 
-    document.documentElement.setAttribute("data-theme", initial);
+  document.documentElement.setAttribute("data-theme", initial);
 
-    const btn = document.getElementById("themeToggle");
-    function setLabel(theme) {
-      btn.textContent = theme === "dark" ? "Light" : "Dark";
-    }
-    setLabel(initial);
-
-    btn.addEventListener("click", () => {
-      const current = document.documentElement.getAttribute("data-theme") || "light";
-      const next = current === "dark" ? "light" : "dark";
-      document.documentElement.setAttribute("data-theme", next);
-      localStorage.setItem("theme", next);
-      setLabel(next);
-    });
-  </script>
+  const btn = document.getElementById("themeToggle");
+  btn.addEventListener("click", () => {
+    const current = document.documentElement.getAttribute("data-theme") || "light";
+    const next = current === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    localStorage.setItem("theme", next);
+  });
+</script>
 </body>
 </html>
