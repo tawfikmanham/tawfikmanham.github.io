@@ -150,11 +150,18 @@
   transform: translateY(0);
 }
 
-    /* ---------- Theme toggle (icon-only) ---------- */
+/* ---------- Theme toggle (icon-only) ---------- */
+/* ---------- Top bar ---------- */
+.top-bar {
+  position: relative;
+  height: 0;
+}
+
+/* ---------- Theme toggle aligned to content ---------- */
 .theme-toggle {
-  position: fixed;
-  top: 18px;
-  right: 18px;
+  position: absolute;
+  top: 0;
+  right: 0;
   width: 42px;
   height: 42px;
   display: grid;
@@ -167,18 +174,6 @@
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.theme-toggle:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 26px var(--shadow);
-}
-
-.theme-toggle .icon {
-  position: absolute;
-  font-size: 16px;
-  line-height: 1;
-  transform: scale(1);
-  transition: opacity 0.15s ease, transform 0.15s ease;
-}
 
 /* Light theme: show moon (to switch to dark) */
 :root[data-theme="light"] .icon-moon { opacity: 1; transform: scale(1); }
@@ -222,12 +217,18 @@
 </head>
 
 <body>
-  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
   <span class="icon icon-sun" aria-hidden="true">☀️</span>
   <span class="icon icon-moon" aria-hidden="true">🌙</span>
 </button>
 
   <div class="wrap">
+    <div class="top-bar">
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+    <span class="icon icon-sun">☀️</span>
+    <span class="icon icon-moon">🌙</span>
+  </button>
+</div>
+
     <!-- Hero -->
     <section>
       <h1>Tawfik Manham</h1>
