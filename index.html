@@ -58,11 +58,11 @@
     }
 
     /* =============================
-       Top bar (theme toggle aligned to content)
+       Top bar (toggle aligned to content)
     ============================== */
     .top-bar {
       position: relative;
-      height: 0;
+      height: 42px; /* IMPORTANT: gives toggle its own clickable space */
     }
 
     .theme-toggle {
@@ -77,6 +77,7 @@
       background: var(--card);
       border-radius: 999px;
       cursor: pointer;
+      z-index: 9999; /* IMPORTANT: keep above everything */
       transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
 
@@ -91,11 +92,13 @@
       transition: opacity 0.15s ease, transform 0.15s ease;
     }
 
-    :root[data-theme="light"] .icon-moon { opacity: 1; }
-    :root[data-theme="light"] .icon-sun { opacity: 0; }
+    /* Light theme: show moon (click to go dark) */
+    :root[data-theme="light"] .icon-moon { opacity: 1; transform: scale(1); }
+    :root[data-theme="light"] .icon-sun  { opacity: 0; transform: scale(0.85); }
 
-    :root[data-theme="dark"] .icon-sun { opacity: 1; }
-    :root[data-theme="dark"] .icon-moon { opacity: 0; }
+    /* Dark theme: show sun (click to go light) */
+    :root[data-theme="dark"] .icon-sun  { opacity: 1; transform: scale(1); }
+    :root[data-theme="dark"] .icon-moon { opacity: 0; transform: scale(0.85); }
 
     /* =============================
        Typography
@@ -231,9 +234,9 @@
 <body>
   <div class="wrap">
     <div class="top-bar">
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-        <span class="icon icon-sun">☀️</span>
-        <span class="icon icon-moon">🌙</span>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+        <span class="icon icon-sun" aria-hidden="true">☀️</span>
+        <span class="icon icon-moon" aria-hidden="true">🌙</span>
       </button>
     </div>
 
@@ -248,40 +251,40 @@
       <h2>Selected Projects</h2>
 
       <div class="project-grid">
-        <a class="project-card" href="https://tawfikmanham.com/project/ai-health-check-for-seis-eis-advance-assurance-applications/" target="_blank">
-          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/12/AI-Hero-1.jpg" alt="">
+        <a class="project-card" href="https://tawfikmanham.com/project/ai-health-check-for-seis-eis-advance-assurance-applications/" target="_blank" rel="noopener">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/12/AI-Hero-1.jpg" alt="AI Application Health Check thumbnail">
           <div class="project-meta">
             <div class="project-title">AI Application Health Check</div>
             <p class="project-subtitle">AI-powered eligibility check to reduce SEIS/EIS application risk.</p>
           </div>
         </a>
 
-        <a class="project-card" href="https://tawfikmanham.com/project/naza-care-connect-web/" target="_blank">
-          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/03/Desktop-14-1x.png" alt="">
+        <a class="project-card" href="https://tawfikmanham.com/project/naza-care-connect-web/" target="_blank" rel="noopener">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/03/Desktop-14-1x.png" alt="Naza Care Connect thumbnail">
           <div class="project-meta">
             <div class="project-title">Naza Care Connect</div>
             <p class="project-subtitle">Streamlining care homes to better support young people.</p>
           </div>
         </a>
 
-        <a class="project-card" href="https://tawfikmanham.com/project/trimble-app-manager/" target="_blank">
-          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-App-Hero-Image.png" alt="">
+        <a class="project-card" href="https://tawfikmanham.com/project/trimble-app-manager/" target="_blank" rel="noopener">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-App-Hero-Image.png" alt="Trimble App Manager thumbnail">
           <div class="project-meta">
             <div class="project-title">Trimble App Manager</div>
             <p class="project-subtitle">Enroll, customize, and secure devices remotely.</p>
           </div>
         </a>
 
-        <a class="project-card" href="https://tawfikmanham.com/project/driver-workflow/" target="_blank">
-          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/SG-Tab-9.png" alt="">
+        <a class="project-card" href="https://tawfikmanham.com/project/driver-workflow/" target="_blank" rel="noopener">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/SG-Tab-9.png" alt="Driver Workflow thumbnail">
           <div class="project-meta">
             <div class="project-title">Driver Workflow (Mobile)</div>
             <p class="project-subtitle">Trips, forms, and messaging for truck drivers.</p>
           </div>
         </a>
 
-        <a class="project-card" href="https://tawfikmanham.com/project/trimble-modus/" target="_blank">
-          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-Design-System-Hero-2.png" alt="">
+        <a class="project-card" href="https://tawfikmanham.com/project/trimble-modus/" target="_blank" rel="noopener">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-Design-System-Hero-2.png" alt="Trimble Modus thumbnail">
           <div class="project-meta">
             <div class="project-title">Trimble Modus (Design System)</div>
             <p class="project-subtitle">Unified design system and micro-interactions at scale.</p>
@@ -292,14 +295,17 @@
   </div>
 
   <script>
+    // Set initial theme (saved > system preference)
     const saved = localStorage.getItem("theme");
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const theme = saved || (prefersDark ? "dark" : "light");
+    const initialTheme = saved || (prefersDark ? "dark" : "light");
 
-    document.documentElement.setAttribute("data-theme", theme);
+    document.documentElement.setAttribute("data-theme", initialTheme);
 
-    document.getElementById("themeToggle").addEventListener("click", () => {
-      const current = document.documentElement.getAttribute("data-theme");
+    // Toggle on click
+    const toggle = document.getElementById("themeToggle");
+    toggle.addEventListener("click", () => {
+      const current = document.documentElement.getAttribute("data-theme") || "light";
       const next = current === "dark" ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", next);
       localStorage.setItem("theme", next);
