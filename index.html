@@ -6,7 +6,9 @@
   <title>Tawfik Manham — Portfolio</title>
 
   <style>
-    /* ---------- Theme tokens ---------- */
+    /* =============================
+       Theme tokens
+    ============================== */
     :root {
       --bg: #ffffff;
       --text: #111111;
@@ -27,7 +29,9 @@
       --thumbBg: #1a1a1d;
     }
 
-    /* ---------- Base ---------- */
+    /* =============================
+       Base
+    ============================== */
     body {
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background: var(--bg);
@@ -41,7 +45,9 @@
       color: inherit;
     }
 
-    /* ---------- Layout ---------- */
+    /* =============================
+       Layout
+    ============================== */
     .wrap {
       max-width: 980px;
       margin: 0 auto;
@@ -51,7 +57,49 @@
       margin-top: 120px;
     }
 
-    /* ---------- Typography ---------- */
+    /* =============================
+       Top bar (theme toggle aligned to content)
+    ============================== */
+    .top-bar {
+      position: relative;
+      height: 0;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 26px var(--shadow);
+    }
+
+    .theme-toggle .icon {
+      position: absolute;
+      font-size: 16px;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+
+    :root[data-theme="light"] .icon-moon { opacity: 1; }
+    :root[data-theme="light"] .icon-sun { opacity: 0; }
+
+    :root[data-theme="dark"] .icon-sun { opacity: 1; }
+    :root[data-theme="dark"] .icon-moon { opacity: 0; }
+
+    /* =============================
+       Typography
+    ============================== */
     h1 {
       font-size: 48px;
       font-weight: 500;
@@ -63,7 +111,6 @@
       font-size: 20px;
       font-weight: 500;
       margin: 0 0 16px 0;
-      color: var(--text);
     }
 
     p {
@@ -74,7 +121,9 @@
       margin: 0;
     }
 
-    /* ---------- Project list (BIG cards) ---------- */
+    /* =============================
+       Projects (big cards)
+    ============================== */
     .project-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -82,12 +131,13 @@
     }
 
     .project-card {
+      position: relative;
       display: block;
       border: 1px solid var(--border);
       border-radius: 20px;
       overflow: hidden;
       background: var(--card);
-      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
       will-change: transform;
     }
 
@@ -100,8 +150,8 @@
       width: 100%;
       height: 340px;
       object-fit: cover;
-      display: block;
       background: var(--thumbBg);
+      display: block;
       border-bottom: 1px solid var(--border);
     }
 
@@ -113,7 +163,6 @@
       font-size: 20px;
       font-weight: 500;
       margin: 0 0 8px 0;
-      letter-spacing: -0.01em;
     }
 
     .project-subtitle {
@@ -123,84 +172,48 @@
       margin: 0;
       max-width: 72ch;
     }
-/* ---------- Hover tooltip: "View case study →" ---------- */
-.project-card {
-  position: relative;
-}
 
-.project-card::after {
-  content: "View case study →";
-  position: absolute;
-  right: 16px;
-  bottom: 16px;
-  padding: 8px 10px;
-  font-size: 13px;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text);
-  border-radius: 999px;
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.15s ease, transform 0.15s ease;
-  pointer-events: none;
-}
+    /* Tooltip */
+    .project-card::after {
+      content: "View case study →";
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+      padding: 8px 12px;
+      font-size: 13px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 999px;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      pointer-events: none;
+    }
 
-.project-card:hover::after {
-  opacity: 1;
-  transform: translateY(0);
-}
+    .project-card:hover::after {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-/* ---------- Theme toggle (icon-only) ---------- */
-/* ---------- Top bar ---------- */
-.top-bar {
-  position: relative;
-  height: 0;
-}
-
-/* ---------- Theme toggle aligned to content ---------- */
-.theme-toggle {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text);
-  border-radius: 999px;
-  cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-
-/* Light theme: show moon (to switch to dark) */
-:root[data-theme="light"] .icon-moon { opacity: 1; transform: scale(1); }
-:root[data-theme="light"] .icon-sun  { opacity: 0; transform: scale(0.85); }
-
-/* Dark theme: show sun (to switch to light) */
-:root[data-theme="dark"] .icon-sun  { opacity: 1; transform: scale(1); }
-:root[data-theme="dark"] .icon-moon { opacity: 0; transform: scale(0.85); }
-
-
-    /* ---------- Subtle page load animation ---------- */
+    /* =============================
+       Subtle animation
+    ============================== */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     section {
       animation: fadeUp 0.6s ease both;
     }
 
-    section:nth-of-type(1) { animation-delay: 0.00s; }
+    section:nth-of-type(1) { animation-delay: 0s; }
     section:nth-of-type(2) { animation-delay: 0.08s; }
     section:nth-of-type(3) { animation-delay: 0.16s; }
-    section:nth-of-type(4) { animation-delay: 0.24s; }
-    section:nth-of-type(5) { animation-delay: 0.32s; }
 
-    /* ---------- Mobile ---------- */
+    /* =============================
+       Mobile
+    ============================== */
     @media (max-width: 640px) {
       body { padding: 24px; }
       h1 { font-size: 36px; }
@@ -208,7 +221,6 @@
       .project-thumb { height: 220px; }
     }
 
-    /* ---------- Accessibility: respect reduced motion ---------- */
     @media (prefers-reduced-motion: reduce) {
       section { animation: none; }
       .project-card { transition: none; }
@@ -217,17 +229,13 @@
 </head>
 
 <body>
-  <span class="icon icon-sun" aria-hidden="true">☀️</span>
-  <span class="icon icon-moon" aria-hidden="true">🌙</span>
-</button>
-
   <div class="wrap">
     <div class="top-bar">
-  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
-    <span class="icon icon-sun">☀️</span>
-    <span class="icon icon-moon">🌙</span>
-  </button>
-</div>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="icon icon-sun">☀️</span>
+        <span class="icon icon-moon">🌙</span>
+      </button>
+    </div>
 
     <!-- Hero -->
     <section>
@@ -240,40 +248,40 @@
       <h2>Selected Projects</h2>
 
       <div class="project-grid">
-        <a class="project-card" href="https://tawfikmanham.com/project/ai-health-check-for-seis-eis-advance-assurance-applications/" target="_blank" rel="noopener">
-          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/12/AI-Hero-1.jpg" alt="AI Application Health Check thumbnail">
+        <a class="project-card" href="https://tawfikmanham.com/project/ai-health-check-for-seis-eis-advance-assurance-applications/" target="_blank">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/12/AI-Hero-1.jpg" alt="">
           <div class="project-meta">
             <div class="project-title">AI Application Health Check</div>
             <p class="project-subtitle">AI-powered eligibility check to reduce SEIS/EIS application risk.</p>
           </div>
         </a>
 
-        <a class="project-card" href="https://tawfikmanham.com/project/naza-care-connect-web/" target="_blank" rel="noopener">
-          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/03/Desktop-14-1x.png" alt="Naza Care Connect thumbnail">
+        <a class="project-card" href="https://tawfikmanham.com/project/naza-care-connect-web/" target="_blank">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/03/Desktop-14-1x.png" alt="">
           <div class="project-meta">
             <div class="project-title">Naza Care Connect</div>
             <p class="project-subtitle">Streamlining care homes to better support young people.</p>
           </div>
         </a>
 
-        <a class="project-card" href="https://tawfikmanham.com/project/trimble-app-manager/" target="_blank" rel="noopener">
-          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-App-Hero-Image.png" alt="Trimble App Manager thumbnail">
+        <a class="project-card" href="https://tawfikmanham.com/project/trimble-app-manager/" target="_blank">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-App-Hero-Image.png" alt="">
           <div class="project-meta">
             <div class="project-title">Trimble App Manager</div>
             <p class="project-subtitle">Enroll, customize, and secure devices remotely.</p>
           </div>
         </a>
 
-        <a class="project-card" href="https://tawfikmanham.com/project/driver-workflow/" target="_blank" rel="noopener">
-          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/SG-Tab-9.png" alt="Driver Workflow thumbnail">
+        <a class="project-card" href="https://tawfikmanham.com/project/driver-workflow/" target="_blank">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/SG-Tab-9.png" alt="">
           <div class="project-meta">
             <div class="project-title">Driver Workflow (Mobile)</div>
             <p class="project-subtitle">Trips, forms, and messaging for truck drivers.</p>
           </div>
         </a>
 
-        <a class="project-card" href="https://tawfikmanham.com/project/trimble-modus/" target="_blank" rel="noopener">
-          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-Design-System-Hero-2.png" alt="Trimble Modus thumbnail">
+        <a class="project-card" href="https://tawfikmanham.com/project/trimble-modus/" target="_blank">
+          <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-Design-System-Hero-2.png" alt="">
           <div class="project-meta">
             <div class="project-title">Trimble Modus (Design System)</div>
             <p class="project-subtitle">Unified design system and micro-interactions at scale.</p>
@@ -284,19 +292,18 @@
   </div>
 
   <script>
-  const saved = localStorage.getItem("theme");
-  const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const initial = saved || (systemDark ? "dark" : "light");
+    const saved = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const theme = saved || (prefersDark ? "dark" : "light");
 
-  document.documentElement.setAttribute("data-theme", initial);
+    document.documentElement.setAttribute("data-theme", theme);
 
-  const btn = document.getElementById("themeToggle");
-  btn.addEventListener("click", () => {
-    const current = document.documentElement.getAttribute("data-theme") || "light";
-    const next = current === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", next);
-    localStorage.setItem("theme", next);
-  });
-</script>
+    document.getElementById("themeToggle").addEventListener("click", () => {
+      const current = document.documentElement.getAttribute("data-theme");
+      const next = current === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+    });
+  </script>
 </body>
 </html>
