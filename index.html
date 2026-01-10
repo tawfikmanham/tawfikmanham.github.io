@@ -218,6 +218,50 @@
     section:nth-of-type(2) { animation-delay: 0.08s; }
     section:nth-of-type(3) { animation-delay: 0.16s; }
 
+    /* Subtle title + subtitle entrance (word-by-word) */
+    @keyframes wordRise {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-title .title-word,
+    .hero-title .title-dot {
+      display: inline-block;
+      animation: wordRise 0.8s ease both;
+    }
+
+    .hero-title .title-word {
+      margin-right: 0.22em;
+    }
+
+    .hero-title .title-word:nth-child(1) { animation-delay: 0s; }
+    .hero-title .title-word:nth-child(2) { animation-delay: 0.14s; }
+    .hero-title .title-word:last-of-type { margin-right: 0; }
+    .hero-title .title-dot { animation-delay: 0.28s; margin-right: 0; }
+
+    .hero-subtitle .subtitle-word,
+    .hero-subtitle .subtitle-dot {
+      display: inline-block;
+      margin-right: 0.2em;
+      animation: wordRise 0.8s ease both;
+    }
+
+    .hero-subtitle .subtitle-word:nth-child(1) { animation-delay: 0.36s; }
+    .hero-subtitle .subtitle-word:nth-child(2) { animation-delay: 0.42s; }
+    .hero-subtitle .subtitle-word:nth-child(3) { animation-delay: 0.48s; }
+    .hero-subtitle .subtitle-word:nth-child(4) { animation-delay: 0.54s; }
+    .hero-subtitle .subtitle-word:nth-child(5) { animation-delay: 0.6s; }
+    .hero-subtitle .subtitle-word:nth-child(6) { animation-delay: 0.66s; }
+    .hero-subtitle .subtitle-word:nth-child(7) { animation-delay: 0.72s; }
+    .hero-subtitle .subtitle-word:nth-child(8) { animation-delay: 0.78s; }
+    .hero-subtitle .subtitle-word:nth-child(9) { animation-delay: 0.84s; }
+    .hero-subtitle .subtitle-word:nth-child(10) { animation-delay: 0.9s; }
+    .hero-subtitle .subtitle-word:nth-child(11) { animation-delay: 0.96s; }
+    .hero-subtitle .subtitle-word:nth-child(12) { animation-delay: 1.02s; }
+    .hero-subtitle .subtitle-word:nth-child(13) { animation-delay: 1.08s; }
+    .hero-subtitle .subtitle-word:last-of-type { margin-right: 0; }
+    .hero-subtitle .subtitle-dot { margin-right: 0; }
+
     /* =============================
        Mobile
     ============================== */
@@ -230,6 +274,10 @@
 
     @media (prefers-reduced-motion: reduce) {
       section { animation: none; }
+      .hero-title .title-word,
+      .hero-title .title-dot,
+      .hero-subtitle .subtitle-word,
+      .hero-subtitle .subtitle-dot { animation: none; }
       .project-card { transition: none; }
     }
   </style>
@@ -246,8 +294,23 @@
 
     <!-- Hero -->
     <section>
-      <h1>Tawfik Manham<span class="name-dot">.</span></h1>
-      <p>Product Designer in London with 9+ years crafting B2B SaaS experiences.</p>
+      <h1 class="hero-title">
+        <span class="title-word">Tawfik</span>
+        <span class="title-word">Manham</span><span class="name-dot title-dot">.</span>
+      </h1>
+      <p class="hero-subtitle">
+        <span class="subtitle-word">Product</span>
+        <span class="subtitle-word">Designer</span>
+        <span class="subtitle-word">in</span>
+        <span class="subtitle-word">London</span>
+        <span class="subtitle-word">with</span>
+        <span class="subtitle-word">9+</span>
+        <span class="subtitle-word">years</span>
+        <span class="subtitle-word">crafting</span>
+        <span class="subtitle-word">B2B</span>
+        <span class="subtitle-word">SaaS</span>
+        <span class="subtitle-word">experiences</span><span class="subtitle-dot">.</span>
+      </p>
     </section>
 
     <!-- Projects -->
