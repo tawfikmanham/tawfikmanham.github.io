@@ -12,7 +12,7 @@
   let dpr = 1;
   let drops = [];
   let isAnimating = false;
-  let isEnabled = !reduceMotion;
+  let isEnabled = false;
   let rafId = 0;
   let audioCtx = null;
   let noiseSource = null;
@@ -266,7 +266,6 @@
       stop();
       return;
     }
-    isEnabled = true;
     resize();
     start();
     startAudio();
