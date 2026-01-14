@@ -156,6 +156,49 @@
       color: var(--muted);
     }
 
+    .confetti-overlay {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1000000;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 14px;
+      box-shadow: 0 12px 30px var(--shadow);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 1000001;
+    }
+
+    .toast.is-visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+
+    .toast button {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font-size: 16px;
+      margin-left: 10px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
     /* =============================
        Projects (big cards)
     ============================== */
@@ -402,6 +445,11 @@
     </footer>
   </div>
 
+  <div class="toast" id="bottomToast" role="status" aria-live="polite">
+    <span>Thanks for taking your time</span>
+    <button type="button" aria-label="Dismiss message">×</button>
+  </div>
+
   <script>
     // Set initial theme (saved > system preference)
     const saved = localStorage.getItem("theme");
@@ -420,5 +468,138 @@
     });
   </script>
   <script src="effects/rain/rain.js"></script>
+  <script>
+    (() => {
+      const reduceMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+      if (reduceMotionQuery.matches) {
+        return;
+      }
+
+      let hasFired = false;
+      let rafId = 0;
+      let toastTimer = 0;
+      const toast = document.getElementById("bottomToast");
+      const toastButton = toast ? toast.querySelector("button") : null;
+      if (toastButton) {
+        toastButton.addEventListener("click", () => {
+          toast.classList.remove("is-visible");
+        });
+      }
+
+      const triggerConfetti = () => {
+        if (hasFired) return;
+        hasFired = true;
+
+        const canvas = document.createElement("canvas");
+        canvas.className = "confetti-overlay";
+        document.body.appendChild(canvas);
+
+        const ctx = canvas.getContext("2d");
+        let width = 0;
+        let height = 0;
+        let dpr = 1;
+        let pieces = [];
+        const gravity = 0.08;
+        const drag = 0.995;
+        const endBuffer = 60;
+
+        const resize = () => {
+          dpr = Math.min(window.devicePixelRatio || 1, 2);
+          width = window.innerWidth;
+          height = window.innerHeight;
+          canvas.width = Math.floor(width * dpr);
+          canvas.height = Math.floor(height * dpr);
+          canvas.style.width = width + "px";
+          canvas.style.height = height + "px";
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        };
+
+        const palette = [
+          "#f5f3ef",
+          "#f2c14e",
+          "#f78154",
+          "#5ca4a9",
+          "#9e2a2b",
+          "#2b2d42",
+        ];
+
+        const random = (min, max) => min + Math.random() * (max - min);
+
+        const createPiece = () => ({
+          x: random(0, width),
+          y: random(-height, 0),
+          w: random(6, 12),
+          h: random(10, 18),
+          tilt: random(-0.6, 0.6),
+          rot: random(0, Math.PI * 2),
+          rotSpeed: random(-0.1, 0.1),
+          vx: random(-1.8, 1.8),
+          vy: random(1, 3.5),
+          color: palette[Math.floor(Math.random() * palette.length)],
+        });
+
+        const initPieces = () => {
+          const count = Math.min(240, Math.floor((width * height) / 6000));
+          pieces = Array.from({ length: count }, createPiece);
+        };
+
+        const tick = () => {
+          ctx.clearRect(0, 0, width, height);
+
+          let allBelow = true;
+          for (const p of pieces) {
+            p.vy += gravity;
+            p.vx *= drag;
+            p.vy *= drag;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.rot += p.rotSpeed;
+
+            if (p.y <= height + endBuffer) {
+              allBelow = false;
+            }
+
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            ctx.restore();
+          }
+
+          if (!allBelow) {
+            rafId = requestAnimationFrame(tick);
+          } else {
+            cancelAnimationFrame(rafId);
+            canvas.remove();
+            window.removeEventListener("resize", resize);
+          }
+        };
+
+        resize();
+        initPieces();
+        window.addEventListener("resize", resize);
+        rafId = requestAnimationFrame(tick);
+      };
+
+      const onScroll = () => {
+        if (hasFired) return;
+        const threshold = 12;
+        const scrollBottom =
+          window.scrollY + window.innerHeight >=
+          document.documentElement.scrollHeight - threshold;
+        if (scrollBottom) {
+          triggerConfetti();
+          if (toast) {
+            toast.classList.add("is-visible");
+            window.clearTimeout(toastTimer);
+          }
+        }
+      };
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("load", onScroll, { passive: true });
+    })();
+  </script>
 </body>
 </html>
