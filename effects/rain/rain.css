@@ -12,9 +12,6 @@
 }
 
 .rain-toggle {
-  position: absolute;
-  top: 0;
-  right: 52px;
   width: 42px;
   height: 42px;
   display: grid;
@@ -48,10 +45,4 @@
 .rain-toggle[disabled] {
   opacity: 0.55;
   cursor: not-allowed;
-}
-
-@media (max-width: 640px) {
-  .rain-toggle {
-    right: 50px;
-  }
 }

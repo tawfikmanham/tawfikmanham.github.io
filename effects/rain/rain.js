@@ -12,23 +12,46 @@
   let dpr = 1;
   let drops = [];
   let isAnimating = false;
-  let isEnabled = false;
   let rafId = 0;
   let audioCtx = null;
   let noiseSource = null;
   let noiseGain = null;
 
+  const settings = {
+    enabled: false,
+    density: 0.00035,
+    minDrops: 220,
+    lengthMin: 12,
+    lengthMax: 26,
+    speedMin: 8,
+    speedMax: 16,
+    thicknessMin: 1,
+    thicknessMax: 1.6,
+    opacityMin: 0.35,
+    opacityMax: 0.7,
+    driftMin: -0.7,
+    driftMax: 0.7,
+    color: { r: 200, g: 200, b: 200 },
+    umbrellaRadiusDesktop: 120,
+    umbrellaRadiusMobile: 80,
+    umbrellaFeatherRatio: 0.35,
+    audioEnabled: true,
+    audioVolume: 0.08,
+    audioLowpass: 1200,
+    audioHighpass: 180,
+  };
+
   const cursor = {
     x: -9999,
     y: -9999,
-    radius: 120,
-    feather: 40,
+    radius: settings.umbrellaRadiusDesktop,
+    feather: Math.round(settings.umbrellaRadiusDesktop * settings.umbrellaFeatherRatio),
   };
 
   const setUmbrellaSize = () => {
     const isMobile = window.matchMedia("(max-width: 640px)").matches;
-    cursor.radius = isMobile ? 80 : 120;
-    cursor.feather = Math.round(cursor.radius * 0.35);
+    cursor.radius = isMobile ? settings.umbrellaRadiusMobile : settings.umbrellaRadiusDesktop;
+    cursor.feather = Math.round(cursor.radius * settings.umbrellaFeatherRatio);
   };
 
   const resize = () => {
@@ -42,21 +65,31 @@
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     const area = width * height;
-    const dropCount = Math.max(220, Math.floor(area * 0.00035));
+    const dropCount = Math.max(settings.minDrops, Math.floor(area * settings.density));
     drops = Array.from({ length: dropCount }, () => createDrop());
     setUmbrellaSize();
   };
 
   const createDrop = () => {
-    const length = random(12, 26);
+    const lengthMin = Math.min(settings.lengthMin, settings.lengthMax);
+    const lengthMax = Math.max(settings.lengthMin, settings.lengthMax);
+    const speedMin = Math.min(settings.speedMin, settings.speedMax);
+    const speedMax = Math.max(settings.speedMin, settings.speedMax);
+    const thicknessMin = Math.min(settings.thicknessMin, settings.thicknessMax);
+    const thicknessMax = Math.max(settings.thicknessMin, settings.thicknessMax);
+    const opacityMin = Math.min(settings.opacityMin, settings.opacityMax);
+    const opacityMax = Math.max(settings.opacityMin, settings.opacityMax);
+    const driftMin = Math.min(settings.driftMin, settings.driftMax);
+    const driftMax = Math.max(settings.driftMin, settings.driftMax);
+    const length = random(lengthMin, lengthMax);
     return {
       x: random(0, width),
       y: random(-height, height),
       length,
-      speed: random(8, 16),
-      thickness: random(1, 1.6),
-      opacity: random(0.35, 0.7),
-      drift: random(-0.7, 0.7),
+      speed: random(speedMin, speedMax),
+      thickness: random(thicknessMin, thicknessMax),
+      opacity: random(opacityMin, opacityMax),
+      drift: random(driftMin, driftMax),
     };
   };
 
@@ -101,7 +134,7 @@
         continue;
       }
 
-      ctx.strokeStyle = `rgba(200, 200, 200, ${alpha})`;
+      ctx.strokeStyle = `rgba(${settings.color.r}, ${settings.color.g}, ${settings.color.b}, ${alpha})`;
       ctx.lineWidth = d.thickness;
       ctx.beginPath();
       ctx.moveTo(d.x, d.y);
@@ -130,7 +163,7 @@
   };
 
   const start = () => {
-    if (isAnimating || reduceMotion || !isEnabled) {
+    if (isAnimating || reduceMotion || !settings.enabled) {
       return;
     }
     isAnimating = true;
@@ -152,7 +185,7 @@
   };
 
   const startAudio = () => {
-    if (audioCtx || reduceMotion || !isEnabled) {
+    if (audioCtx || reduceMotion || !settings.enabled || !settings.audioEnabled) {
       return;
     }
     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -162,14 +195,14 @@
 
     const lowpass = audioCtx.createBiquadFilter();
     lowpass.type = "lowpass";
-    lowpass.frequency.value = 1200;
+    lowpass.frequency.value = settings.audioLowpass;
 
     const highpass = audioCtx.createBiquadFilter();
     highpass.type = "highpass";
-    highpass.frequency.value = 180;
+    highpass.frequency.value = settings.audioHighpass;
 
     noiseGain = audioCtx.createGain();
-    noiseGain.gain.value = 0.08;
+    noiseGain.gain.value = settings.audioVolume;
 
     noiseSource.connect(lowpass);
     lowpass.connect(highpass);
@@ -210,10 +243,10 @@
       return;
     }
     button.removeAttribute("disabled");
-    button.setAttribute("aria-pressed", String(isEnabled));
-    button.setAttribute("aria-label", isEnabled ? "Turn rain off" : "Turn rain on");
-    button.classList.toggle("is-on", isEnabled);
-    button.classList.toggle("is-off", !isEnabled);
+    button.setAttribute("aria-pressed", String(settings.enabled));
+    button.setAttribute("aria-label", settings.enabled ? "Turn rain off" : "Turn rain on");
+    button.classList.toggle("is-on", settings.enabled);
+    button.classList.toggle("is-off", !settings.enabled);
   };
 
   const initToggle = () => {
@@ -239,9 +272,9 @@
       if (reduceMotion) {
         return;
       }
-      isEnabled = !isEnabled;
+      settings.enabled = !settings.enabled;
       updateToggle(button);
-      if (isEnabled) {
+      if (settings.enabled) {
         resize();
         start();
         startAudio();
@@ -262,7 +295,7 @@
   reduceMotionQuery.addEventListener("change", (event) => {
     reduceMotion = event.matches;
     if (reduceMotion) {
-      isEnabled = false;
+      settings.enabled = false;
       stop();
       return;
     }
@@ -273,8 +306,9 @@
 
   resize();
   initToggle();
-  if (isEnabled) {
+  if (settings.enabled) {
     start();
     startAudio();
   }
+
 })();
