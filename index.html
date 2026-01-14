@@ -18,6 +18,8 @@
       --card: #ffffff;
       --shadow: rgba(0,0,0,0.08);
       --thumbBg: #f6f6f6;
+      --grid-line: rgba(17, 17, 17, 0.05);
+      --grid-size: 24px;
     }
 
     :root[data-theme="dark"] {
@@ -28,6 +30,7 @@
       --card: #121214;
       --shadow: rgba(0,0,0,0.55);
       --thumbBg: #1a1a1d;
+      --grid-line: rgba(242, 242, 242, 0.05);
     }
 
     /* =============================
@@ -35,7 +38,11 @@
     ============================== */
     body {
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: var(--bg);
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: var(--grid-size) var(--grid-size);
       color: var(--text);
       margin: 0;
       padding: 48px;
