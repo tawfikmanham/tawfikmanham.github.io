@@ -316,6 +316,7 @@
     .hero-subtitle .subtitle-dot {
       display: inline-block;
       margin-right: 0.2em;
+      opacity: 0;
       animation: wordRise 0.8s ease both;
     }
 
@@ -333,7 +334,7 @@
     .hero-subtitle .subtitle-word:nth-child(12) { animation-delay: 1.02s; }
     .hero-subtitle .subtitle-word:nth-child(13) { animation-delay: 1.08s; }
     .hero-subtitle .subtitle-word:last-of-type { margin-right: 0; }
-    .hero-subtitle .subtitle-dot { margin-right: 0; }
+    .hero-subtitle .subtitle-dot { margin-right: 0; animation-delay: 0.96s; }
 
     /* =============================
        Mobile
@@ -356,7 +357,10 @@
       .hero-title .title-word,
       .hero-title .title-dot,
       .hero-subtitle .subtitle-word,
-      .hero-subtitle .subtitle-dot { animation: none; }
+      .hero-subtitle .subtitle-dot {
+        animation: none;
+        opacity: 1;
+      }
       .project-card { transition: none; }
     }
   </style>
