@@ -28,6 +28,7 @@
       --thumbBg: #f6f6f6;
       --grid-line: rgba(17, 17, 17, 0.05);
       --grid-size: 24px;
+      --accent: #ab1f26;
     }
 
     :root[data-theme="dark"] {
@@ -48,8 +49,7 @@
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background-color: var(--bg);
       background-image:
-        linear-gradient(var(--grid-line) 1px, transparent 1px),
-        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+        radial-gradient(circle, var(--grid-line) 1px, transparent 1px);
       background-size: var(--grid-size) var(--grid-size);
       color: var(--text);
       margin: 0;
@@ -67,6 +67,8 @@
     .wrap {
       max-width: 980px;
       margin: 0 auto;
+      position: relative;
+      z-index: 1;
     }
 
     section {
@@ -148,7 +150,7 @@
     }
 
     .name-dot {
-      color: #ab1f26;
+      color: var(--accent);
     }
 
     h2 {
@@ -167,8 +169,54 @@
 
     footer {
       margin-top: 120px;
+      padding-top: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
       font-size: 14px;
       color: var(--muted);
+    }
+
+    .footer-socials {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .social-link {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .social-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px var(--shadow);
+    }
+
+    .social-link svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+      white-space: nowrap;
     }
 
     .confetti-overlay {
@@ -178,6 +226,15 @@
       height: 100%;
       pointer-events: none;
       z-index: 1000000;
+    }
+
+    .grid-glow {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
     }
 
     .toast {
@@ -294,7 +351,7 @@
       content: "View case study →";
       position: absolute;
       right: 16px;
-      bottom: 16px;
+      top: 16px;
       padding: 8px 12px;
       font-size: 13px;
       border: 1px solid var(--border);
@@ -380,6 +437,7 @@
       body { padding: 24px; }
       h1 { font-size: 36px; }
       section { margin-top: 72px; }
+      footer { justify-content: center; text-align: center; }
     }
 
     @media (min-width: 900px) {
@@ -483,7 +541,28 @@
     </section>
 
     <footer>
-      Tawfik Manham © 2026. Made with ❤️ from London.
+      <div>Tawfik Manham © 2026. Made with ❤️ from London.</div>
+      <div class="footer-socials">
+        <a class="social-link" href="https://linkedin.com/in/tawfikmanham" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4.98 3.5a2.5 2.5 0 1 1-.01 5.01 2.5 2.5 0 0 1 .01-5.01ZM3 9h3.96v12H3V9Zm7.5 0H14v1.64h.06c.49-.93 1.7-1.91 3.5-1.91 3.75 0 4.44 2.47 4.44 5.69V21H18v-5.18c0-1.23-.02-2.82-1.72-2.82-1.73 0-2 1.35-2 2.73V21H10.5V9Z"/>
+          </svg>
+          <span class="sr-only">LinkedIn</span>
+        </a>
+        <a class="social-link" href="https://www.instagram.com/tawfikmanham/" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 8.1A3.9 3.9 0 1 0 12 16a3.9 3.9 0 0 0 0-7.8Zm0 6.4a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5Zm4.85-6.9a.9.9 0 1 1 0 1.8.9.9 0 0 1 0-1.8Z"/>
+            <path d="M7.2 3h9.6A4.2 4.2 0 0 1 21 7.2v9.6A4.2 4.2 0 0 1 16.8 21H7.2A4.2 4.2 0 0 1 3 16.8V7.2A4.2 4.2 0 0 1 7.2 3Zm0 1.6A2.6 2.6 0 0 0 4.6 7.2v9.6a2.6 2.6 0 0 0 2.6 2.6h9.6a2.6 2.6 0 0 0 2.6-2.6V7.2a2.6 2.6 0 0 0-2.6-2.6H7.2Z"/>
+          </svg>
+          <span class="sr-only">Instagram</span>
+        </a>
+        <a class="social-link" href="https://github.com/tawfikmanham" target="_blank" rel="noopener" aria-label="GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 2C6.48 2 2 6.58 2 12.25c0 4.52 2.87 8.35 6.84 9.7.5.1.68-.22.68-.5 0-.24-.01-.9-.01-1.76-2.78.62-3.37-1.22-3.37-1.22-.45-1.19-1.1-1.5-1.1-1.5-.9-.64.07-.63.07-.63 1 .07 1.53 1.05 1.53 1.05.9 1.57 2.36 1.12 2.94.86.09-.67.35-1.12.64-1.38-2.22-.26-4.55-1.14-4.55-5.06 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.29.1-2.69 0 0 .84-.27 2.75 1.05A9.3 9.3 0 0 1 12 6.96c.85 0 1.7.12 2.5.35 1.9-1.32 2.74-1.05 2.74-1.05.55 1.4.2 2.43.1 2.69.64.72 1.03 1.63 1.03 2.75 0 3.93-2.34 4.8-4.57 5.05.36.32.68.95.68 1.92 0 1.39-.01 2.5-.01 2.84 0 .28.18.61.69.5A10.1 10.1 0 0 0 22 12.25C22 6.58 17.52 2 12 2Z"/>
+          </svg>
+          <span class="sr-only">GitHub</span>
+        </a>
+      </div>
     </footer>
   </div>
 
@@ -491,6 +570,8 @@
     <span>Hope you enjoyed exploring 👍</span>
     <button type="button" aria-label="Dismiss message">×</button>
   </div>
+
+  <canvas class="grid-glow" id="gridGlow" aria-hidden="true"></canvas>
 
   <script>
     // Set initial theme (saved > system preference)
@@ -508,6 +589,135 @@
       document.documentElement.setAttribute("data-theme", next);
       localStorage.setItem("theme", next);
     });
+  </script>
+  <script>
+    (() => {
+      const canvas = document.getElementById("gridGlow");
+      if (!canvas) return;
+
+      const ctx = canvas.getContext("2d");
+      let width = 0;
+      let height = 0;
+      let dpr = 1;
+      let gridSize = 24;
+      let glowBase = "171, 31, 38";
+      const maxAlpha = 1;
+      let fadeSpeed = 0.02;
+      let cells = [];
+      let rafId = 0;
+      let lastX = null;
+      let lastY = null;
+      const inset = 0;
+
+      const readThemeTokens = () => {
+        const styles = getComputedStyle(document.documentElement);
+        const size = parseFloat(styles.getPropertyValue("--grid-size"));
+        gridSize = Number.isFinite(size) ? size : 24;
+        const accent = styles.getPropertyValue("--accent").trim();
+        const rgb = accent ? hexToRgb(accent) : null;
+        if (rgb) {
+          glowBase = `${rgb.r}, ${rgb.g}, ${rgb.b}`;
+        }
+      };
+
+      const hexToRgb = (value) => {
+        if (!value) return null;
+        const cleaned = value.replace("#", "").trim();
+        if (cleaned.length !== 6) return null;
+        const r = parseInt(cleaned.slice(0, 2), 16);
+        const g = parseInt(cleaned.slice(2, 4), 16);
+        const b = parseInt(cleaned.slice(4, 6), 16);
+        if ([r, g, b].some((c) => Number.isNaN(c))) return null;
+        return { r, g, b };
+      };
+
+      const resize = () => {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        canvas.style.width = width + "px";
+        canvas.style.height = height + "px";
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      };
+
+      const addCell = (x, y) => {
+        const col = Math.floor(x / gridSize);
+        const row = Math.floor(y / gridSize);
+        if (col < 0 || row < 0) return;
+        const key = row * 100000 + col;
+        const existing = cells.find((c) => c.key === key);
+        if (existing) {
+          existing.alpha = 1;
+          return;
+        }
+        cells.push({ key, col, row, alpha: 1 });
+      };
+
+      const draw = () => {
+        ctx.clearRect(0, 0, width, height);
+
+        for (let i = cells.length - 1; i >= 0; i -= 1) {
+          const cell = cells[i];
+          cell.alpha = Math.max(0, cell.alpha - fadeSpeed);
+          if (cell.alpha <= 0.01) {
+            cells.splice(i, 1);
+            continue;
+          }
+          const x = cell.col * gridSize + inset;
+          const y = cell.row * gridSize + inset;
+          const alpha = Math.max(0, Math.min(1, cell.alpha)) * maxAlpha;
+          ctx.fillStyle = `rgba(${glowBase}, ${alpha})`;
+          const glowAlpha = Math.min(alpha * 0.9, 0.9);
+          ctx.shadowColor = `rgba(${glowBase}, ${glowAlpha})`;
+          ctx.shadowBlur = gridSize * 1.6;
+          const baseRadius = gridSize * 0.49;
+          const radius = baseRadius * (0.4 + 0.6 * Math.max(0, Math.min(1, cell.alpha)));
+          ctx.beginPath();
+          ctx.arc(x + gridSize / 2, y + gridSize / 2, radius, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        }
+
+        rafId = requestAnimationFrame(draw);
+      };
+
+      const onMove = (event) => {
+        const x = event.clientX;
+        const y = event.clientY;
+        if (lastX === null || lastY === null) {
+          lastX = x;
+          lastY = y;
+        }
+
+        const dist = Math.hypot(x - lastX, y - lastY);
+        const steps = Math.max(1, Math.floor(dist / (gridSize * 0.2)));
+        for (let i = 0; i <= steps; i += 1) {
+          const t = steps === 0 ? 0 : i / steps;
+          addCell(lastX + (x - lastX) * t, lastY + (y - lastY) * t);
+        }
+        lastX = x;
+        lastY = y;
+      };
+
+      const onLeave = () => {
+        lastX = null;
+        lastY = null;
+      };
+
+      readThemeTokens();
+      resize();
+      draw();
+
+      window.addEventListener("resize", resize);
+      window.addEventListener("mousemove", onMove, { passive: true });
+      window.addEventListener("mouseleave", onLeave);
+      window.addEventListener("blur", onLeave);
+
+      const observer = new MutationObserver(readThemeTokens);
+      observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    })();
   </script>
   <script src="effects/rain/rain.js"></script>
   <script>
