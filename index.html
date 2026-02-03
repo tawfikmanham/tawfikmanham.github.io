@@ -123,7 +123,7 @@
 
     .theme-toggle .icon {
       position: absolute;
-      font-size: 16px;
+      font-size: 12px;
       transition: opacity 0.15s ease, transform 0.15s ease;
     }
 
@@ -146,7 +146,7 @@
       font-size: 48px;
       font-weight: 500;
       letter-spacing: -0.02em;
-      margin: 0 0 16px 0;
+      margin: 0 0 8px 0;
     }
 
     .name-dot {
@@ -160,11 +160,54 @@
     }
 
     p {
-      font-size: 18px;
+      font-size: 16px;
       color: var(--muted);
       line-height: 1.6;
       max-width: 640px;
       margin: 0;
+    }
+
+    .hero-subtitle {
+      font-size: 18px;
+    }
+
+    /* Typewriter subcopy (header only) */
+    .typewriter-line {
+      font-family: "JetBrains Mono", "Fira Code", "IBM Plex Mono", "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      height: 1.6em;
+      margin: 8px 0 16px 0;
+      display: block;
+      align-items: center;
+      gap: 6px;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .typewriter-text {
+      display: inline-block;
+    }
+
+    .typewriter-cursor {
+      display: inline-block;
+      width: 0.6ch;
+      color: var(--muted);
+      opacity: 0.8;
+      animation: cursorBlink 1.1s steps(2, start) infinite;
+    }
+
+    @keyframes cursorBlink {
+      50% { opacity: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .typewriter-cursor {
+        animation: none;
+      }
     }
 
     footer {
@@ -480,17 +523,15 @@
       </h1>
       <p class="hero-subtitle">
         <span class="subtitle-word">Product</span>
-        <span class="subtitle-word">Designer</span>
-        <span class="subtitle-word">in</span>
+        <span class="subtitle-word">Designer,</span>
         <span class="subtitle-word">London</span>
-        <span class="subtitle-word">with</span>
-        <span class="subtitle-word">9+</span>
-        <span class="subtitle-word">years</span>
-        <span class="subtitle-word">crafting</span>
-        <span class="subtitle-word">B2B</span>
-        <span class="subtitle-word">SaaS</span>
-        <span class="subtitle-word">experience.</span>
+        <span class="subtitle-word">🇬🇧</span>
       </p>
+      <!-- Typewriter subcopy (header only) -->
+      <div class="typewriter-line" id="typewriter" aria-live="off" aria-label="9 years building B2B products" role="text">
+        <span class="typewriter-text" aria-hidden="true"></span>
+        <span class="typewriter-cursor" aria-hidden="true">▍</span>
+      </div>
     </section>
 
     <!-- Projects -->
@@ -589,6 +630,67 @@
       document.documentElement.setAttribute("data-theme", next);
       localStorage.setItem("theme", next);
     });
+  </script>
+  <script>
+    // Typewriter subcopy (header only)
+    (() => {
+      const el = document.getElementById("typewriter");
+      if (!el) return;
+
+      const textEl = el.querySelector(".typewriter-text");
+      const cursorEl = el.querySelector(".typewriter-cursor");
+      const lines = [
+        "9 years building B2B products",
+        "B2B SaaS product design",
+        "Design and code thinking",
+        "Designing for scale",
+        "Design systems and workflows",
+      ];
+
+      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (prefersReduced) {
+        if (textEl) textEl.textContent = lines[0];
+        if (cursorEl) cursorEl.style.display = "none";
+        return;
+      }
+
+      let lineIndex = 0;
+      let charIndex = 0;
+      let isDeleting = false;
+
+      const typingSpeed = 52;
+      const deletingSpeed = 32;
+      const pauseAfterTyping = 1400;
+      const pauseAfterDeleting = 400;
+
+      const tick = () => {
+        const current = lines[lineIndex];
+        if (!textEl) return;
+
+        if (!isDeleting) {
+          charIndex += 1;
+          textEl.textContent = current.slice(0, charIndex);
+          if (charIndex === current.length) {
+            isDeleting = true;
+            setTimeout(tick, pauseAfterTyping);
+            return;
+          }
+          setTimeout(tick, typingSpeed);
+        } else {
+          charIndex -= 1;
+          textEl.textContent = current.slice(0, charIndex);
+          if (charIndex === 0) {
+            isDeleting = false;
+            lineIndex = (lineIndex + 1) % lines.length;
+            setTimeout(tick, pauseAfterDeleting);
+            return;
+          }
+          setTimeout(tick, deletingSpeed);
+        }
+      };
+
+      tick();
+    })();
   </script>
   <script>
     (() => {
