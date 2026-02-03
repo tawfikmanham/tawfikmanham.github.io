@@ -186,6 +186,8 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      opacity: 0;
+      transition: opacity 0.2s ease;
     }
 
     .typewriter-text {
@@ -198,6 +200,10 @@
       color: var(--accent);
       opacity: 0.8;
       animation: cursorBlink 1.1s steps(2, start) infinite;
+    }
+
+    .typewriter-line.is-ready {
+      opacity: 1;
     }
 
     @keyframes cursorBlink {
@@ -651,6 +657,7 @@
       if (prefersReduced) {
         if (textEl) textEl.textContent = lines[0];
         if (cursorEl) cursorEl.style.display = "none";
+        el.classList.add("is-ready");
         return;
       }
 
@@ -689,7 +696,12 @@
         }
       };
 
-      tick();
+      const start = () => {
+        el.classList.add("is-ready");
+        tick();
+      };
+
+      setTimeout(start, 520);
     })();
   </script>
   <script>
