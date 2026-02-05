@@ -171,6 +171,107 @@
       font-size: 18px;
     }
 
+    /* =============================
+       Hero layout
+    ============================== */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 28px;
+      align-items: start;
+    }
+
+    .hero-text {
+      min-width: 0;
+    }
+
+    .puzzle-card {
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--card);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .puzzle-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .puzzle-controls {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .puzzle-title {
+      font-size: 16px;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .puzzle-counter {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .puzzle-shuffle {
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .puzzle-shuffle:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 22px var(--shadow);
+    }
+
+    .puzzle-board {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 3px;
+      aspect-ratio: 5 / 4;
+      border-radius: 12px;
+      padding: 4px;
+      background: var(--thumbBg);
+      overflow: hidden;
+    }
+
+    .puzzle-tile {
+      border: 0;
+      border-radius: 6px;
+      background-color: var(--thumbBg);
+      background-repeat: no-repeat;
+      background-size: 300% 300%;
+      cursor: pointer;
+      transition: transform 0.12s ease;
+    }
+
+    .puzzle-tile:hover {
+      transform: translateY(-2px);
+    }
+
+    .puzzle-tile.is-empty {
+      background: transparent;
+      cursor: default;
+      box-shadow: inset 0 0 0 1px var(--border);
+    }
+
+    .puzzle-hint {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0;
+    }
+
     /* Typewriter subcopy (header only) */
     .typewriter-line {
       font-family: "JetBrains Mono", "Fira Code", "IBM Plex Mono", "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -494,6 +595,12 @@
       .project-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
+
+      .hero-grid {
+        grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+        gap: 36px;
+        align-items: center;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -524,20 +631,36 @@
 
     <!-- Hero -->
     <section>
-      <h1 class="hero-title">
-        <span class="title-word">Tawfik</span>
-        <span class="title-word title-word-last">Manham</span><span class="name-dot title-dot">.</span>
-      </h1>
-      <p class="hero-subtitle">
-        <span class="subtitle-word">Product</span>
-        <span class="subtitle-word">Designer,</span>
-        <span class="subtitle-word">London</span>
-        <span class="subtitle-word">🇬🇧</span>
-      </p>
-      <!-- Typewriter subcopy (header only) -->
-      <div class="typewriter-line" id="typewriter" aria-live="off" aria-label="9 years building B2B products" role="text">
-        <span class="typewriter-text" aria-hidden="true"></span>
-        <span class="typewriter-cursor" aria-hidden="true">▍</span>
+      <div class="hero-grid">
+        <div class="hero-text">
+          <h1 class="hero-title">
+            <span class="title-word">Tawfik</span>
+            <span class="title-word title-word-last">Manham</span><span class="name-dot title-dot">.</span>
+          </h1>
+          <p class="hero-subtitle">
+            <span class="subtitle-word">Product</span>
+            <span class="subtitle-word">Designer,</span>
+            <span class="subtitle-word">London</span>
+            <span class="subtitle-word">🇬🇧</span>
+          </p>
+          <!-- Typewriter subcopy (header only) -->
+          <div class="typewriter-line" id="typewriter" aria-live="off" aria-label="9 years building B2B products" role="text">
+            <span class="typewriter-text" aria-hidden="true"></span>
+            <span class="typewriter-cursor" aria-hidden="true">▍</span>
+          </div>
+        </div>
+
+        <div class="puzzle-card" aria-label="Sliding puzzle portrait">
+          <div class="puzzle-header">
+            <p class="puzzle-title">Playful portrait</p>
+            <div class="puzzle-controls">
+              <span class="puzzle-counter" id="puzzleCounter" aria-live="polite">Moves: 0</span>
+              <button class="puzzle-shuffle" type="button" id="puzzleShuffle">Shuffle</button>
+            </div>
+          </div>
+          <div class="puzzle-board" id="puzzleBoard" role="grid" aria-label="Sliding puzzle board"></div>
+          <p class="puzzle-hint">Slide tiles to reveal the photo.</p>
+        </div>
       </div>
     </section>
 
@@ -703,6 +826,106 @@
       };
 
       setTimeout(start, 520);
+    })();
+  </script>
+  <script>
+    // Sliding puzzle (playful portrait)
+    (() => {
+      const board = document.getElementById("puzzleBoard");
+      const shuffleButton = document.getElementById("puzzleShuffle");
+      const counterEl = document.getElementById("puzzleCounter");
+      if (!board || !shuffleButton || !counterEl) return;
+
+      const size = 3;
+      const tileCount = size * size;
+      const emptyTile = tileCount - 1;
+      let tiles = Array.from({ length: tileCount }, (_, i) => i);
+      let emptyIndex = tileCount - 1;
+      let moveCount = 0;
+
+      const puzzleImage = "assets/portrait.jpg";
+
+      const indexToRowCol = (index) => ({
+        row: Math.floor(index / size),
+        col: index % size,
+      });
+
+      const isAdjacent = (indexA, indexB) => {
+        const a = indexToRowCol(indexA);
+        const b = indexToRowCol(indexB);
+        return Math.abs(a.row - b.row) + Math.abs(a.col - b.col) === 1;
+      };
+
+      const swapTiles = (index) => {
+        if (!isAdjacent(index, emptyIndex)) return;
+        const nextTiles = tiles.slice();
+        [nextTiles[index], nextTiles[emptyIndex]] = [nextTiles[emptyIndex], nextTiles[index]];
+        tiles = nextTiles;
+        emptyIndex = index;
+        moveCount += 1;
+        render();
+      };
+
+      const render = () => {
+        board.innerHTML = "";
+        counterEl.textContent = `Moves: ${moveCount}`;
+        tiles.forEach((tile, index) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "puzzle-tile";
+          button.setAttribute("role", "gridcell");
+
+          if (tile === emptyTile) {
+            button.classList.add("is-empty");
+            button.setAttribute("aria-label", "Empty tile");
+            button.disabled = true;
+          } else {
+            const row = Math.floor(tile / size);
+            const col = tile % size;
+            const x = (col / (size - 1)) * 100;
+            const y = (row / (size - 1)) * 100;
+            button.style.backgroundImage = `url("${puzzleImage}")`;
+            button.style.backgroundPosition = `${x}% ${y}%`;
+            button.setAttribute("aria-label", `Tile ${tile + 1}`);
+            button.addEventListener("click", () => swapTiles(index));
+          }
+
+          board.appendChild(button);
+        });
+      };
+
+      const neighbors = (index) => {
+        const { row, col } = indexToRowCol(index);
+        const result = [];
+        if (row > 0) result.push(index - size);
+        if (row < size - 1) result.push(index + size);
+        if (col > 0) result.push(index - 1);
+        if (col < size - 1) result.push(index + 1);
+        return result;
+      };
+
+      const shuffle = (steps = 40) => {
+        let currentEmpty = emptyIndex;
+        let currentTiles = tiles.slice();
+        moveCount = 0;
+        for (let i = 0; i < steps; i += 1) {
+          const options = neighbors(currentEmpty);
+          const nextIndex = options[Math.floor(Math.random() * options.length)];
+          [currentTiles[currentEmpty], currentTiles[nextIndex]] = [
+            currentTiles[nextIndex],
+            currentTiles[currentEmpty],
+          ];
+          currentEmpty = nextIndex;
+        }
+        tiles = currentTiles;
+        emptyIndex = currentEmpty;
+        render();
+      };
+
+      shuffleButton.addEventListener("click", () => shuffle(50));
+
+      render();
+      shuffle(60);
     })();
   </script>
   <script>
