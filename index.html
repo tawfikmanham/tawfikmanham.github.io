@@ -4,6 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tawfik Manham — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GXJ6VVHNCQ"></script>
   <script>
@@ -193,6 +194,7 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
+      position: relative;
     }
 
     .puzzle-header {
@@ -215,8 +217,17 @@
     }
 
     .puzzle-counter {
-      font-size: 12px;
-      color: var(--muted);
+      position: absolute;
+      right: 18px;
+      bottom: 16px;
+      font-size: 11px;
+      color: var(--text);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 10px;
+      box-shadow: 0 10px 26px var(--shadow);
+      pointer-events: none;
     }
 
     .puzzle-shuffle {
@@ -233,6 +244,32 @@
     .puzzle-shuffle:hover {
       transform: translateY(-1px);
       box-shadow: 0 8px 22px var(--shadow);
+    }
+
+    .puzzle-shuffle .material-symbols-outlined {
+      font-size: 16px;
+      line-height: 1;
+      display: block;
+    }
+
+    .puzzle-reveal {
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(4px);
+      pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .puzzle-reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
     }
 
     .puzzle-board {
@@ -654,11 +691,14 @@
           <div class="puzzle-header">
             <p class="puzzle-title">Playful portrait</p>
             <div class="puzzle-controls">
-              <span class="puzzle-counter" id="puzzleCounter" aria-live="polite">Moves: 0</span>
-              <button class="puzzle-shuffle" type="button" id="puzzleShuffle">Shuffle</button>
+              <button class="puzzle-reveal" type="button" id="puzzleReveal" aria-hidden="true">Reveal</button>
+              <button class="puzzle-shuffle" type="button" id="puzzleShuffle" aria-label="Shuffle puzzle">
+                <span class="material-symbols-outlined" aria-hidden="true">shuffle</span>
+              </button>
             </div>
           </div>
           <div class="puzzle-board" id="puzzleBoard" role="grid" aria-label="Sliding puzzle board"></div>
+          <span class="puzzle-counter" id="puzzleCounter" aria-live="polite">Moves: 0</span>
           <p class="puzzle-hint">Slide tiles to reveal the photo.</p>
         </div>
       </div>
@@ -833,8 +873,9 @@
     (() => {
       const board = document.getElementById("puzzleBoard");
       const shuffleButton = document.getElementById("puzzleShuffle");
+      const revealButton = document.getElementById("puzzleReveal");
       const counterEl = document.getElementById("puzzleCounter");
-      if (!board || !shuffleButton || !counterEl) return;
+      if (!board || !shuffleButton || !revealButton || !counterEl) return;
 
       const size = 3;
       const tileCount = size * size;
@@ -842,6 +883,7 @@
       let tiles = Array.from({ length: tileCount }, (_, i) => i);
       let emptyIndex = tileCount - 1;
       let moveCount = 0;
+      const revealAfterMoves = 4;
 
       const puzzleImage = "assets/portrait.jpg";
 
@@ -854,6 +896,22 @@
         const a = indexToRowCol(indexA);
         const b = indexToRowCol(indexB);
         return Math.abs(a.row - b.row) + Math.abs(a.col - b.col) === 1;
+      };
+
+      const syncReveal = () => {
+        if (moveCount > revealAfterMoves) {
+          revealButton.classList.add("is-visible");
+          revealButton.setAttribute("aria-hidden", "false");
+        } else {
+          revealButton.classList.remove("is-visible");
+          revealButton.setAttribute("aria-hidden", "true");
+        }
+      };
+
+      const solve = () => {
+        tiles = Array.from({ length: tileCount }, (_, i) => i);
+        emptyIndex = tileCount - 1;
+        render();
       };
 
       const swapTiles = (index) => {
@@ -869,6 +927,7 @@
       const render = () => {
         board.innerHTML = "";
         counterEl.textContent = `Moves: ${moveCount}`;
+        syncReveal();
         tiles.forEach((tile, index) => {
           const button = document.createElement("button");
           button.type = "button";
@@ -922,6 +981,7 @@
         render();
       };
 
+      revealButton.addEventListener("click", solve);
       shuffleButton.addEventListener("click", () => shuffle(50));
 
       render();
