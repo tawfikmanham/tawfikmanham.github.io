@@ -402,13 +402,38 @@
     }
 
     .project-meta {
-      padding: 18px 20px 22px;
+      padding: 16px;
     }
 
     .project-title {
       font-size: 20px;
       font-weight: 500;
       margin: 0 0 8px 0;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 0;
+    }
+
+    .project-subtitle + .project-tags {
+      margin-top: 8px;
+    }
+
+    .project-tag {
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid rgba(171, 31, 38, 0.35);
+      background: rgba(171, 31, 38, 0.08);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      line-height: 1.2;
+      font-weight: 500;
+      letter-spacing: 0.01em;
     }
 
     .project-subtitle {
@@ -585,6 +610,12 @@
           <div class="project-meta">
             <div class="project-title">AI Application Health Check</div>
             <p class="project-subtitle">AI-powered eligibility check to reduce SEIS/EIS application risk.</p>
+            <div class="project-tags" aria-label="Project tags">
+              <span class="project-tag">B2B</span>
+              <span class="project-tag">SaaS</span>
+              <span class="project-tag">Startup</span>
+              <span class="project-tag">Legal Tech</span>
+            </div>
           </div>
         </a>
 
@@ -593,6 +624,11 @@
           <div class="project-meta">
             <div class="project-title">Naza Care Connect</div>
             <p class="project-subtitle">Streamlining care homes to better support young people.</p>
+            <div class="project-tags" aria-label="Project tags">
+              <span class="project-tag">B2B</span>
+              <span class="project-tag">SaaS</span>
+              <span class="project-tag">Healthcare</span>
+            </div>
           </div>
         </a>
 
@@ -601,22 +637,38 @@
           <div class="project-meta">
             <div class="project-title">Trimble App Manager</div>
             <p class="project-subtitle">Enroll, customize, and secure devices remotely.</p>
+            <div class="project-tags" aria-label="Project tags">
+              <span class="project-tag">B2B</span>
+              <span class="project-tag">SaaS</span>
+              <span class="project-tag">Transportation and Logistics</span>
+              <span class="project-tag">Web</span>
+            </div>
           </div>
         </a>
 
         <a class="project-card" href="https://tawfikmanham.com/project/driver-workflow/" target="_blank" rel="noopener">
           <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/04/Driver-Workflow-Red-1.png" alt="Driver Workflow thumbnail">
           <div class="project-meta">
-            <div class="project-title">Driver Workflow (Mobile)</div>
+            <div class="project-title">Driver Workflow</div>
             <p class="project-subtitle">Trips, forms, and messaging for truck drivers.</p>
+            <div class="project-tags" aria-label="Project tags">
+              <span class="project-tag">B2C</span>
+              <span class="project-tag">SaaS</span>
+              <span class="project-tag">Transportation and Logistics</span>
+              <span class="project-tag">Mobile</span>
+            </div>
           </div>
         </a>
 
         <a class="project-card" href="https://tawfikmanham.com/project/trimble-modus/" target="_blank" rel="noopener">
           <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-Modus-Hero-5.png" alt="Trimble Modus thumbnail">
           <div class="project-meta">
-            <div class="project-title">Trimble Modus (Design System)</div>
+            <div class="project-title">Trimble Modus</div>
             <p class="project-subtitle">Unified design system and micro-interactions at scale.</p>
+            <div class="project-tags" aria-label="Project tags">
+              <span class="project-tag">Web</span>
+              <span class="project-tag">Design System</span>
+            </div>
           </div>
         </a>
       </div>
