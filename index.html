@@ -50,7 +50,8 @@
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background-color: var(--bg);
       background-image:
-        radial-gradient(circle, var(--grid-line) 1px, transparent 1px);
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
       background-size: var(--grid-size) var(--grid-size);
       color: var(--text);
       margin: 0;
@@ -186,129 +187,6 @@
       min-width: 0;
     }
 
-    .puzzle-card {
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      background: var(--card);
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      position: relative;
-    }
-
-    .puzzle-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .puzzle-controls {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .puzzle-title {
-      font-size: 16px;
-      font-weight: 500;
-      margin: 0;
-    }
-
-    .puzzle-counter {
-      position: absolute;
-      right: 18px;
-      bottom: 16px;
-      font-size: 11px;
-      color: var(--text);
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 4px 10px;
-      box-shadow: 0 10px 26px var(--shadow);
-      pointer-events: none;
-    }
-
-    .puzzle-shuffle {
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--text);
-      border-radius: 999px;
-      padding: 6px 12px;
-      font-size: 12px;
-      cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .puzzle-shuffle:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 8px 22px var(--shadow);
-    }
-
-    .puzzle-shuffle .material-symbols-outlined {
-      font-size: 16px;
-      line-height: 1;
-      display: block;
-    }
-
-    .puzzle-reveal {
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--text);
-      border-radius: 999px;
-      padding: 6px 12px;
-      font-size: 12px;
-      cursor: pointer;
-      opacity: 0;
-      transform: translateY(4px);
-      pointer-events: none;
-      transition: opacity 0.2s ease, transform 0.2s ease;
-    }
-
-    .puzzle-reveal.is-visible {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-
-    .puzzle-board {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 3px;
-      aspect-ratio: 5 / 4;
-      border-radius: 12px;
-      padding: 4px;
-      background: var(--thumbBg);
-      overflow: hidden;
-    }
-
-    .puzzle-tile {
-      border: 0;
-      border-radius: 6px;
-      background-color: var(--thumbBg);
-      background-repeat: no-repeat;
-      background-size: 300% 300%;
-      cursor: pointer;
-      transition: transform 0.12s ease;
-    }
-
-    .puzzle-tile:hover {
-      transform: translateY(-2px);
-    }
-
-    .puzzle-tile.is-empty {
-      background: transparent;
-      cursor: default;
-      box-shadow: inset 0 0 0 1px var(--border);
-    }
-
-    .puzzle-hint {
-      font-size: 13px;
-      color: var(--muted);
-      margin: 0;
-    }
-
     /* Typewriter subcopy (header only) */
     .typewriter-line {
       font-family: "JetBrains Mono", "Fira Code", "IBM Plex Mono", "Source Code Pro", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
@@ -406,24 +284,6 @@
       white-space: nowrap;
     }
 
-    .confetti-overlay {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 1000000;
-    }
-
-    .grid-glow {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-    }
-
     .toast {
       position: fixed;
       left: 50%;
@@ -433,11 +293,11 @@
       color: var(--text);
       border: 1px solid var(--border);
       border-radius: 999px;
-      padding: 10px 16px;
+      padding: 10px 14px;
       font-size: 14px;
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       width: auto;
       max-width: min(520px, calc(100% - 32px));
       box-shadow: 0 12px 30px var(--shadow);
@@ -445,12 +305,15 @@
       pointer-events: none;
       transition: opacity 0.2s ease, transform 0.2s ease;
       z-index: 1000001;
+      isolation: isolate;
+      overflow: hidden;
     }
 
     .toast.is-visible {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
       pointer-events: auto;
+      animation: toastBorderFlash 1.4s ease-out 1;
     }
 
     .toast button {
@@ -462,15 +325,37 @@
       cursor: pointer;
       line-height: 1;
       flex: 0 0 auto;
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
     }
 
-    .toast span {
+    .toast-message {
       flex: 1;
       min-width: 0;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       overflow-wrap: anywhere;
+    }
+
+    @keyframes toastBorderFlash {
+      0% {
+        border-color: var(--border);
+        box-shadow: 0 12px 30px var(--shadow);
+      }
+      35% {
+        border-color: #ab1f26;
+        box-shadow:
+          0 14px 32px var(--shadow),
+          0 0 20px rgba(171, 31, 38, 0.38);
+      }
+      100% {
+        border-color: var(--border);
+        box-shadow: 0 12px 30px var(--shadow);
+      }
     }
 
     @media (max-width: 480px) {
@@ -687,20 +572,6 @@
           </div>
         </div>
 
-        <div class="puzzle-card" aria-label="Sliding puzzle portrait">
-          <div class="puzzle-header">
-            <p class="puzzle-title">Playful portrait</p>
-            <div class="puzzle-controls">
-              <button class="puzzle-reveal" type="button" id="puzzleReveal" aria-hidden="true">Reveal</button>
-              <button class="puzzle-shuffle" type="button" id="puzzleShuffle" aria-label="Shuffle puzzle">
-                <span class="material-symbols-outlined" aria-hidden="true">shuffle</span>
-              </button>
-            </div>
-          </div>
-          <div class="puzzle-board" id="puzzleBoard" role="grid" aria-label="Sliding puzzle board"></div>
-          <span class="puzzle-counter" id="puzzleCounter" aria-live="polite">Moves: 0</span>
-          <p class="puzzle-hint">Slide tiles to reveal the photo.</p>
-        </div>
       </div>
     </section>
 
@@ -778,11 +649,9 @@
   </div>
 
   <div class="toast" id="bottomToast" role="status" aria-live="polite">
-    <span>Hope you enjoyed exploring 👍</span>
+    <span class="toast-message">Hope you enjoyed exploring 👍</span>
     <button type="button" aria-label="Dismiss message">×</button>
   </div>
-
-  <canvas class="grid-glow" id="gridGlow" aria-hidden="true"></canvas>
 
   <script>
     // Set initial theme (saved > system preference)
@@ -868,255 +737,6 @@
       setTimeout(start, 520);
     })();
   </script>
-  <script>
-    // Sliding puzzle (playful portrait)
-    (() => {
-      const board = document.getElementById("puzzleBoard");
-      const shuffleButton = document.getElementById("puzzleShuffle");
-      const revealButton = document.getElementById("puzzleReveal");
-      const counterEl = document.getElementById("puzzleCounter");
-      if (!board || !shuffleButton || !revealButton || !counterEl) return;
-
-      const size = 3;
-      const tileCount = size * size;
-      const emptyTile = tileCount - 1;
-      let tiles = Array.from({ length: tileCount }, (_, i) => i);
-      let emptyIndex = tileCount - 1;
-      let moveCount = 0;
-      const revealAfterMoves = 4;
-
-      const puzzleImage = "assets/portrait.jpg";
-
-      const indexToRowCol = (index) => ({
-        row: Math.floor(index / size),
-        col: index % size,
-      });
-
-      const isAdjacent = (indexA, indexB) => {
-        const a = indexToRowCol(indexA);
-        const b = indexToRowCol(indexB);
-        return Math.abs(a.row - b.row) + Math.abs(a.col - b.col) === 1;
-      };
-
-      const syncReveal = () => {
-        if (moveCount > revealAfterMoves) {
-          revealButton.classList.add("is-visible");
-          revealButton.setAttribute("aria-hidden", "false");
-        } else {
-          revealButton.classList.remove("is-visible");
-          revealButton.setAttribute("aria-hidden", "true");
-        }
-      };
-
-      const solve = () => {
-        tiles = Array.from({ length: tileCount }, (_, i) => i);
-        emptyIndex = tileCount - 1;
-        render();
-      };
-
-      const swapTiles = (index) => {
-        if (!isAdjacent(index, emptyIndex)) return;
-        const nextTiles = tiles.slice();
-        [nextTiles[index], nextTiles[emptyIndex]] = [nextTiles[emptyIndex], nextTiles[index]];
-        tiles = nextTiles;
-        emptyIndex = index;
-        moveCount += 1;
-        render();
-      };
-
-      const render = () => {
-        board.innerHTML = "";
-        counterEl.textContent = `Moves: ${moveCount}`;
-        syncReveal();
-        tiles.forEach((tile, index) => {
-          const button = document.createElement("button");
-          button.type = "button";
-          button.className = "puzzle-tile";
-          button.setAttribute("role", "gridcell");
-
-          if (tile === emptyTile) {
-            button.classList.add("is-empty");
-            button.setAttribute("aria-label", "Empty tile");
-            button.disabled = true;
-          } else {
-            const row = Math.floor(tile / size);
-            const col = tile % size;
-            const x = (col / (size - 1)) * 100;
-            const y = (row / (size - 1)) * 100;
-            button.style.backgroundImage = `url("${puzzleImage}")`;
-            button.style.backgroundPosition = `${x}% ${y}%`;
-            button.setAttribute("aria-label", `Tile ${tile + 1}`);
-            button.addEventListener("click", () => swapTiles(index));
-          }
-
-          board.appendChild(button);
-        });
-      };
-
-      const neighbors = (index) => {
-        const { row, col } = indexToRowCol(index);
-        const result = [];
-        if (row > 0) result.push(index - size);
-        if (row < size - 1) result.push(index + size);
-        if (col > 0) result.push(index - 1);
-        if (col < size - 1) result.push(index + 1);
-        return result;
-      };
-
-      const shuffle = (steps = 40) => {
-        let currentEmpty = emptyIndex;
-        let currentTiles = tiles.slice();
-        moveCount = 0;
-        for (let i = 0; i < steps; i += 1) {
-          const options = neighbors(currentEmpty);
-          const nextIndex = options[Math.floor(Math.random() * options.length)];
-          [currentTiles[currentEmpty], currentTiles[nextIndex]] = [
-            currentTiles[nextIndex],
-            currentTiles[currentEmpty],
-          ];
-          currentEmpty = nextIndex;
-        }
-        tiles = currentTiles;
-        emptyIndex = currentEmpty;
-        render();
-      };
-
-      revealButton.addEventListener("click", solve);
-      shuffleButton.addEventListener("click", () => shuffle(50));
-
-      render();
-      shuffle(60);
-    })();
-  </script>
-  <script>
-    (() => {
-      const canvas = document.getElementById("gridGlow");
-      if (!canvas) return;
-
-      const ctx = canvas.getContext("2d");
-      let width = 0;
-      let height = 0;
-      let dpr = 1;
-      let gridSize = 24;
-      let glowBase = "171, 31, 38";
-      const maxAlpha = 1;
-      let fadeSpeed = 0.02;
-      let cells = [];
-      let rafId = 0;
-      let lastX = null;
-      let lastY = null;
-      const inset = 0;
-
-      const readThemeTokens = () => {
-        const styles = getComputedStyle(document.documentElement);
-        const size = parseFloat(styles.getPropertyValue("--grid-size"));
-        gridSize = Number.isFinite(size) ? size : 24;
-        const accent = styles.getPropertyValue("--accent").trim();
-        const rgb = accent ? hexToRgb(accent) : null;
-        if (rgb) {
-          glowBase = `${rgb.r}, ${rgb.g}, ${rgb.b}`;
-        }
-      };
-
-      const hexToRgb = (value) => {
-        if (!value) return null;
-        const cleaned = value.replace("#", "").trim();
-        if (cleaned.length !== 6) return null;
-        const r = parseInt(cleaned.slice(0, 2), 16);
-        const g = parseInt(cleaned.slice(2, 4), 16);
-        const b = parseInt(cleaned.slice(4, 6), 16);
-        if ([r, g, b].some((c) => Number.isNaN(c))) return null;
-        return { r, g, b };
-      };
-
-      const resize = () => {
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
-        width = window.innerWidth;
-        height = window.innerHeight;
-        canvas.width = Math.floor(width * dpr);
-        canvas.height = Math.floor(height * dpr);
-        canvas.style.width = width + "px";
-        canvas.style.height = height + "px";
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      };
-
-      const addCell = (x, y) => {
-        const col = Math.floor(x / gridSize);
-        const row = Math.floor(y / gridSize);
-        if (col < 0 || row < 0) return;
-        const key = row * 100000 + col;
-        const existing = cells.find((c) => c.key === key);
-        if (existing) {
-          existing.alpha = 1;
-          return;
-        }
-        cells.push({ key, col, row, alpha: 1 });
-      };
-
-      const draw = () => {
-        ctx.clearRect(0, 0, width, height);
-
-        for (let i = cells.length - 1; i >= 0; i -= 1) {
-          const cell = cells[i];
-          cell.alpha = Math.max(0, cell.alpha - fadeSpeed);
-          if (cell.alpha <= 0.01) {
-            cells.splice(i, 1);
-            continue;
-          }
-          const x = cell.col * gridSize + inset;
-          const y = cell.row * gridSize + inset;
-          const alpha = Math.max(0, Math.min(1, cell.alpha)) * maxAlpha;
-          ctx.fillStyle = `rgba(${glowBase}, ${alpha})`;
-          const glowAlpha = Math.min(alpha * 0.9, 0.9);
-          ctx.shadowColor = `rgba(${glowBase}, ${glowAlpha})`;
-          ctx.shadowBlur = gridSize * 1.6;
-          const baseRadius = gridSize * 0.49;
-          const radius = baseRadius * (0.4 + 0.6 * Math.max(0, Math.min(1, cell.alpha)));
-          ctx.beginPath();
-          ctx.arc(x + gridSize / 2, y + gridSize / 2, radius, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.shadowBlur = 0;
-        }
-
-        rafId = requestAnimationFrame(draw);
-      };
-
-      const onMove = (event) => {
-        const x = event.clientX;
-        const y = event.clientY;
-        if (lastX === null || lastY === null) {
-          lastX = x;
-          lastY = y;
-        }
-
-        const dist = Math.hypot(x - lastX, y - lastY);
-        const steps = Math.max(1, Math.floor(dist / (gridSize * 0.2)));
-        for (let i = 0; i <= steps; i += 1) {
-          const t = steps === 0 ? 0 : i / steps;
-          addCell(lastX + (x - lastX) * t, lastY + (y - lastY) * t);
-        }
-        lastX = x;
-        lastY = y;
-      };
-
-      const onLeave = () => {
-        lastX = null;
-        lastY = null;
-      };
-
-      readThemeTokens();
-      resize();
-      draw();
-
-      window.addEventListener("resize", resize);
-      window.addEventListener("mousemove", onMove, { passive: true });
-      window.addEventListener("mouseleave", onLeave);
-      window.addEventListener("blur", onLeave);
-
-      const observer = new MutationObserver(readThemeTokens);
-      observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-    })();
-  </script>
   <script src="effects/rain/rain.js"></script>
   <script>
     (() => {
@@ -1126,111 +746,14 @@
       }
 
       let hasFired = false;
-      let rafId = 0;
-      let toastTimer = 0;
       const toast = document.getElementById("bottomToast");
       const toastButton = toast ? toast.querySelector("button") : null;
+
       if (toastButton) {
         toastButton.addEventListener("click", () => {
           toast.classList.remove("is-visible");
         });
       }
-
-      const triggerConfetti = () => {
-        if (hasFired) return;
-        hasFired = true;
-
-        const canvas = document.createElement("canvas");
-        canvas.className = "confetti-overlay";
-        document.body.appendChild(canvas);
-
-        const ctx = canvas.getContext("2d");
-        let width = 0;
-        let height = 0;
-        let dpr = 1;
-        let pieces = [];
-        const gravity = 0.08;
-        const drag = 0.995;
-        const endBuffer = 60;
-
-        const resize = () => {
-          dpr = Math.min(window.devicePixelRatio || 1, 2);
-          width = window.innerWidth;
-          height = window.innerHeight;
-          canvas.width = Math.floor(width * dpr);
-          canvas.height = Math.floor(height * dpr);
-          canvas.style.width = width + "px";
-          canvas.style.height = height + "px";
-          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        };
-
-        const palette = [
-          "#f5f3ef",
-          "#f2c14e",
-          "#f78154",
-          "#5ca4a9",
-          "#9e2a2b",
-          "#2b2d42",
-        ];
-
-        const random = (min, max) => min + Math.random() * (max - min);
-
-        const createPiece = () => ({
-          x: random(0, width),
-          y: random(-height, 0),
-          w: random(6, 12),
-          h: random(10, 18),
-          tilt: random(-0.6, 0.6),
-          rot: random(0, Math.PI * 2),
-          rotSpeed: random(-0.1, 0.1),
-          vx: random(-1.8, 1.8),
-          vy: random(1, 3.5),
-          color: palette[Math.floor(Math.random() * palette.length)],
-        });
-
-        const initPieces = () => {
-          const count = Math.min(240, Math.floor((width * height) / 6000));
-          pieces = Array.from({ length: count }, createPiece);
-        };
-
-        const tick = () => {
-          ctx.clearRect(0, 0, width, height);
-
-          let allBelow = true;
-          for (const p of pieces) {
-            p.vy += gravity;
-            p.vx *= drag;
-            p.vy *= drag;
-            p.x += p.vx;
-            p.y += p.vy;
-            p.rot += p.rotSpeed;
-
-            if (p.y <= height + endBuffer) {
-              allBelow = false;
-            }
-
-            ctx.save();
-            ctx.translate(p.x, p.y);
-            ctx.rotate(p.rot);
-            ctx.fillStyle = p.color;
-            ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
-            ctx.restore();
-          }
-
-          if (!allBelow) {
-            rafId = requestAnimationFrame(tick);
-          } else {
-            cancelAnimationFrame(rafId);
-            canvas.remove();
-            window.removeEventListener("resize", resize);
-          }
-        };
-
-        resize();
-        initPieces();
-        window.addEventListener("resize", resize);
-        rafId = requestAnimationFrame(tick);
-      };
 
       const onScroll = () => {
         if (hasFired) return;
@@ -1239,10 +762,9 @@
           window.scrollY + window.innerHeight >=
           document.documentElement.scrollHeight - threshold;
         if (scrollBottom) {
-          triggerConfetti();
+          hasFired = true;
           if (toast) {
             toast.classList.add("is-visible");
-            window.clearTimeout(toastTimer);
           }
         }
       };
