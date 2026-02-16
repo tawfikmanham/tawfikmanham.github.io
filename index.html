@@ -30,6 +30,7 @@
       --grid-line: rgba(17, 17, 17, 0.05);
       --grid-size: 24px;
       --accent: #ab1f26;
+      --chipText: #2f2f2f;
     }
 
     :root[data-theme="dark"] {
@@ -41,6 +42,7 @@
       --shadow: rgba(0,0,0,0.55);
       --thumbBg: #1a1a1d;
       --grid-line: rgba(242, 242, 242, 0.05);
+      --chipText: #9f9fa3;
     }
 
     /* =============================
@@ -402,7 +404,7 @@
     }
 
     .project-meta {
-      padding: 16px;
+      padding: 16px 16px 24px;
     }
 
     .project-title {
@@ -427,10 +429,10 @@
       align-items: center;
       border: 1px solid rgba(171, 31, 38, 0.35);
       background: rgba(171, 31, 38, 0.08);
-      color: var(--text);
+      color: var(--chipText);
       border-radius: 999px;
-      padding: 4px 10px;
-      font-size: 12px;
+      padding: 4px 8px;
+      font-size: 10px;
       line-height: 1.2;
       font-weight: 500;
       letter-spacing: 0.01em;
