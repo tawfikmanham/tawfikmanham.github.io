@@ -57,12 +57,14 @@
       background-size: var(--grid-size) var(--grid-size);
       color: var(--text);
       margin: 0;
-      padding: 48px;
+      padding: 0 48px 48px;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
     a {
       text-decoration: none;
       color: inherit;
+      transition: color 0.25s ease;
     }
 
     /* =============================
@@ -80,59 +82,78 @@
     }
 
     /* =============================
-       Top bar (toggle aligned to content)
+       Top controls
     ============================== */
     .top-bar {
       display: flex;
       justify-content: flex-end;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      margin-bottom: 24px;
+      padding: 20px 0;
+    }
+
+    .top-pill {
+      display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 6px;
+      padding: 6px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.18);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+      transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     }
 
-    .theme-toggle {
+    :root[data-theme="dark"] .top-pill {
+      background: rgba(11, 11, 12, 0.22);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.24);
+    }
+
+    .theme-toggle,
+    .resume-link,
+    .rain-toggle {
       width: 42px;
       height: 42px;
       display: grid;
       place-items: center;
-      border: 1px solid var(--border);
-      background: var(--card);
+      border: 0;
+      background: transparent;
       border-radius: 999px;
       cursor: pointer;
-      z-index: 9999; /* IMPORTANT: keep above everything */
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      color: var(--text);
+      position: relative;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
     }
 
-    .resume-link {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      border: 1px solid var(--border);
-      background: var(--card);
-      border-radius: 999px;
-      cursor: pointer;
-      z-index: 9999;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
-    }
-
-    .theme-toggle:hover {
+    .theme-toggle:hover,
+    .resume-link:hover,
+    .rain-toggle:hover {
       transform: translateY(-1px);
-      box-shadow: 0 10px 26px var(--shadow);
-    }
-
-    .resume-link:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 26px var(--shadow);
+      background: color-mix(in srgb, var(--card) 32%, transparent);
+      box-shadow: inset 0 0 0 1px var(--border);
     }
 
     .theme-toggle .icon {
       position: absolute;
-      font-size: 12px;
+      font-size: 20px;
+      font-variation-settings: "FILL" 1, "wght" 500, "GRAD" 0, "opsz" 24;
       transition: opacity 0.15s ease, transform 0.15s ease;
     }
 
     .resume-link .icon {
-      font-size: 16px;
+      font-size: 20px;
+      font-variation-settings: "FILL" 1, "wght" 500, "GRAD" 0, "opsz" 24;
+    }
+
+    .rain-toggle .icon {
+      position: absolute;
+      font-size: 20px;
+      font-variation-settings: "FILL" 1, "wght" 500, "GRAD" 0, "opsz" 24;
+      transition: opacity 0.15s ease, transform 0.15s ease;
     }
 
     /* Light theme: show moon (click to go dark) */
@@ -264,7 +285,7 @@
       border-radius: 999px;
       border: 1px solid var(--border);
       background: var(--card);
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
     }
 
     .social-link:hover {
@@ -377,7 +398,7 @@
     .project-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 48px;
+      gap: 64px;
     }
 
     .project-card {
@@ -389,7 +410,7 @@
       border-radius: 20px;
       overflow: hidden;
       background: var(--card);
-      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease, background-color 0.25s ease;
       will-change: transform;
       transform-style: preserve-3d;
       transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(0);
@@ -399,11 +420,14 @@
     }
 
     .project-card:hover {
+      border-color: color-mix(in srgb, var(--border) 55%, var(--text) 45%);
       transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(-4px);
       box-shadow:
         0 0 0 8px var(--card),
         0 0 0 9px var(--border),
-        0 18px 45px var(--shadow);
+        0 18px 45px var(--shadow),
+        0 34px 62px -30px rgba(171, 31, 38, 0.42),
+        0 56px 92px -56px rgba(171, 31, 38, 0.28);
     }
 
 
@@ -473,6 +497,7 @@
       line-height: 1.2;
       font-weight: 500;
       letter-spacing: 0.01em;
+      transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
     }
 
     .project-subtitle {
@@ -485,12 +510,13 @@
 
     /* Tooltip */
     .project-card::after {
-      content: "View case study →";
+      content: "View case study";
       position: absolute;
       right: 16px;
       top: 16px;
-      padding: 8px 12px;
+      padding: 8px 46px 8px 12px;
       font-size: 13px;
+      line-height: 1;
       border: 1px solid var(--border);
       background: var(--card);
       border-radius: 999px;
@@ -500,9 +526,37 @@
       pointer-events: none;
     }
 
+    .project-card::before {
+      content: "→";
+      position: absolute;
+      right: 36px;
+      top: 16px;
+      height: 29px;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      line-height: 1;
+      opacity: 0;
+      transform: translateX(0);
+      transition: opacity 0.15s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes tooltipArrowNudge {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(6px); }
+      100% { transform: translateX(0); }
+    }
+
     .project-card:hover::after {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    .project-card:hover::before {
+      opacity: 1;
+      animation: tooltipArrowNudge 0.7s ease-in-out infinite;
     }
 
 
@@ -571,10 +625,11 @@
        Mobile
     ============================== */
     @media (max-width: 640px) {
-      body { padding: 24px; }
+      body { padding: 0 24px 24px; }
       h1 { font-size: 36px; }
       section { margin-top: 72px; }
       footer { justify-content: center; text-align: center; }
+      .top-bar { padding: 16px 0; }
     }
 
     @media (min-width: 900px) {
@@ -602,13 +657,19 @@
 <body>
   <div class="wrap">
     <div class="top-bar">
-      <a class="resume-link" href="https://docs.google.com/document/d/1l1KmHafoL8wiiYg8Wrxb333mRmp25JeiYmt-wvbD-48/edit?usp=sharing" target="_blank" rel="noopener" aria-label="Open resume">
-        <span class="icon" aria-hidden="true">📄</span>
-      </a>
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
-        <span class="icon icon-sun" aria-hidden="true">☀️</span>
-        <span class="icon icon-moon" aria-hidden="true">🌙</span>
-      </button>
+      <div class="top-pill">
+        <a class="resume-link" href="https://docs.google.com/document/d/1l1KmHafoL8wiiYg8Wrxb333mRmp25JeiYmt-wvbD-48/edit?usp=sharing" target="_blank" rel="noopener" aria-label="Open resume">
+          <span class="icon material-symbols-outlined" aria-hidden="true">description</span>
+        </a>
+        <button id="rainToggle" class="rain-toggle" type="button" aria-label="Toggle rain">
+          <span class="icon icon-rain material-symbols-outlined" aria-hidden="true">rainy</span>
+          <span class="icon icon-umbrella material-symbols-outlined" aria-hidden="true">umbrella</span>
+        </button>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+          <span class="icon icon-sun material-symbols-outlined" aria-hidden="true">light_mode</span>
+          <span class="icon icon-moon material-symbols-outlined" aria-hidden="true">dark_mode</span>
+        </button>
+      </div>
     </div>
 
     <!-- Hero -->

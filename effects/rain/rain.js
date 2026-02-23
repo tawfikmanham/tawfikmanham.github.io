@@ -257,8 +257,8 @@
       button.className = "rain-toggle";
       button.type = "button";
       button.innerHTML =
-        '<span class="icon icon-rain" aria-hidden="true">🌧️</span>' +
-        '<span class="icon icon-umbrella" aria-hidden="true">☔️</span>';
+        '<span class="icon icon-rain material-symbols-outlined" aria-hidden="true">rainy</span>' +
+        '<span class="icon icon-umbrella material-symbols-outlined" aria-hidden="true">umbrella</span>';
       const themeToggle = document.getElementById("themeToggle");
       if (themeToggle && themeToggle.parentNode) {
         themeToggle.parentNode.insertBefore(button, themeToggle);
