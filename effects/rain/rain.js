@@ -13,24 +13,34 @@
   let drops = [];
   let isAnimating = false;
   let rafId = 0;
+  let lastTime = 0;
+  let elapsed = 0;
   let audioCtx = null;
   let noiseSource = null;
   let noiseGain = null;
 
   const settings = {
     enabled: false,
-    density: 0.00035,
-    minDrops: 220,
-    lengthMin: 12,
-    lengthMax: 26,
-    speedMin: 8,
-    speedMax: 16,
-    thicknessMin: 1,
-    thicknessMax: 1.6,
-    opacityMin: 0.35,
-    opacityMax: 0.7,
-    driftMin: -0.7,
-    driftMax: 0.7,
+    density: 0.00028,
+    minDrops: 180,
+    lengthMin: 14,
+    lengthMax: 34,
+    speedMin: 9,
+    speedMax: 22,
+    thicknessMin: 0.7,
+    thicknessMax: 1.45,
+    opacityMin: 0.16,
+    opacityMax: 0.56,
+    driftMin: -0.35,
+    driftMax: 0.35,
+    windBase: 0.08,
+    windGustAmp: 0.32,
+    windGustFreq: 0.00042,
+    swayAmpMin: 0.015,
+    swayAmpMax: 0.09,
+    swayFreqMin: 0.0012,
+    swayFreqMax: 0.0026,
+    streakLean: 2.6,
     color: { r: 200, g: 200, b: 200 },
     umbrellaRadiusDesktop: 120,
     umbrellaRadiusMobile: 80,
@@ -81,32 +91,62 @@
     const opacityMax = Math.max(settings.opacityMin, settings.opacityMax);
     const driftMin = Math.min(settings.driftMin, settings.driftMax);
     const driftMax = Math.max(settings.driftMin, settings.driftMax);
-    const length = random(lengthMin, lengthMax);
+    const depth = Math.pow(Math.random(), 1.35);
+    const length = random(lengthMin, lengthMax) * (0.72 + depth * 0.7);
+    const speed = random(speedMin, speedMax) * (0.58 + depth * 1.05);
+    const thickness = random(thicknessMin, thicknessMax) * (0.75 + depth * 0.65);
+    const opacity = random(opacityMin, opacityMax) * (0.64 + depth * 0.5);
+    const drift = random(driftMin, driftMax) * (0.55 + depth * 0.75);
     return {
       x: random(0, width),
       y: random(-height, height),
+      depth,
       length,
-      speed: random(speedMin, speedMax),
-      thickness: random(thicknessMin, thicknessMax),
-      opacity: random(opacityMin, opacityMax),
-      drift: random(driftMin, driftMax),
+      speed,
+      thickness,
+      opacity,
+      drift,
+      swayAmp: random(settings.swayAmpMin, settings.swayAmpMax),
+      swayFreq: random(settings.swayFreqMin, settings.swayFreqMax),
+      swayPhase: random(0, Math.PI * 2),
+      vx: 0,
     };
   };
 
   const random = (min, max) => min + Math.random() * (max - min);
 
-  const updateDrops = () => {
+  const resetDrop = (d, spawnAbove = true) => {
+    const fresh = createDrop();
+    d.x = random(0, width);
+    d.y = spawnAbove ? -fresh.length - random(0, height * 0.25) : random(-height, height);
+    d.depth = fresh.depth;
+    d.length = fresh.length;
+    d.speed = fresh.speed;
+    d.thickness = fresh.thickness;
+    d.opacity = fresh.opacity;
+    d.drift = fresh.drift;
+    d.swayAmp = fresh.swayAmp;
+    d.swayFreq = fresh.swayFreq;
+    d.swayPhase = fresh.swayPhase;
+    d.vx = 0;
+  };
+
+  const updateDrops = (dtMs, nowMs) => {
+    const frameScale = Math.min(2.1, Math.max(0.35, dtMs / (1000 / 60)));
+    const gust = settings.windBase + Math.sin(nowMs * settings.windGustFreq) * settings.windGustAmp;
+
     for (const d of drops) {
-      d.y += d.speed;
-      d.x += d.drift;
+      const sway = Math.sin(nowMs * d.swayFreq + d.swayPhase) * d.swayAmp;
+      d.vx = (d.drift + gust * (0.45 + d.depth * 0.9) + sway) * frameScale;
+      d.y += d.speed * frameScale;
+      d.x += d.vx;
 
       if (d.y > height + d.length) {
-        d.y = -d.length;
-        d.x = random(0, width);
+        resetDrop(d, true);
       }
 
-      if (d.x < -20) d.x = width + 20;
-      if (d.x > width + 20) d.x = -20;
+      if (d.x < -50) d.x = width + 50;
+      if (d.x > width + 50) d.x = -50;
     }
   };
 
@@ -134,26 +174,48 @@
         continue;
       }
 
-      ctx.strokeStyle = `rgba(${settings.color.r}, ${settings.color.g}, ${settings.color.b}, ${alpha})`;
+      const depthAlpha = alpha * (0.62 + d.depth * 0.72);
+      const tailX = d.x + d.vx * settings.streakLean;
+      const tailY = d.y + d.length;
+      const haloAlpha = Math.min(0.24, depthAlpha * 0.45);
+
+      if (d.depth > 0.58) {
+        ctx.strokeStyle = `rgba(${settings.color.r}, ${settings.color.g}, ${settings.color.b}, ${haloAlpha})`;
+        ctx.lineWidth = d.thickness + 0.9;
+        ctx.beginPath();
+        ctx.moveTo(d.x, d.y);
+        ctx.lineTo(tailX, tailY);
+        ctx.stroke();
+      }
+
+      ctx.strokeStyle = `rgba(${settings.color.r}, ${settings.color.g}, ${settings.color.b}, ${Math.min(0.92, depthAlpha)})`;
       ctx.lineWidth = d.thickness;
       ctx.beginPath();
       ctx.moveTo(d.x, d.y);
-      ctx.lineTo(d.x + d.drift * 2, d.y + d.length);
+      ctx.lineTo(tailX, tailY);
       ctx.stroke();
     }
   };
 
-  const tick = () => {
+  const tick = (nowMs) => {
     if (!isAnimating) {
       return;
     }
-    updateDrops();
+    if (!lastTime) {
+      lastTime = nowMs;
+    }
+    const dtMs = nowMs - lastTime;
+    lastTime = nowMs;
+    elapsed = nowMs;
+
+    updateDrops(dtMs, elapsed);
     drawDrops();
     rafId = requestAnimationFrame(tick);
   };
 
   const stop = () => {
     isAnimating = false;
+    lastTime = 0;
     if (rafId) {
       cancelAnimationFrame(rafId);
       rafId = 0;
@@ -167,7 +229,8 @@
       return;
     }
     isAnimating = true;
-    tick();
+    lastTime = 0;
+    rafId = requestAnimationFrame(tick);
   };
 
   const createNoiseBuffer = (context) => {
