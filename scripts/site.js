@@ -117,3 +117,35 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("load", onScroll, { passive: true });
 })();
+
+(() => {
+  const svg = document.querySelector(".footer-wordmark-svg");
+  if (!svg) return;
+
+  const text = svg.querySelector("text");
+  if (!text) return;
+
+  const fitFooterWordmark = () => {
+    try {
+      const box = text.getBBox();
+      if (!box.width || !box.height) return;
+
+      // Fit to actual glyph bounds so the wordmark scales with container width,
+      // matching the same central content width as the project cards.
+      svg.setAttribute(
+        "viewBox",
+        `${box.x} ${box.y} ${box.width} ${box.height}`
+      );
+    } catch (_) {
+      // Ignore transient measurement errors during initial render.
+    }
+  };
+
+  fitFooterWordmark();
+  window.addEventListener("load", fitFooterWordmark, { passive: true });
+  window.addEventListener("resize", fitFooterWordmark, { passive: true });
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(fitFooterWordmark);
+  }
+})();
