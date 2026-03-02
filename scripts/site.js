@@ -149,3 +149,131 @@
     document.fonts.ready.then(fitFooterWordmark);
   }
 })();
+
+(() => {
+  const grid = document.getElementById("selectedProjectsGrid");
+  const toggle = document.getElementById("projectToggle");
+  if (!grid || !toggle) return;
+
+  const cards = Array.from(grid.querySelectorAll(".project-card"));
+  const initialVisibleCount = 4;
+  if (cards.length <= initialVisibleCount) return;
+
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const extraCards = cards.slice(initialVisibleCount);
+  const hiddenClassName = "project-card--hidden";
+  const easing = "cubic-bezier(0.22, 1, 0.36, 1)";
+  const enterDuration = 300;
+  const exitDuration = 220;
+  const stagger = 30;
+  let expanded = false;
+  let animating = false;
+
+  const setExpandedState = (isExpanded) => {
+    cards.forEach((card, index) => {
+      const shouldHide = !isExpanded && index >= initialVisibleCount;
+      card.classList.toggle(hiddenClassName, shouldHide);
+    });
+
+    toggle.textContent = isExpanded ? "See fewer projects" : "See more projects";
+    toggle.setAttribute("aria-expanded", String(isExpanded));
+    expanded = isExpanded;
+  };
+
+  const runAnimations = async (animations) => {
+    await Promise.all(
+      animations.map((animation) =>
+        animation.finished.catch(() => undefined)
+      )
+    );
+  };
+
+  const animateHeight = async (from, to, duration) => {
+    if (prefersReducedMotion.matches || from === to) return;
+    const animation = grid.animate(
+      [{ height: `${from}px` }, { height: `${to}px` }],
+      { duration, easing, fill: "forwards" }
+    );
+
+    await animation.finished.catch(() => undefined);
+    animation.cancel();
+  };
+
+  const expandWithMotion = async () => {
+    const startHeight = grid.getBoundingClientRect().height;
+    extraCards.forEach((card) => card.classList.remove(hiddenClassName));
+    const endHeight = grid.getBoundingClientRect().height;
+
+    const cardAnimations = extraCards.map((card, index) =>
+      card.animate(
+        [
+          { opacity: 0, transform: "translateY(12px) scale(0.99)", filter: "blur(1px)" },
+          { opacity: 1, transform: "translateY(0) scale(1)", filter: "blur(0)" },
+        ],
+        {
+          duration: enterDuration,
+          delay: index * stagger,
+          easing,
+          fill: "both",
+        }
+      )
+    );
+
+    await Promise.all([
+      animateHeight(startHeight, endHeight, enterDuration + 60),
+      runAnimations(cardAnimations),
+    ]);
+  };
+
+  const collapseWithMotion = async () => {
+    const startHeight = grid.getBoundingClientRect().height;
+
+    const cardAnimations = [...extraCards]
+      .reverse()
+      .map((card, index) =>
+        card.animate(
+          [
+            { opacity: 1, transform: "translateY(0) scale(1)", filter: "blur(0)" },
+            { opacity: 0, transform: "translateY(10px) scale(0.992)", filter: "blur(0.8px)" },
+          ],
+          {
+            duration: exitDuration,
+            delay: index * Math.round(stagger * 0.8),
+            easing,
+            fill: "both",
+          }
+        )
+      );
+
+    await runAnimations(cardAnimations);
+    extraCards.forEach((card) => card.classList.add(hiddenClassName));
+    const endHeight = grid.getBoundingClientRect().height;
+    await animateHeight(startHeight, endHeight, exitDuration + 50);
+  };
+
+  setExpandedState(false);
+  toggle.hidden = false;
+
+  toggle.addEventListener("click", async () => {
+    if (animating) return;
+    animating = true;
+    toggle.disabled = true;
+    grid.classList.add("is-animating");
+
+    try {
+      if (prefersReducedMotion.matches) {
+        setExpandedState(!expanded);
+      } else if (!expanded) {
+        await expandWithMotion();
+        setExpandedState(true);
+      } else {
+        await collapseWithMotion();
+        setExpandedState(false);
+      }
+    } finally {
+      grid.classList.remove("is-animating");
+      toggle.disabled = false;
+      animating = false;
+    }
+  });
+})();

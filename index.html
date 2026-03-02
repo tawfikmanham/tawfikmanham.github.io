@@ -430,7 +430,38 @@
     .project-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 28px;
+      gap: 42px;
+    }
+
+    .project-grid.is-animating {
+      overflow: clip;
+    }
+
+    .project-card.project-card--hidden {
+      display: none;
+    }
+
+    .project-grid-actions {
+      display: flex;
+      justify-content: center;
+      margin-top: 24px;
+    }
+
+    .project-toggle {
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font: inherit;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.25s ease, background-color 0.25s ease, color 0.25s ease;
+    }
+
+    .project-toggle:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 12px 30px var(--shadow);
     }
 
     .project-card {
@@ -439,12 +470,33 @@
       border: 1px solid var(--border);
       border-radius: 24px;
       overflow: visible;
-      background: var(--card);
+      background-color: var(--card);
       transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.25s ease;
       transform: translateY(0);
       box-shadow:
         0 0 0 8px var(--card),
         0 0 0 9px var(--border);
+    }
+
+    .project-card::before {
+      content: "";
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      top: -11px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--muted) 0%, transparent) 0%,
+        color-mix(in srgb, var(--muted) 45%, transparent) 50%,
+        color-mix(in srgb, var(--muted) 0%, transparent) 100%
+      );
+      opacity: 0;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.22s ease;
+      pointer-events: none;
     }
 
     .project-card:hover {
@@ -453,12 +505,19 @@
       box-shadow:
         0 0 0 8px var(--card),
         0 0 0 9px var(--border),
-        0 18px 45px var(--shadow),
-        0 34px 62px -40px rgba(171, 31, 38, 0.4),
-        0 56px 92px -68px rgba(171, 31, 38, 0.26);
+        0 20px 52px var(--shadow),
+        0 30px 72px -36px rgba(171, 31, 38, 0.58),
+        0 64px 120px -74px rgba(171, 31, 38, 0.42),
+        0 0 44px rgba(171, 31, 38, 0.3);
+    }
+
+    .project-card:hover::before {
+      opacity: 1;
+      transform: scaleX(1);
     }
 
     .project-thumb-wrap {
+      position: relative;
       width: 100%;
       aspect-ratio: 5 / 4;
       overflow: hidden;
@@ -485,7 +544,34 @@
     }
 
     .project-meta {
+      position: relative;
       padding: 16px 16px 24px;
+    }
+
+    .project-meta::after {
+      content: "";
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: -10px;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--accent) 0%, transparent) 0%,
+        color-mix(in srgb, var(--accent) 100%, transparent) 50%,
+        color-mix(in srgb, var(--accent) 0%, transparent) 100%
+      );
+      opacity: 0;
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.22s ease;
+      pointer-events: none;
+    }
+
+    .project-card:hover .project-meta::after {
+      opacity: 1;
+      transform: scaleX(1);
     }
 
     .project-company {
@@ -539,11 +625,11 @@
 
     /* Tooltip */
     .project-card::after {
-      content: "View case study";
+      content: "View case study \2192";
       position: absolute;
       right: 16px;
       top: 16px;
-      padding: 8px 46px 8px 12px;
+      padding: 8px 12px;
       font-size: 13px;
       line-height: 1;
       border: 1px solid var(--border);
@@ -555,37 +641,9 @@
       pointer-events: none;
     }
 
-    .project-card::before {
-      content: "→";
-      position: absolute;
-      right: 36px;
-      top: 16px;
-      height: 29px;
-      display: grid;
-      place-items: center;
-      font-size: 13px;
-      line-height: 1;
-      opacity: 0;
-      transform: translateX(0);
-      transition: opacity 0.15s ease;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    @keyframes tooltipArrowNudge {
-      0% { transform: translateX(0); }
-      50% { transform: translateX(6px); }
-      100% { transform: translateX(0); }
-    }
-
     .project-card:hover::after {
       opacity: 1;
       transform: translateY(0);
-    }
-
-    .project-card:hover::before {
-      opacity: 1;
-      animation: tooltipArrowNudge 0.7s ease-in-out infinite;
     }
 
     /* =============================
@@ -681,7 +739,9 @@
         animation: none;
         opacity: 1;
       }
-      .project-card { transition: none; }
+      .project-card {
+        transition: none;
+      }
     }
   </style>
 </head>
@@ -732,7 +792,7 @@
     <section>
       <h2 class="project-section-title">Selected Projects</h2>
 
-      <div class="project-grid">
+      <div class="project-grid" id="selectedProjectsGrid">
         <a class="project-card" href="https://tawfikmanham.com/project/ai-health-check-for-seis-eis-advance-assurance-applications/" target="_blank" rel="noopener">
           <div class="project-thumb-wrap">
             <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/12/SeedLegals-Ai-Health-Check-10.png" alt="AI Application Health Check thumbnail">
@@ -814,6 +874,11 @@
             </div>
           </div>
         </a>
+      </div>
+      <div class="project-grid-actions">
+        <button class="project-toggle" id="projectToggle" type="button" aria-controls="selectedProjectsGrid" aria-expanded="false" hidden>
+          See more projects
+        </button>
       </div>
     </section>
 
