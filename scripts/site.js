@@ -129,14 +129,17 @@
   const offscreen = document.createElement("canvas");
   const offscreenCtx = offscreen.getContext("2d", { willReadFrequently: true });
   if (!offscreenCtx) return;
+  const accentColor =
+    getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#AB1F26";
 
   const cfg = {
     text: "MANHAM",
+    textFillRatio: 0.992, // How much of the canvas width the visible glyphs should occupy.
     dotSize: 1.8, // Dot size in CSS px.
     dotSizeJitter: 0.85, // Halftone size variance.
     density: 3, // Lower value means more particles.
     alphaThreshold: 100, // Text sampling threshold.
-    color: "#AB1F26",
+    color: accentColor,
     baseAlpha: 0.78,
     repelRadius: 84, // Mouse influence radius.
     returnSpeed: 0.02, // Base return speed once easing starts.
@@ -184,8 +187,10 @@
     while (low <= high) {
       const mid = (low + high) >> 1;
       measureCtx.font = `900 ${mid}px Arial Black, Arial, sans-serif`;
-      const textWidth = measureCtx.measureText(cfg.text).width;
-      if (textWidth <= width * 0.9 && mid <= height * 0.85) {
+      const metrics = measureCtx.measureText(cfg.text);
+      const glyphWidth = metrics.actualBoundingBoxLeft + metrics.actualBoundingBoxRight;
+      const targetWidth = width * cfg.textFillRatio;
+      if (glyphWidth <= targetWidth && mid <= height * 0.85) {
         best = mid;
         low = mid + 1;
       } else {
@@ -250,7 +255,10 @@
     offscreenCtx.textAlign = "center";
     offscreenCtx.textBaseline = "middle";
     offscreenCtx.fillStyle = "#fff";
-    offscreenCtx.fillText(cfg.text, width * 0.5, height * 0.56);
+    const metrics = offscreenCtx.measureText(cfg.text);
+    const centerOffsetX =
+      (metrics.actualBoundingBoxRight - metrics.actualBoundingBoxLeft) * 0.5;
+    offscreenCtx.fillText(cfg.text, width * 0.5 - centerOffsetX, height * 0.56);
 
     const image = offscreenCtx.getImageData(0, 0, width, height).data;
     const samplePoints = [];
