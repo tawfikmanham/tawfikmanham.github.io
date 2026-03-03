@@ -288,6 +288,7 @@
       flex-wrap: wrap;
       font-size: 14px;
       margin-top: 14px;
+      padding: 0 clamp(10px, 2.2vw, 20px);
     }
 
     .social-link {
@@ -314,9 +315,7 @@
 
     .footer-wordmark-canvas-wrap {
       position: relative;
-      width: 100vw;
-      left: 50%;
-      transform: translateX(-50%);
+      width: 100%;
       margin: 10px 0 -2px;
       height: clamp(120px, 24vw, 220px);
       pointer-events: none;
@@ -542,6 +541,46 @@
       border-top-right-radius: 24px;
     }
 
+    .project-thumb-wrap--seedlegals {
+      transition: background-color 0.25s ease;
+    }
+
+    .project-card:hover .project-thumb-wrap--seedlegals {
+      background: #AB1F26;
+    }
+
+    .project-thumb-wrap--nazacare {
+      transition: background-color 0.25s ease;
+    }
+
+    .project-card:hover .project-thumb-wrap--nazacare {
+      background: #AB1F26;
+    }
+
+    .project-thumb-wrap--tam {
+      transition: background-color 0.25s ease;
+    }
+
+    .project-card:hover .project-thumb-wrap--tam {
+      background: #AB1F26;
+    }
+
+    .project-thumb-wrap--driver {
+      transition: background-color 0.25s ease;
+    }
+
+    .project-card:hover .project-thumb-wrap--driver {
+      background: #AB1F26;
+    }
+
+    .project-thumb-wrap--modus {
+      transition: background-color 0.25s ease;
+    }
+
+    .project-card:hover .project-thumb-wrap--modus {
+      background: #AB1F26;
+    }
+
     .project-thumb {
       width: 100%;
       height: 100%;
@@ -549,13 +588,11 @@
       display: block;
       transform: scale(1);
       transform-origin: center;
-      filter: grayscale(0.75) saturate(0.9);
-      transition: transform 0.35s ease, filter 0.35s ease;
+      transition: transform 0.35s ease;
     }
 
     .project-card:hover .project-thumb {
       transform: scale(1.04);
-      filter: grayscale(0) saturate(1);
     }
 
     .project-meta {
@@ -810,8 +847,8 @@
 
       <div class="project-grid" id="selectedProjectsGrid">
         <a class="project-card" href="https://tawfikmanham.com/project/ai-health-check-for-seis-eis-advance-assurance-applications/" target="_blank" rel="noopener">
-          <div class="project-thumb-wrap">
-            <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/12/SeedLegals-Ai-Health-Check-10.png" alt="AI Application Health Check thumbnail">
+          <div class="project-thumb-wrap project-thumb-wrap--seedlegals">
+            <img class="project-thumb" src="./assets/seedlegals-ai-health-check-11.png" alt="AI Application Health Check thumbnail">
           </div>
           <div class="project-meta">
             <div class="project-company">Seedlegals</div>
@@ -827,8 +864,8 @@
         </a>
 
         <a class="project-card" href="https://tawfikmanham.com/project/naza-care-connect-web/" target="_blank" rel="noopener">
-          <div class="project-thumb-wrap">
-            <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2025/03/Naza-Care-Red-1.png" alt="Naza Care Connect thumbnail">
+          <div class="project-thumb-wrap project-thumb-wrap--nazacare">
+            <img class="project-thumb" src="./assets/naza-care-01.png" alt="Naza Care Connect thumbnail">
           </div>
           <div class="project-meta">
             <div class="project-company">Nazacare</div>
@@ -843,8 +880,8 @@
         </a>
 
         <a class="project-card" href="https://tawfikmanham.com/project/trimble-app-manager/" target="_blank" rel="noopener">
-          <div class="project-thumb-wrap">
-            <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/03/TAM-Red-1.png" alt="Trimble App Manager thumbnail">
+          <div class="project-thumb-wrap project-thumb-wrap--tam">
+            <img class="project-thumb" src="./assets/tam-01.png" alt="Trimble App Manager thumbnail">
           </div>
           <div class="project-meta">
             <div class="project-company">Trimble</div>
@@ -860,8 +897,8 @@
         </a>
 
         <a class="project-card" href="https://tawfikmanham.com/project/driver-workflow/" target="_blank" rel="noopener">
-          <div class="project-thumb-wrap">
-            <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/04/Driver-Workflow-Red-1.png" alt="Driver Workflow thumbnail">
+          <div class="project-thumb-wrap project-thumb-wrap--driver">
+            <img class="project-thumb" src="./assets/driver-workflow-02.png" alt="Driver Workflow thumbnail">
           </div>
           <div class="project-meta">
             <div class="project-company">Trimble</div>
@@ -877,8 +914,8 @@
         </a>
 
         <a class="project-card" href="https://tawfikmanham.com/project/trimble-modus/" target="_blank" rel="noopener">
-          <div class="project-thumb-wrap">
-            <img class="project-thumb" src="https://tawfikmanham.com/wp-content/uploads/2024/05/Trimble-Modus-Hero-5.png" alt="Trimble Modus thumbnail">
+          <div class="project-thumb-wrap project-thumb-wrap--modus">
+            <img class="project-thumb" src="./assets/trimble-modus-02.png" alt="Trimble Modus thumbnail">
           </div>
           <div class="project-meta">
             <div class="project-company">Trimble</div>
