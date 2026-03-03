@@ -303,32 +303,22 @@
       fill: currentColor;
     }
 
-    .footer-wordmark-svg {
-      margin: 12px 0 -2px;
+    .footer-wordmark-canvas-wrap {
+      position: relative;
+      width: 100vw;
+      left: 50%;
+      transform: translateX(-50%);
+      margin: 10px 0 -2px;
+      height: clamp(120px, 24vw, 220px);
+      pointer-events: none;
+    }
+
+    .footer-wordmark-canvas {
       width: 100%;
+      height: 100%;
       display: block;
-      color: var(--accent);
-      overflow: hidden;
-      line-height: 0;
-      vertical-align: bottom;
-    }
-
-    .footer-wordmark-svg text {
-      fill: url(#footerWordmarkGradient);
-      font-weight: 900;
-      font-family: "Arial Black", "Inter", "Segoe UI", sans-serif;
-    }
-
-    .footer-wordmark-svg .grad-top {
-      stop-color: color-mix(in srgb, var(--accent) 90%, #000 10%);
-    }
-
-    .footer-wordmark-svg .grad-mid {
-      stop-color: color-mix(in srgb, var(--accent) 70%, var(--bg) 30%);
-    }
-
-    .footer-wordmark-svg .grad-bottom {
-      stop-color: color-mix(in srgb, var(--bg) 88%, var(--accent) 12%);
+      background: transparent;
+      pointer-events: auto;
     }
 
     .sr-only {
@@ -718,7 +708,7 @@
         grid-template-columns: 1fr;
       }
       .footer-top { justify-content: center; text-align: center; }
-      .footer-wordmark-svg { margin: 10px 0 -2px; }
+      .footer-wordmark-canvas-wrap { margin: 8px 0 -2px; }
       .top-bar { padding: 16px 0; }
     }
 
@@ -907,16 +897,9 @@
           </a>
         </div>
       </div>
-      <svg class="footer-wordmark-svg" viewBox="0 0 860 170" aria-label="MANHAM" role="img" preserveAspectRatio="xMinYMax meet">
-        <defs>
-          <linearGradient id="footerWordmarkGradient" x1="0" y1="0" x2="0" y2="1">
-            <stop class="grad-top" offset="0%"></stop>
-            <stop class="grad-mid" offset="78%"></stop>
-            <stop class="grad-bottom" offset="100%"></stop>
-          </linearGradient>
-        </defs>
-        <text x="0" y="150" font-size="160">MANHAM</text>
-      </svg>
+      <div class="footer-wordmark-canvas-wrap" aria-hidden="true">
+        <canvas id="footerWordmarkCanvas" class="footer-wordmark-canvas"></canvas>
+      </div>
     </footer>
   </div>
 
