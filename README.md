@@ -52,6 +52,12 @@ https://tawfikmanham.com/
 
 ---
 
+## Design docs
+
+- Project card component guide: `docs/components.md`
+
+---
+
 ## Notes
 
 This repo is actively updated.  

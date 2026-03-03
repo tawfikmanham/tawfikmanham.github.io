@@ -586,7 +586,9 @@
 
     .project-card {
       position: relative;
-      display: block;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
       border: 1px solid var(--border);
       border-radius: 24px;
       overflow: visible;
@@ -703,6 +705,9 @@
 
     .project-meta {
       position: relative;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
       padding: 16px 16px 24px;
     }
 
@@ -711,7 +716,7 @@
       position: absolute;
       left: 16px;
       right: 16px;
-      bottom: -10px;
+      bottom: -12px;
       height: 2px;
       border-radius: 999px;
       background: linear-gradient(
@@ -779,6 +784,38 @@
       line-height: 1.6;
       margin: 0;
       max-width: 72ch;
+      flex: 1;
+    }
+
+    .project-card--with-impact .project-title {
+      font-size: 21px;
+      font-weight: 600;
+    }
+
+    .project-subtitle--with-impact .subtitle-main {
+      display: block;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .project-subtitle--with-impact {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-subtitle--with-impact .impact-line {
+      display: block;
+      margin-top: 16px;
+      border-left: 2px solid #AB1F26;
+      padding-left: 12px;
+      color: var(--text);
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .project-subtitle--with-impact + .project-tags {
+      margin-top: 18px;
     }
 
     /* Tooltip */
@@ -927,89 +964,7 @@
     <section id="projects">
       <h2 class="project-section-title">Selected Projects</h2>
 
-      <div class="project-grid" id="selectedProjectsGrid">
-        <a class="project-card" href="https://tawfikmanham.com/project/ai-health-check-for-seis-eis-advance-assurance-applications/" target="_blank" rel="noopener">
-          <div class="project-thumb-wrap project-thumb-wrap--seedlegals">
-            <img class="project-thumb" src="./assets/seedlegals-ai-health-check-11.png" alt="AI Application Health Check thumbnail">
-          </div>
-          <div class="project-meta">
-            <div class="project-company">Seedlegals</div>
-            <div class="project-title">AI Application Health Check</div>
-            <p class="project-subtitle">AI-powered eligibility check to reduce SEIS/EIS application risk.</p>
-            <div class="project-tags" aria-label="Project tags">
-              <span class="project-tag">B2B</span>
-              <span class="project-tag">SaaS</span>
-              <span class="project-tag">Startup</span>
-              <span class="project-tag">Legal Tech</span>
-            </div>
-          </div>
-        </a>
-
-        <a class="project-card" href="https://tawfikmanham.com/project/naza-care-connect-web/" target="_blank" rel="noopener">
-          <div class="project-thumb-wrap project-thumb-wrap--nazacare">
-            <img class="project-thumb" src="./assets/naza-care-01.png" alt="Naza Care Connect thumbnail">
-          </div>
-          <div class="project-meta">
-            <div class="project-company">Nazacare</div>
-            <div class="project-title">Naza Care Connect</div>
-            <p class="project-subtitle">Streamlining care homes to better support young people.</p>
-            <div class="project-tags" aria-label="Project tags">
-              <span class="project-tag">B2B</span>
-              <span class="project-tag">SaaS</span>
-              <span class="project-tag">Healthcare</span>
-            </div>
-          </div>
-        </a>
-
-        <a class="project-card" href="https://tawfikmanham.com/project/trimble-app-manager/" target="_blank" rel="noopener">
-          <div class="project-thumb-wrap project-thumb-wrap--tam">
-            <img class="project-thumb" src="./assets/tam-01.png" alt="Trimble App Manager thumbnail">
-          </div>
-          <div class="project-meta">
-            <div class="project-company">Trimble</div>
-            <div class="project-title">Trimble App Manager</div>
-            <p class="project-subtitle">Enroll, customize, and secure devices remotely.</p>
-            <div class="project-tags" aria-label="Project tags">
-              <span class="project-tag">B2B</span>
-              <span class="project-tag">SaaS</span>
-              <span class="project-tag">Transportation and Logistics</span>
-              <span class="project-tag">Web</span>
-            </div>
-          </div>
-        </a>
-
-        <a class="project-card" href="https://tawfikmanham.com/project/driver-workflow/" target="_blank" rel="noopener">
-          <div class="project-thumb-wrap project-thumb-wrap--driver">
-            <img class="project-thumb" src="./assets/driver-workflow-02.png" alt="Driver Workflow thumbnail">
-          </div>
-          <div class="project-meta">
-            <div class="project-company">Trimble</div>
-            <div class="project-title">Driver Workflow</div>
-            <p class="project-subtitle">Trips, forms, and messaging for truck drivers.</p>
-            <div class="project-tags" aria-label="Project tags">
-              <span class="project-tag">B2C</span>
-              <span class="project-tag">SaaS</span>
-              <span class="project-tag">Transportation and Logistics</span>
-              <span class="project-tag">Mobile</span>
-            </div>
-          </div>
-        </a>
-
-        <a class="project-card" href="https://tawfikmanham.com/project/trimble-modus/" target="_blank" rel="noopener">
-          <div class="project-thumb-wrap project-thumb-wrap--modus">
-            <img class="project-thumb" src="./assets/trimble-modus-02.png" alt="Trimble Modus thumbnail">
-          </div>
-          <div class="project-meta">
-            <div class="project-company">Trimble</div>
-            <div class="project-title">Trimble Modus</div>
-            <p class="project-subtitle">Unified design system and micro-interactions at scale.</p>
-            <div class="project-tags" aria-label="Project tags">
-              <span class="project-tag">Web</span>
-              <span class="project-tag">Design System</span>
-            </div>
-          </div>
-        </a>
-      </div>
+      <div class="project-grid" id="selectedProjectsGrid"></div>
       <div class="project-grid-actions">
         <button class="project-toggle" id="projectToggle" type="button" aria-controls="selectedProjectsGrid" aria-expanded="false" hidden>
           See more projects

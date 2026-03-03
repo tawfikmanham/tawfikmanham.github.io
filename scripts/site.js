@@ -470,6 +470,128 @@
 
 (() => {
   const grid = document.getElementById("selectedProjectsGrid");
+  if (!grid) return;
+
+  const projects = [
+    {
+      company: "Seedlegals",
+      title: "AI Application Health Check",
+      subtitle:
+        "Embedded AI into the SEIS workflow to prevent errors before submission.",
+      impact:
+        "60%+ faster CX review turnaround by preventing errors before submission.",
+      link: "https://tawfikmanham.com/project/ai-health-check-for-seis-eis-advance-assurance-applications/",
+      imageSrc: "./assets/seedlegals-ai-health-check-11.png",
+      imageAlt: "AI Application Health Check thumbnail",
+      tags: ["B2B", "SaaS", "Startup", "Legal Tech"],
+      cardClass: "project-card--with-impact",
+      thumbClass: "project-thumb-wrap--seedlegals",
+      subtitleClass: "project-subtitle--with-impact",
+    },
+    {
+      company: "Nazacare",
+      title: "Care Home Management Platform",
+      subtitle:
+        "Designed a 0→1 B2B care management platform replacing fragmented Google Drive workflows.",
+      impact:
+        "Unified rota planning, staff leave, medication tracking, and resident oversight into a single source of truth.",
+      link: "https://tawfikmanham.com/project/naza-care-connect-web/",
+      imageSrc: "./assets/naza-care-01.png",
+      imageAlt: "Naza Care Connect thumbnail",
+      tags: ["B2B", "SaaS", "Healthcare"],
+      cardClass: "project-card--with-impact",
+      thumbClass: "project-thumb-wrap--nazacare",
+      subtitleClass: "project-subtitle--with-impact",
+    },
+    {
+      company: "Trimble",
+      title: "Fleet Enterprise Mobility Platform",
+      subtitle:
+        "Designed and launched a 0→1 SaaS system for managing driver devices across large scale fleets.",
+      impact:
+        "£500K+ generated in Q1 through expansion into new markets.",
+      link: "https://tawfikmanham.com/project/trimble-app-manager/",
+      imageSrc: "./assets/tam-01.png",
+      imageAlt: "Trimble App Manager thumbnail",
+      tags: ["B2B", "SaaS", "Transportation and Logistics", "Web"],
+      cardClass: "project-card--with-impact",
+      thumbClass: "project-thumb-wrap--tam",
+      subtitleClass: "project-subtitle--with-impact",
+    },
+    {
+      company: "Trimble",
+      title: "Driver Experience Platform",
+      subtitle:
+        "Led UX audit and streamlined integrated driver workflows across messaging, trips, navigation, and hours of service.",
+      impact:
+        "NPS improved from 6.8 to 8.2 (20% uplift).",
+      link: "https://tawfikmanham.com/project/driver-workflow/",
+      imageSrc: "./assets/driver-workflow-02.png",
+      imageAlt: "Driver Workflow thumbnail",
+      tags: ["B2C", "SaaS", "Transportation and Logistics", "Mobile"],
+      cardClass: "project-card--with-impact",
+      thumbClass: "project-thumb-wrap--driver",
+      subtitleClass: "project-subtitle--with-impact",
+    },
+    {
+      company: "Trimble",
+      title: "Trimble Modus",
+      subtitle: "Unified design system and micro-interactions at scale.",
+      link: "https://tawfikmanham.com/project/trimble-modus/",
+      imageSrc: "./assets/trimble-modus-02.png",
+      imageAlt: "Trimble Modus thumbnail",
+      tags: ["Web", "Design System"],
+      thumbClass: "project-thumb-wrap--modus",
+    },
+  ];
+
+  const escapeHtml = (value) =>
+    String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
+
+  const renderImpactBlock = ({ subtitle, impact, subtitleClass = "" }) => {
+    const subtitleClasses = ["project-subtitle", subtitleClass].filter(Boolean).join(" ");
+    if (!impact) {
+      return `<p class="${subtitleClasses}">${escapeHtml(subtitle)}</p>`;
+    }
+
+    return `<p class="${subtitleClasses}"><span class="subtitle-main">${escapeHtml(
+      subtitle
+    )}</span><span class="impact-line">${escapeHtml(impact)}</span></p>`;
+  };
+
+  const renderProjectCard = (project) => {
+    const cardClasses = ["project-card", project.cardClass].filter(Boolean).join(" ");
+    const tagsMarkup = project.tags
+      .map((tag) => `<span class="project-tag">${escapeHtml(tag)}</span>`)
+      .join("");
+
+    return `
+      <a class="${cardClasses}" href="${escapeHtml(project.link)}" target="_blank" rel="noopener">
+        <div class="project-thumb-wrap ${escapeHtml(project.thumbClass)}">
+          <img class="project-thumb" src="${escapeHtml(project.imageSrc)}" alt="${escapeHtml(
+      project.imageAlt
+    )}">
+        </div>
+        <div class="project-meta">
+          <div class="project-company">${escapeHtml(project.company)}</div>
+          <div class="project-title">${escapeHtml(project.title)}</div>
+          ${renderImpactBlock(project)}
+          <div class="project-tags" aria-label="Project tags">${tagsMarkup}</div>
+        </div>
+      </a>
+    `;
+  };
+
+  grid.innerHTML = projects.map(renderProjectCard).join("");
+})();
+
+(() => {
+  const grid = document.getElementById("selectedProjectsGrid");
   const toggle = document.getElementById("projectToggle");
   if (!grid || !toggle) return;
 
