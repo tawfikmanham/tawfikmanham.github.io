@@ -226,6 +226,26 @@
       color: var(--text);
     }
 
+    .hero-title .hero-word,
+    .hero-title .hero-dot,
+    .hero-lead .hero-word,
+    .hero-lead .hero-dot {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(10px) scale(0.985);
+      filter: blur(6px);
+      animation: heroWordIn 0.58s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      will-change: transform, opacity, filter;
+    }
+
+    .hero-title .hero-word {
+      margin-right: 0.22em;
+    }
+
+    .hero-title .hero-word:nth-child(1) { animation-delay: 0.02s; }
+    .hero-title .hero-word:nth-child(2) { animation-delay: 0.12s; margin-right: 0; }
+    .hero-title .hero-dot { animation-delay: 0.2s; margin-right: 0; }
+
     .hero-lead {
       margin: 14px 0 0;
       font-size: clamp(1.2rem, 2.5vw, 1.9rem);
@@ -234,6 +254,34 @@
       font-weight: 500;
       color: color-mix(in srgb, var(--text) 94%, var(--muted) 6%);
       max-width: none;
+    }
+
+    .hero-lead .hero-word {
+      margin-right: 0.18em;
+    }
+
+    .hero-lead .hero-word:nth-child(1) { animation-delay: 0.3s; }
+    .hero-lead .hero-word:nth-child(2) { animation-delay: 0.36s; }
+    .hero-lead .hero-word:nth-child(3) { animation-delay: 0.42s; }
+    .hero-lead .hero-word:nth-child(4) { animation-delay: 0.48s; }
+    .hero-lead .hero-word:nth-child(5) { animation-delay: 0.54s; }
+    .hero-lead .hero-word:nth-child(6) { animation-delay: 0.6s; margin-right: 0; }
+    .hero-lead .hero-dot { animation-delay: 0.66s; margin-right: 0; }
+
+    @keyframes heroWordIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.985);
+        filter: blur(6px);
+      }
+      70% {
+        filter: blur(0.8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
     }
 
     .hero-description {
@@ -296,15 +344,6 @@
       box-shadow: 0 12px 28px var(--shadow);
     }
 
-    .hero-proof-list {
-      margin: 24px 0 0;
-      padding: 0;
-      list-style: none;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
     .hero-status-strip {
       margin: 14px 0 0;
       padding: 0;
@@ -321,18 +360,6 @@
       background: color-mix(in srgb, var(--card) 78%, transparent);
       color: color-mix(in srgb, var(--text) 74%, var(--muted) 26%);
       font-size: 12px;
-      font-weight: 500;
-      line-height: 1.2;
-      white-space: nowrap;
-    }
-
-    .hero-proof-item {
-      padding: 7px 12px;
-      border-radius: 999px;
-      border: 1px solid color-mix(in srgb, var(--border) 78%, var(--text) 22%);
-      background: color-mix(in srgb, var(--card) 72%, transparent);
-      color: color-mix(in srgb, var(--text) 82%, var(--muted) 18%);
-      font-size: 13px;
       font-weight: 500;
       line-height: 1.2;
       white-space: nowrap;
@@ -825,6 +852,15 @@
 
     @media (prefers-reduced-motion: reduce) {
       section { animation: none; }
+      .hero-title .hero-word,
+      .hero-title .hero-dot,
+      .hero-lead .hero-word,
+      .hero-lead .hero-dot {
+        animation: none;
+        opacity: 1;
+        transform: none;
+        filter: none;
+      }
       .hero-cta {
         transition: none;
       }
@@ -857,8 +893,18 @@
     <section class="hero" aria-labelledby="hero-heading">
       <div class="hero-grid">
         <div class="hero-content">
-      <h1 class="hero-title" id="hero-heading">Tawfik Manham<span class="name-dot">.</span></h1>
-          <h2 class="hero-lead">Designing enterprise B2B systems that scale.</h2>
+          <h1 class="hero-title" id="hero-heading">
+            <span class="hero-word">Tawfik</span>
+            <span class="hero-word">Manham</span><span class="name-dot hero-dot">.</span>
+          </h1>
+          <h2 class="hero-lead">
+            <span class="hero-word">Designing</span>
+            <span class="hero-word">enterprise</span>
+            <span class="hero-word">B2B</span>
+            <span class="hero-word">systems</span>
+            <span class="hero-word">that</span>
+            <span class="hero-word">scale</span><span class="hero-dot">.</span>
+          </h2>
           <p class="hero-description">
             Product Designer with 9+ years across enterprise and startup teams.<br>
             I design complex B2B systems, simplify critical workflows, and navigate ambiguity from idea to production.
@@ -870,7 +916,7 @@
           <ul class="hero-status-strip" aria-label="Status highlights">
             <li class="hero-status-item">Product Designer</li>
             <li class="hero-status-item">B2B SaaS</li>
-        <li class="hero-status-item">Eligible to work in UK</li>
+            <li class="hero-status-item">Eligible to work in UK</li>
             <li class="hero-status-item">London, UK</li>
           </ul>
         </div>
