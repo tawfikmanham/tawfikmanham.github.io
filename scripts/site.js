@@ -121,6 +121,7 @@
 (() => {
   const canvas = document.getElementById("footerWordmarkCanvas");
   if (!canvas) return;
+  const fallbackWordmark = document.getElementById("footerWordmarkFallback");
 
   const ctx = canvas.getContext("2d", { alpha: true });
   if (!ctx) return;
@@ -266,6 +267,9 @@
     if (!samplePoints.length) {
       particles = [];
       drawStatic();
+      if (fallbackWordmark) {
+        fallbackWordmark.style.display = "grid";
+      }
       return;
     }
 
@@ -293,6 +297,9 @@
       };
     });
 
+    if (fallbackWordmark) {
+      fallbackWordmark.style.display = "none";
+    }
     drawStatic();
     requestRender();
   };
@@ -422,7 +429,7 @@
 
   window.addEventListener("resize", rebuildWithDebounce, { passive: true });
 
-  reduceMotionQuery.addEventListener("change", (event) => {
+  const handleReduceMotionChange = (event) => {
     reduceMotion = event.matches;
     if (reduceMotion) {
       if (rafId) {
@@ -441,7 +448,14 @@
     }
 
     requestRender();
-  });
+  };
+
+  // Safari fallback: older versions use addListener/removeListener.
+  if (typeof reduceMotionQuery.addEventListener === "function") {
+    reduceMotionQuery.addEventListener("change", handleReduceMotionChange);
+  } else if (typeof reduceMotionQuery.addListener === "function") {
+    reduceMotionQuery.addListener(handleReduceMotionChange);
+  }
 
   buildParticles();
 })();

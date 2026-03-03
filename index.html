@@ -321,6 +321,22 @@
       pointer-events: auto;
     }
 
+    .footer-wordmark-fallback {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+      color: var(--accent);
+      font-family: "Arial Black", Arial, sans-serif;
+      font-weight: 900;
+      font-size: clamp(52px, 14vw, 180px);
+      letter-spacing: 0.03em;
+      line-height: 1;
+      user-select: none;
+      opacity: 0.9;
+    }
+
     .sr-only {
       position: absolute;
       width: 1px;
@@ -899,6 +915,7 @@
       </div>
       <div class="footer-wordmark-canvas-wrap" aria-hidden="true">
         <canvas id="footerWordmarkCanvas" class="footer-wordmark-canvas"></canvas>
+        <div id="footerWordmarkFallback" class="footer-wordmark-fallback">MANHAM</div>
       </div>
     </footer>
   </div>
@@ -908,7 +925,7 @@
     <button type="button" aria-label="Dismiss message">×</button>
   </div>
 
-  <script src="effects/rain/rain.js"></script>
-  <script src="scripts/site.js"></script>
+  <script src="effects/rain/rain.js?v=20260303"></script>
+  <script src="scripts/site.js?v=20260303"></script>
 </body>
 </html>
