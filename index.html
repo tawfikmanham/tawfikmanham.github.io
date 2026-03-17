@@ -51,10 +51,7 @@
     body {
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background-color: var(--bg);
-      background-image:
-        linear-gradient(var(--grid-line) 1px, transparent 1px),
-        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-      background-size: var(--grid-size) var(--grid-size);
+      background-image: none;
       color: var(--text);
       margin: 0;
       padding: 0 48px 0;
@@ -812,7 +809,7 @@
 
     /* Tooltip */
     .project-card::after {
-      content: "View case study \2192";
+      content: "Open case study \2197";
       position: absolute;
       right: 16px;
       top: 16px;
