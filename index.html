@@ -71,7 +71,7 @@
        Layout
     ============================== */
     .wrap {
-      max-width: 980px;
+      max-width: 1440px;
       margin: 0 auto;
       position: relative;
       z-index: 1;
@@ -91,14 +91,14 @@
       top: 0;
       z-index: 1000;
       margin-bottom: 24px;
-      padding: 20px 0;
+      padding: 16px 0;
     }
 
     .top-pill {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 6px;
+      gap: 8px;
+      padding: 8px;
       border-radius: 999px;
       border: 1px solid var(--border);
       background: rgba(255, 255, 255, 0.18);
@@ -205,7 +205,7 @@
 
     .hero-grid {
       width: 100%;
-      max-width: 960px;
+      max-width: 1440px;
       margin: 0 auto;
       display: grid;
       grid-template-columns: minmax(0, 1fr);
@@ -219,7 +219,7 @@
 
     .hero-title {
       margin: 0;
-      font-size: clamp(2.2rem, 6vw, 4.2rem);
+      font-size: 72px;
       line-height: 1.05;
       letter-spacing: -0.035em;
       font-weight: 600;
@@ -228,45 +228,75 @@
 
     .hero-title .hero-word,
     .hero-title .hero-dot,
-    .hero-lead .hero-word,
-    .hero-lead .hero-dot {
-      display: inline-block;
+    .hero-reveal {
       opacity: 0;
       transform: translateY(10px) scale(0.985);
       filter: blur(6px);
       animation: heroWordIn 0.58s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation-delay: var(--hero-delay, 0s);
       will-change: transform, opacity, filter;
     }
 
     .hero-title .hero-word {
+      display: inline-block;
       margin-right: 0.22em;
     }
 
+    .hero-title .hero-dot {
+      display: inline-block;
+    }
+
     .hero-title .hero-word:nth-child(1) { animation-delay: 0.02s; }
-    .hero-title .hero-word:nth-child(2) { animation-delay: 0.12s; margin-right: 0; }
-    .hero-title .hero-dot { animation-delay: 0.2s; margin-right: 0; }
+    .hero-title .hero-word:nth-child(2) { animation-delay: 0.1s; margin-right: 0; }
+    .hero-title .hero-dot { animation-delay: 0.18s; margin-right: 0; }
 
     .hero-lead {
-      margin: 14px 0 0;
+      margin: 8px 0 0;
       font-size: clamp(1.2rem, 2.5vw, 1.9rem);
-      line-height: 1.25;
+      line-height: 1.2;
       letter-spacing: -0.02em;
-      font-weight: 500;
+      font-weight: 400;
       color: color-mix(in srgb, var(--text) 94%, var(--muted) 6%);
       max-width: none;
+      display: flex;
+      align-items: center;
+      min-height: 1.2em;
+      position: relative;
+      overflow: hidden;
     }
 
-    .hero-lead .hero-word {
-      margin-right: 0.18em;
+    .hero-rotator-track {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 1.2em;
+      overflow: hidden;
+      padding-left: 8px;
     }
 
-    .hero-lead .hero-word:nth-child(1) { animation-delay: 0.3s; }
-    .hero-lead .hero-word:nth-child(2) { animation-delay: 0.36s; }
-    .hero-lead .hero-word:nth-child(3) { animation-delay: 0.42s; }
-    .hero-lead .hero-word:nth-child(4) { animation-delay: 0.48s; }
-    .hero-lead .hero-word:nth-child(5) { animation-delay: 0.54s; }
-    .hero-lead .hero-word:nth-child(6) { animation-delay: 0.6s; margin-right: 0; }
-    .hero-lead .hero-dot { animation-delay: 0.66s; margin-right: 0; }
+    .hero-rotator-item {
+      position: absolute;
+      inset: 0 auto auto 0;
+      opacity: 0;
+      transform: translateY(8px);
+      filter: blur(4px);
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .hero-rotator-item.is-active {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    .hero-rotator-item.is-entering {
+      animation: heroRoleIn 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .hero-rotator-item.is-exiting {
+      animation: heroRoleOut 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
 
     @keyframes heroWordIn {
       from {
@@ -284,68 +314,49 @@
       }
     }
 
+    @keyframes heroRoleIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+        filter: blur(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes heroRoleOut {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(-8px);
+        filter: blur(4px);
+      }
+    }
+
     .hero-description {
-      margin-top: 20px;
+      margin-top: 24px;
       max-width: 60ch;
       font-size: clamp(1rem, 1.3vw, 1.1rem);
       color: var(--muted);
     }
 
-    .hero-cta-row {
-      margin-top: 34px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
+    .hero-description-line {
+      display: block;
     }
 
-    .hero-cta {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 46px;
-      padding: 0 20px;
-      border-radius: 12px;
-      border: 1px solid transparent;
-      font-size: 15px;
-      font-weight: 600;
-      line-height: 1;
-      transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
-    }
-
-    .hero-cta:hover {
-      transform: translateY(-1px);
-    }
-
-    .hero-cta:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    .hero-cta-primary {
-      background: var(--accent);
-      color: #ffffff;
-      border-color: color-mix(in srgb, var(--accent) 70%, #ffffff 30%);
-      box-shadow: 0 14px 28px rgba(171, 31, 38, 0.22);
-    }
-
-    .hero-cta-primary:hover {
-      box-shadow: 0 18px 34px rgba(171, 31, 38, 0.3);
-    }
-
-    .hero-cta-secondary {
-      background: color-mix(in srgb, var(--card) 65%, transparent);
-      color: var(--text);
-      border-color: color-mix(in srgb, var(--border) 82%, var(--text) 18%);
-    }
-
-    .hero-cta-secondary:hover {
-      background: color-mix(in srgb, var(--card) 86%, transparent);
-      border-color: color-mix(in srgb, var(--border) 62%, var(--text) 38%);
-      box-shadow: 0 12px 28px var(--shadow);
+    .hero-description-line + .hero-description-line {
+      margin-top: 4px;
     }
 
     .hero-status-strip {
-      margin: 14px 0 0;
+      margin: 16px 0 0;
       padding: 0;
       list-style: none;
       display: flex;
@@ -354,21 +365,31 @@
     }
 
     .hero-status-item {
-      padding: 5px 10px;
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 8px;
       border-radius: 999px;
-      border: 1px solid color-mix(in srgb, var(--border) 82%, var(--text) 18%);
-      background: color-mix(in srgb, var(--card) 78%, transparent);
-      color: color-mix(in srgb, var(--text) 74%, var(--muted) 26%);
-      font-size: 12px;
+      border: 1px solid color-mix(in srgb, var(--border) 92%, var(--text) 8%);
+      background: color-mix(in srgb, var(--card) 62%, transparent);
+      color: color-mix(in srgb, var(--muted) 90%, var(--text) 10%);
+      font-size: 10px;
       font-weight: 500;
       line-height: 1.2;
+      letter-spacing: 0.01em;
       white-space: nowrap;
+      transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .hero-status-item:hover {
+      border-color: color-mix(in srgb, var(--border) 82%, var(--text) 18%);
+      background: color-mix(in srgb, var(--card) 72%, transparent);
+      color: color-mix(in srgb, var(--muted) 78%, var(--text) 22%);
     }
 
     footer {
       margin-top: 120px;
-      padding-top: 28px;
-      padding-bottom: 28px;
+      padding-top: 16px;
+      padding-bottom: 16px;
       color: var(--muted);
       container-type: inline-size;
     }
@@ -383,7 +404,7 @@
     .footer-socials {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 16px;
     }
 
     .footer-bottom {
@@ -417,38 +438,6 @@
       width: 18px;
       height: 18px;
       fill: currentColor;
-    }
-
-    .footer-wordmark-canvas-wrap {
-      position: relative;
-      width: 100%;
-      margin: 10px 0 -2px;
-      height: clamp(120px, 24vw, 220px);
-      pointer-events: none;
-    }
-
-    .footer-wordmark-canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-      background: transparent;
-      pointer-events: auto;
-    }
-
-    .footer-wordmark-fallback {
-      position: absolute;
-      inset: 0;
-      display: grid;
-      place-items: center;
-      pointer-events: none;
-      color: var(--accent);
-      font-family: "Arial Black", Arial, sans-serif;
-      font-weight: 900;
-      font-size: clamp(52px, 14vw, 180px);
-      letter-spacing: 0.03em;
-      line-height: 1;
-      user-select: none;
-      opacity: 0.9;
     }
 
     .sr-only {
@@ -894,15 +883,20 @@
       section { animation: none; }
       .hero-title .hero-word,
       .hero-title .hero-dot,
-      .hero-lead .hero-word,
-      .hero-lead .hero-dot {
+      .hero-reveal {
         animation: none;
         opacity: 1;
         transform: none;
         filter: none;
       }
-      .hero-cta {
-        transition: none;
+      .hero-rotator-item {
+        animation: none;
+        opacity: 0;
+        transform: none;
+        filter: none;
+      }
+      .hero-rotator-item.is-active {
+        opacity: 1;
       }
       .project-card {
         transition: none;
@@ -935,29 +929,32 @@
         <div class="hero-content">
           <h1 class="hero-title" id="hero-heading">
             <span class="hero-word">Tawfik</span>
-            <span class="hero-word">Manham</span><span class="name-dot hero-dot">.</span>
+            <span class="hero-word">Manham</span>
+            <span class="hero-dot name-dot">.</span>
           </h1>
-          <h2 class="hero-lead">
-            <span class="hero-word">Designing</span>
-            <span class="hero-word">enterprise</span>
-            <span class="hero-word">B2B</span>
-            <span class="hero-word">systems</span>
-            <span class="hero-word">that</span>
-            <span class="hero-word">scale</span><span class="hero-dot">.</span>
+          <h2
+            class="hero-lead hero-reveal"
+            id="heroRoleRotator"
+            aria-label="Product Designer, B2B Systems, UI Motion, Figma to Code"
+            style="--hero-delay: 0.26s;"
+          >
+            <span class="hero-rotator-track" aria-hidden="true">
+              <span class="hero-rotator-item is-active" id="heroRoleCurrent">Product Designer</span>
+              <span class="hero-rotator-item" id="heroRoleNext"></span>
+            </span>
           </h2>
           <p class="hero-description">
-            Product Designer with 9+ years across enterprise and startup teams.<br>
-            I design complex B2B systems, simplify critical workflows, and navigate ambiguity from idea to production.
+            <span class="hero-description-line hero-reveal" style="--hero-delay: 0.34s;">9+ years in B2B product design</span>
+            <span class="hero-description-line hero-reveal" style="--hero-delay: 0.42s;">Worked across enterprise systems and startups</span>
+            <span class="hero-description-line hero-reveal" style="--hero-delay: 0.5s;">Simplifying complex workflows and bridging design with code</span>
           </p>
-          <div class="hero-cta-row">
-            <a class="hero-cta hero-cta-primary" href="#projects">View Work</a>
-            <a class="hero-cta hero-cta-secondary" href="https://docs.google.com/document/d/1l1KmHafoL8wiiYg8Wrxb333mRmp25JeiYmt-wvbD-48/edit?tab=t.0" target="_blank" rel="noopener">Resume</a>
-          </div>
           <ul class="hero-status-strip" aria-label="Status highlights">
-            <li class="hero-status-item">Product Designer</li>
-            <li class="hero-status-item">B2B SaaS</li>
-            <li class="hero-status-item">Eligible to work in UK</li>
-            <li class="hero-status-item">London, UK</li>
+            <li class="hero-status-item hero-reveal" style="--hero-delay: 0.58s;">B2B</li>
+            <li class="hero-status-item hero-reveal" style="--hero-delay: 0.66s;">0→1 Products</li>
+            <li class="hero-status-item hero-reveal" style="--hero-delay: 0.74s;">Prototyping</li>
+            <li class="hero-status-item hero-reveal" style="--hero-delay: 0.82s;">Figma → Code</li>
+            <li class="hero-status-item hero-reveal" style="--hero-delay: 0.9s;">Open to work</li>
+            <li class="hero-status-item hero-reveal" style="--hero-delay: 0.98s;">London</li>
           </ul>
         </div>
       </div>
@@ -999,10 +996,6 @@
           </a>
         </div>
       </div>
-      <div class="footer-wordmark-canvas-wrap" aria-hidden="true">
-        <canvas id="footerWordmarkCanvas" class="footer-wordmark-canvas"></canvas>
-        <div id="footerWordmarkFallback" class="footer-wordmark-fallback">MANHAM</div>
-      </div>
       <div class="footer-bottom">
         <div>Tawfik Manham © 2026</div>
         <div>Made with ❤️ London</div>
@@ -1016,6 +1009,6 @@
   </div>
 
   <script src="effects/rain/rain.js?v=20260303"></script>
-  <script src="scripts/site.js?v=20260303"></script>
+  <script src="scripts/site.js?v=20260317"></script>
 </body>
 </html>
