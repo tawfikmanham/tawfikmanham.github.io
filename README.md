@@ -55,6 +55,7 @@ https://tawfikmanham.com/
 ## Design docs
 
 - Project card component guide: `docs/components.md`
+- Design guidelines and 8px audit baseline: draft (not published yet)
 
 ---
 
