@@ -1,8 +1,7 @@
 (() => {
-  // Set initial theme (saved > system preference)
+  // Set initial theme (saved preference > dark default)
   const saved = localStorage.getItem("theme");
-  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-  const initialTheme = saved || (prefersDark ? "dark" : "light");
+  const initialTheme = saved || "dark";
 
   document.documentElement.setAttribute("data-theme", initialTheme);
 
