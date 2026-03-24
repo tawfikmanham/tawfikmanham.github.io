@@ -394,6 +394,133 @@
       container-type: inline-size;
     }
 
+    /* Contribution graph */
+    .contrib-wrap {
+      margin-bottom: 40px;
+    }
+
+    .contrib-total {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0 0 14px;
+    }
+
+    .contrib-body {
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .contrib-day-labels {
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      align-self: stretch;
+    }
+
+    .contrib-month-spacer {
+      flex-shrink: 0;
+      height: 18px;
+    }
+
+    .contrib-days {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding-right: 8px;
+    }
+
+    .contrib-days span {
+      flex: 1;
+      font-size: 10px;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      line-height: 1;
+    }
+
+    .contrib-right {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .contrib-month-row {
+      display: flex;
+      height: 14px;
+      margin-bottom: 4px;
+    }
+
+    .contrib-month-row span {
+      flex: 1;
+      font-size: 10px;
+      color: var(--muted);
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .contrib-graph {
+      display: flex;
+      gap: 3px;
+      width: 100%;
+    }
+
+    .contrib-col {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .contrib-cell {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 2px;
+      cursor: default;
+      transition: outline 0.1s;
+    }
+
+    .contrib-cell:hover {
+      outline: 1.5px solid rgba(255,255,255,0.25);
+      outline-offset: 1px;
+    }
+
+    :root .contrib-cell[data-level="0"] { background: #ebedf0; }
+    :root .contrib-cell[data-level="1"] { background: #9be9a8; }
+    :root .contrib-cell[data-level="2"] { background: #40c463; }
+    :root .contrib-cell[data-level="3"] { background: #30a14e; }
+    :root .contrib-cell[data-level="4"] { background: #216e39; }
+
+    :root[data-theme="dark"] .contrib-cell[data-level="0"] { background: #161b22; }
+    :root[data-theme="dark"] .contrib-cell[data-level="1"] { background: #0e4429; }
+    :root[data-theme="dark"] .contrib-cell[data-level="2"] { background: #006d32; }
+    :root[data-theme="dark"] .contrib-cell[data-level="3"] { background: #26a641; }
+    :root[data-theme="dark"] .contrib-cell[data-level="4"] { background: #39d353; }
+
+    .contrib-tooltip {
+      position: fixed;
+      background: #1c1c1e;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-size: 12px;
+      color: #f2f2f2;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      z-index: 1000;
+      white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    }
+
+    .contrib-tooltip.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     .footer-socials-row {
       display: flex;
       align-items: center;
@@ -973,6 +1100,28 @@
     </section>
 
     <footer>
+      <div class="contrib-wrap">
+        <p class="contrib-total" id="contribTotal"></p>
+        <div class="contrib-body">
+          <div class="contrib-day-labels">
+            <div class="contrib-month-spacer"></div>
+            <div class="contrib-days">
+              <span></span>
+              <span>Mon</span>
+              <span></span>
+              <span>Wed</span>
+              <span></span>
+              <span>Fri</span>
+              <span></span>
+            </div>
+          </div>
+          <div class="contrib-right">
+            <div class="contrib-month-row" id="contribMonths"></div>
+            <div class="contrib-graph" id="contribGraph"></div>
+          </div>
+        </div>
+      </div>
+      <div class="contrib-tooltip" id="contribTooltip"></div>
       <div class="footer-socials-row">
         <div class="footer-socials">
           <a class="social-link" href="https://linkedin.com/in/tawfikmanham" target="_blank" rel="noopener" aria-label="LinkedIn">
@@ -1010,5 +1159,73 @@
 
   <script src="effects/rain/rain.js?v=20260303"></script>
   <script src="scripts/site.js?v=20260317"></script>
+  <script>
+    (async function loadContribGraph() {
+      const graph = document.getElementById('contribGraph');
+      const tooltip = document.getElementById('contribTooltip');
+      const totalEl = document.getElementById('contribTotal');
+      const monthRow = document.getElementById('contribMonths');
+      if (!graph || !tooltip) return;
+
+      try {
+        const res = await fetch('https://github-contributions-api.jogruber.de/v4/tawfikmanham?y=last');
+        if (!res.ok) return;
+        const data = await res.json();
+        const contribs = data.contributions;
+
+        // Total
+        const total = contribs.reduce((sum, d) => sum + d.count, 0);
+        if (totalEl) totalEl.textContent = `${total} contributions in the last year`;
+
+        // Group into columns of 7 (weeks)
+        const weeks = [];
+        for (let i = 0; i < contribs.length; i += 7) {
+          weeks.push(contribs.slice(i, i + 7));
+        }
+
+        // Month labels
+        weeks.forEach((week, i) => {
+          const span = document.createElement('span');
+          const d = new Date(week[0].date + 'T12:00:00');
+          const prev = i > 0 ? new Date(weeks[i - 1][0].date + 'T12:00:00') : null;
+          if (!prev || d.getMonth() !== prev.getMonth()) {
+            span.textContent = d.toLocaleDateString('en-US', { month: 'short' });
+          }
+          monthRow.appendChild(span);
+        });
+
+        // Graph cells
+        weeks.forEach(week => {
+          const col = document.createElement('div');
+          col.className = 'contrib-col';
+          week.forEach(day => {
+            const cell = document.createElement('div');
+            cell.className = 'contrib-cell';
+            cell.dataset.level = day.level;
+
+            cell.addEventListener('mouseenter', e => {
+              const d = new Date(day.date + 'T12:00:00');
+              const label = day.count === 0
+                ? `No contributions on ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+                : `${day.count} contribution${day.count !== 1 ? 's' : ''} on ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+              tooltip.textContent = label;
+              tooltip.classList.add('visible');
+              moveTooltip(e);
+            });
+            cell.addEventListener('mousemove', moveTooltip);
+            cell.addEventListener('mouseleave', () => tooltip.classList.remove('visible'));
+
+            col.appendChild(cell);
+          });
+          graph.appendChild(col);
+        });
+      } catch (_) {}
+
+      function moveTooltip(e) {
+        tooltip.style.left = Math.min(e.clientX - tooltip.offsetWidth / 2, window.innerWidth - tooltip.offsetWidth - 8) + 'px';
+        tooltip.style.top = (e.clientY - tooltip.offsetHeight - 12) + 'px';
+      }
+    })();
+  </script>
 </body>
 </html>
