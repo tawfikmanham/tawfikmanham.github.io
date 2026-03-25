@@ -3,6 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script>
+    // Force dark mode immediately at first paint.
+    document.documentElement.setAttribute("data-theme", "dark");
+    try { localStorage.removeItem("theme"); } catch (_) {}
+  </script>
   <title>Tawfik Manham — Portfolio</title>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <!-- Google tag (gtag.js) -->
@@ -1158,7 +1163,7 @@
   </div>
 
   <script src="effects/rain/rain.js?v=20260303"></script>
-  <script src="scripts/site.js?v=20260325"></script>
+  <script src="scripts/site.js?v=20260325b"></script>
   <script>
     (async function loadContribGraph() {
       const graph = document.getElementById('contribGraph');
