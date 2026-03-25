@@ -1,9 +1,6 @@
 (() => {
-  // Set initial theme (saved preference > dark default)
-  const saved = localStorage.getItem("theme");
-  const initialTheme = saved || "dark";
-
-  document.documentElement.setAttribute("data-theme", initialTheme);
+  // Always start in dark mode, independent of system preference.
+  document.documentElement.setAttribute("data-theme", "dark");
 
   // Toggle on click
   const toggle = document.getElementById("themeToggle");
@@ -12,7 +9,6 @@
       const current = document.documentElement.getAttribute("data-theme") || "light";
       const next = current === "dark" ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", next);
-      localStorage.setItem("theme", next);
     });
   }
 })();
