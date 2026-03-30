@@ -1,13 +1,8 @@
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <script>
-    // Force dark mode immediately at first paint.
-    document.documentElement.setAttribute("data-theme", "dark");
-    try { localStorage.removeItem("theme"); } catch (_) {}
-  </script>
   <title>Tawfik Manham — Portfolio</title>
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <!-- Google tag (gtag.js) -->
@@ -37,7 +32,6 @@
       --dot-color: rgba(17, 17, 17, 0.05);
       --accent: #ab1f26;
       --chipText: #2f2f2f;
-      --divider: rgba(17, 17, 17, 0.07);
     }
 
     :root[data-theme="dark"] {
@@ -51,7 +45,6 @@
       --grid-line: rgba(242, 242, 242, 0.05);
       --dot-color: rgba(242, 242, 242, 0.06);
       --chipText: #9f9fa3;
-      --divider: rgba(255, 255, 255, 0.07);
     }
 
     /* =============================
@@ -60,6 +53,8 @@
     body {
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background-color: var(--bg);
+      background-image: radial-gradient(circle, var(--dot-color) 1.5px, transparent 1.5px);
+      background-size: var(--grid-size) var(--grid-size);
       color: var(--text);
       margin: 0;
       padding: 0 48px 0;
@@ -82,41 +77,8 @@
       z-index: 1;
     }
 
-    /* Vertical rail lines at both edges of the content wrapper */
-    .wrap::before,
-    .wrap::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 1px;
-      background: var(--divider);
-      pointer-events: none;
-      z-index: 0;
-    }
-    .wrap::before { left: -24px; }
-    .wrap::after  { right: -24px; }
-
     section {
-      margin-top: 80px;
-    }
-
-    /* Horizontal section dividers — full viewport width */
-    #projects {
-      position: relative;
-      padding-top: 56px;
-    }
-
-    #projects::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: calc(100% + 48px);
-      height: 1px;
-      background: var(--divider);
-      pointer-events: none;
+      margin-top: 120px;
     }
 
     /* =============================
@@ -393,63 +355,6 @@
       margin-top: 4px;
     }
 
-    /* Availability chip above hero name */
-    .avail-chip {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 5px 12px 5px 8px;
-      border-radius: 999px;
-      border: 1px solid color-mix(in srgb, var(--border) 90%, var(--text) 10%);
-      background: color-mix(in srgb, var(--card) 55%, transparent);
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--muted);
-      letter-spacing: 0.01em;
-      margin-bottom: 20px;
-      opacity: 0;
-      transform: translateY(8px);
-      filter: blur(4px);
-      animation: heroWordIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.05s forwards;
-    }
-
-    .avail-dot {
-      position: relative;
-      width: 8px;
-      height: 8px;
-      flex-shrink: 0;
-    }
-
-    .avail-dot::before,
-    .avail-dot::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-    }
-
-    /* Solid inner dot */
-    .avail-dot::before {
-      background: #22c55e;
-      z-index: 1;
-    }
-
-    /* Pulsing ring — transform + opacity only (compositor-only, no repaints) */
-    .avail-dot::after {
-      background: rgba(34, 197, 94, 0.5);
-      transform: scale(1);
-      transform-origin: center;
-      animation: availPulse 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
-    }
-
-    @keyframes availPulse {
-      /* Active pulse — expands and fades */
-      0%   { transform: scale(1);   opacity: 0.6; }
-      45%  { transform: scale(2.6); opacity: 0;   }
-      /* Hold at rest before next loop */
-      100% { transform: scale(2.6); opacity: 0;   }
-    }
-
     .hero-status-strip {
       margin: 16px 0 0;
       padding: 0;
@@ -482,24 +387,11 @@
     }
 
     footer {
-      position: relative;
-      margin-top: 80px;
-      padding-top: 48px;
+      margin-top: 120px;
+      padding-top: 16px;
       padding-bottom: 16px;
       color: var(--muted);
       container-type: inline-size;
-    }
-
-    footer::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: calc(100% + 48px);
-      height: 1px;
-      background: var(--divider);
-      pointer-events: none;
     }
 
     /* Contribution graph */
@@ -788,7 +680,7 @@
     .project-grid-actions {
       display: flex;
       justify-content: center;
-      margin-top: 48px;
+      margin-top: 24px;
     }
 
     .project-toggle {
@@ -1100,18 +992,6 @@
       .footer-bottom { justify-content: center; text-align: center; }
       .footer-wordmark-canvas-wrap { margin: 8px 0 -2px; }
       .top-bar { padding: 16px 0; }
-
-      /* Contribution graph — horizontal scroll on mobile */
-      .contrib-wrap {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-      .contrib-body {
-        min-width: 560px;
-      }
-      .contrib-day-labels {
-        display: none;
-      }
     }
 
     @media (min-width: 900px) {
@@ -1156,7 +1036,7 @@
   <div class="wrap">
     <div class="top-bar">
       <div class="top-pill">
-        <a class="resume-link" href="https://drive.google.com/file/d/1yfMmlyFbG9K3olSaruMokM6bHiJ3PrXs/view?usp=sharing" target="_blank" rel="noopener" aria-label="Open resume">
+        <a class="resume-link" href="https://docs.google.com/document/d/1l1KmHafoL8wiiYg8Wrxb333mRmp25JeiYmt-wvbD-48/edit?usp=sharing" target="_blank" rel="noopener" aria-label="Open resume">
           <span class="icon material-symbols-outlined" aria-hidden="true">description</span>
         </a>
         <button id="rainToggle" class="rain-toggle" type="button" aria-label="Toggle rain">
@@ -1174,10 +1054,6 @@
     <section class="hero" aria-labelledby="hero-heading">
       <div class="hero-grid">
         <div class="hero-content">
-          <div class="avail-chip" aria-label="Available to work">
-            <span class="avail-dot" aria-hidden="true"></span>
-            Available to work
-          </div>
           <h1 class="hero-title" id="hero-heading">
             <span class="hero-word">Tawfik</span>
             <span class="hero-word">Manham</span>
@@ -1204,6 +1080,7 @@
             <li class="hero-status-item hero-reveal" style="--hero-delay: 0.66s;">0→1 Products</li>
             <li class="hero-status-item hero-reveal" style="--hero-delay: 0.74s;">Prototyping</li>
             <li class="hero-status-item hero-reveal" style="--hero-delay: 0.82s;">Figma → Code</li>
+            <li class="hero-status-item hero-reveal" style="--hero-delay: 0.9s;">Open to work</li>
             <li class="hero-status-item hero-reveal" style="--hero-delay: 0.98s;">London</li>
           </ul>
         </div>
@@ -1281,7 +1158,7 @@
   </div>
 
   <script src="effects/rain/rain.js?v=20260303"></script>
-  <script src="scripts/site.js?v=20260325b"></script>
+  <script src="scripts/site.js?v=20260317"></script>
   <script>
     (async function loadContribGraph() {
       const graph = document.getElementById('contribGraph');
@@ -1290,56 +1167,11 @@
       const monthRow = document.getElementById('contribMonths');
       if (!graph || !tooltip) return;
 
-      function buildFallbackContribs() {
-        const out = [];
-        const dayMs = 24 * 60 * 60 * 1000;
-        const today = new Date();
-        const start = new Date(today);
-        start.setHours(12, 0, 0, 0);
-        start.setTime(start.getTime() - (364 * dayMs));
-        let total = 0;
-
-        for (let i = 0; i < 365; i++) {
-          const date = new Date(start.getTime() + i * dayMs);
-          const weekday = date.getDay();
-          // Keep weekdays busier and weekends lighter so the graph looks natural.
-          const base = weekday === 0 || weekday === 6 ? 0.18 : 0.34;
-          const boosted = Math.random() < base;
-          const count = boosted ? Math.floor(Math.random() * 8) + 1 : 0;
-          const level = count === 0 ? 0 : count <= 2 ? 1 : count <= 4 ? 2 : count <= 6 ? 3 : 4;
-          total += count;
-          out.push({
-            date: date.toISOString().slice(0, 10),
-            count,
-            level
-          });
-        }
-        return { contributions: out, total };
-      }
-
-      function normalizeContribs(raw) {
-        if (!Array.isArray(raw) || raw.length === 0) return null;
-        const normalized = raw
-          .map(item => {
-            if (!item || !item.date) return null;
-            const count = Number.isFinite(item.count) ? item.count : Number(item.count) || 0;
-            const level = Number.isFinite(item.level)
-              ? item.level
-              : count === 0 ? 0 : count <= 2 ? 1 : count <= 4 ? 2 : count <= 6 ? 3 : 4;
-            return {
-              date: String(item.date).slice(0, 10),
-              count: Math.max(0, count),
-              level: Math.max(0, Math.min(4, level))
-            };
-          })
-          .filter(Boolean);
-        return normalized.length ? normalized : null;
-      }
-
       try {
         const res = await fetch('https://github-contributions-api.jogruber.de/v4/tawfikmanham?y=last');
-        const data = res.ok ? await res.json() : null;
-        const contribs = normalizeContribs(data?.contributions) || buildFallbackContribs().contributions;
+        if (!res.ok) return;
+        const data = await res.json();
+        const contribs = data.contributions;
 
         // Total
         const total = contribs.reduce((sum, d) => sum + d.count, 0);
@@ -1417,51 +1249,7 @@
         }, { threshold: 0.2 });
         observer.observe(graph);
 
-      } catch (_) {
-        const fallback = buildFallbackContribs();
-        const contribs = fallback.contributions;
-        const total = fallback.total;
-        if (totalEl) totalEl.textContent = `${total} contributions in the last year`;
-
-        const weeks = [];
-        for (let i = 0; i < contribs.length; i += 7) {
-          weeks.push(contribs.slice(i, i + 7));
-        }
-
-        weeks.forEach((week, i) => {
-          const span = document.createElement('span');
-          const d = new Date(week[0].date + 'T12:00:00');
-          const prev = i > 0 ? new Date(weeks[i - 1][0].date + 'T12:00:00') : null;
-          if (!prev || d.getMonth() !== prev.getMonth()) {
-            span.textContent = d.toLocaleDateString('en-US', { month: 'short' });
-          }
-          monthRow.appendChild(span);
-        });
-
-        weeks.forEach(week => {
-          const col = document.createElement('div');
-          col.className = 'contrib-col';
-          week.forEach(day => {
-            const cell = document.createElement('div');
-            cell.className = 'contrib-cell';
-            cell.dataset.level = day.level;
-
-            cell.addEventListener('mouseenter', e => {
-              const d = new Date(day.date + 'T12:00:00');
-              const label = day.count === 0
-                ? `No contributions on ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
-                : `${day.count} contribution${day.count !== 1 ? 's' : ''} on ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
-              tooltip.textContent = label;
-              tooltip.classList.add('visible');
-              moveTooltip(e);
-            });
-            cell.addEventListener('mousemove', moveTooltip);
-            cell.addEventListener('mouseleave', () => tooltip.classList.remove('visible'));
-            col.appendChild(cell);
-          });
-          graph.appendChild(col);
-        });
-      }
+      } catch (_) {}
 
       function moveTooltip(e) {
         tooltip.style.left = Math.min(e.clientX - tooltip.offsetWidth / 2, window.innerWidth - tooltip.offsetWidth - 8) + 'px';
