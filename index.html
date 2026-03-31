@@ -99,13 +99,14 @@
     .wrap::after  { right: -24px; }
 
     section {
-      margin-top: 80px;
+      margin-top: 0;
     }
 
     /* Horizontal section dividers — full viewport width */
     #projects {
       position: relative;
-      padding-top: 56px;
+      padding-top: 72px;
+      padding-bottom: 72px;
     }
 
     #projects::before {
@@ -508,7 +509,8 @@
     ============================== */
     #experience {
       position: relative;
-      padding-top: 56px;
+      padding-top: 72px;
+      padding-bottom: 72px;
     }
 
     #experience::before {
@@ -588,7 +590,7 @@
     #stack {
       position: relative;
       padding-top: 72px;
-      padding-bottom: 80px;
+      padding-bottom: 72px;
     }
 
     #stack::before {
@@ -607,7 +609,6 @@
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      padding-top: 8px;
     }
 
     .stack-item {
@@ -711,7 +712,7 @@
     #side-projects {
       position: relative;
       padding-top: 72px;
-      padding-bottom: 80px;
+      padding-bottom: 72px;
     }
 
     #side-projects::before {
@@ -1040,6 +1041,23 @@
       border-radius: 999px;
       display: grid;
       place-items: center;
+    }
+
+    .toast-cta {
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: var(--text);
+      color: var(--bg);
+      text-decoration: none;
+      transition: opacity 0.15s ease;
+    }
+
+    .toast-cta:hover {
+      opacity: 0.75;
     }
 
     .toast-message {
@@ -1591,56 +1609,56 @@
         <!-- Figma -->
         <div class="stack-item" data-tooltip="Figma">
           <div class="stack-tile">
-            <img src="icons/Figma Logo.svg.svg" alt="Figma">
+            <img src="icons/Figma Logo.svg.svg" alt="Figma" loading="eager" decoding="sync">
           </div>
         </div>
 
         <!-- Adobe Creative Suite -->
         <div class="stack-item" data-tooltip="Adobe Creative Suite">
           <div class="stack-tile">
-            <img src="icons/Adobe logo 2.svg" alt="Adobe Creative Suite">
+            <img src="icons/Adobe logo 2.svg" alt="Adobe Creative Suite" loading="eager" decoding="sync">
           </div>
         </div>
 
         <!-- ChatGPT -->
         <div class="stack-item" data-tooltip="ChatGPT">
           <div class="stack-tile">
-            <img src="icons/Chatgpt Logo.svg.svg" alt="ChatGPT">
+            <img src="icons/Chatgpt Logo.svg.svg" alt="ChatGPT" loading="eager" decoding="sync">
           </div>
         </div>
 
         <!-- Claude -->
         <div class="stack-item" data-tooltip="Claude">
           <div class="stack-tile">
-            <img src="icons/Cluade logo.svg" alt="Claude">
+            <img src="icons/Cluade logo.svg" alt="Claude" loading="eager" decoding="sync">
           </div>
         </div>
 
         <!-- Miro -->
         <div class="stack-item" data-tooltip="Miro">
           <div class="stack-tile">
-            <img src="icons/Miro Icon 3.svg" alt="Miro">
+            <img src="icons/Miro Icon 3.svg" alt="Miro" loading="eager" decoding="sync">
           </div>
         </div>
 
         <!-- Adobe After Effects -->
         <div class="stack-item" data-tooltip="Adobe After Effects">
           <div class="stack-tile">
-            <img src="icons/After Effect.svg" alt="Adobe After Effects">
+            <img src="icons/After Effect.svg" alt="Adobe After Effects" loading="eager" decoding="sync">
           </div>
         </div>
 
         <!-- Vercel -->
         <div class="stack-item" data-tooltip="Vercel">
           <div class="stack-tile">
-            <img src="icons/Vercel.svg.svg" alt="Vercel">
+            <img src="icons/Vercel.svg.svg" alt="Vercel" loading="eager" decoding="sync">
           </div>
         </div>
 
         <!-- Lovable -->
         <div class="stack-item" data-tooltip="Lovable">
           <div class="stack-tile">
-            <img src="icons/Lovable.svg.svg" alt="Lovable">
+            <img src="icons/Lovable.svg.svg" alt="Lovable" loading="eager" decoding="sync">
           </div>
         </div>
 
@@ -1719,7 +1737,12 @@
   </div>
 
   <div class="toast" id="bottomToast" role="status" aria-live="polite">
-    <span class="toast-message">Hope you enjoyed exploring 👍</span>
+    <span class="toast-message">Thank you for visiting</span>
+    <a class="toast-cta" href="https://drive.google.com/uc?export=download&id=1yfMmlyFbG9K3olSaruMokM6bHiJ3PrXs" download aria-label="Download CV">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 2v8M8 10l-3-3M8 10l3-3M3 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
     <button type="button" aria-label="Dismiss message">×</button>
   </div>
 
