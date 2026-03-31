@@ -1,9 +1,15 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script>
+    // Force dark mode immediately at first paint.
+    document.documentElement.setAttribute("data-theme", "dark");
+    try { localStorage.removeItem("theme"); } catch (_) {}
+  </script>
   <title>Tawfik Manham — Portfolio</title>
+  <link rel="icon" type="image/svg+xml" href="./icons/favicon.svg" />
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GXJ6VVHNCQ"></script>
@@ -32,6 +38,7 @@
       --dot-color: rgba(17, 17, 17, 0.05);
       --accent: #ab1f26;
       --chipText: #2f2f2f;
+      --divider: rgba(17, 17, 17, 0.07);
     }
 
     :root[data-theme="dark"] {
@@ -45,6 +52,7 @@
       --grid-line: rgba(242, 242, 242, 0.05);
       --dot-color: rgba(242, 242, 242, 0.06);
       --chipText: #9f9fa3;
+      --divider: rgba(255, 255, 255, 0.07);
     }
 
     /* =============================
@@ -53,8 +61,6 @@
     body {
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background-color: var(--bg);
-      background-image: radial-gradient(circle, var(--dot-color) 1.5px, transparent 1.5px);
-      background-size: var(--grid-size) var(--grid-size);
       color: var(--text);
       margin: 0;
       padding: 0 48px 0;
@@ -77,8 +83,42 @@
       z-index: 1;
     }
 
+    /* Vertical rail lines at both edges of the content wrapper */
+    .wrap::before,
+    .wrap::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--divider);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .wrap::before { left: -24px; }
+    .wrap::after  { right: -24px; }
+
     section {
-      margin-top: 120px;
+      margin-top: 0;
+    }
+
+    /* Horizontal section dividers — full viewport width */
+    #projects {
+      position: relative;
+      padding-top: 72px;
+      padding-bottom: 72px;
+    }
+
+    #projects::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% + 48px);
+      height: 1px;
+      background: var(--divider);
+      pointer-events: none;
     }
 
     /* =============================
@@ -201,6 +241,7 @@
     ============================== */
     .hero {
       margin-top: 84px;
+      padding-bottom: 72px;
     }
 
     .hero-grid {
@@ -355,6 +396,63 @@
       margin-top: 4px;
     }
 
+    /* Availability chip above hero name */
+    .avail-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 12px 5px 8px;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--border) 90%, var(--text) 10%);
+      background: color-mix(in srgb, var(--card) 55%, transparent);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 0.01em;
+      margin-bottom: 20px;
+      opacity: 0;
+      transform: translateY(8px);
+      filter: blur(4px);
+      animation: heroWordIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.05s forwards;
+    }
+
+    .avail-dot {
+      position: relative;
+      width: 8px;
+      height: 8px;
+      flex-shrink: 0;
+    }
+
+    .avail-dot::before,
+    .avail-dot::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+    }
+
+    /* Solid inner dot */
+    .avail-dot::before {
+      background: #22c55e;
+      z-index: 1;
+    }
+
+    /* Pulsing ring — transform + opacity only (compositor-only, no repaints) */
+    .avail-dot::after {
+      background: rgba(34, 197, 94, 0.5);
+      transform: scale(1);
+      transform-origin: center;
+      animation: availPulse 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes availPulse {
+      /* Active pulse — expands and fades */
+      0%   { transform: scale(1);   opacity: 0.6; }
+      45%  { transform: scale(2.6); opacity: 0;   }
+      /* Hold at rest before next loop */
+      100% { transform: scale(2.6); opacity: 0;   }
+    }
+
     .hero-status-strip {
       margin: 16px 0 0;
       padding: 0;
@@ -387,16 +485,333 @@
     }
 
     footer {
-      margin-top: 120px;
-      padding-top: 16px;
-      padding-bottom: 16px;
+      position: relative;
+      margin-top: 0;
+      padding-top: 56px;
+      padding-bottom: 48px;
       color: var(--muted);
       container-type: inline-size;
     }
 
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% + 48px);
+      height: 1px;
+      background: var(--divider);
+      pointer-events: none;
+    }
+
+    /* =============================
+       Experience & Skills
+    ============================== */
+    #experience {
+      position: relative;
+      padding-top: 72px;
+      padding-bottom: 72px;
+    }
+
+    #experience::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% + 48px);
+      height: 1px;
+      background: var(--divider);
+      pointer-events: none;
+    }
+
+    .exp-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .exp-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .exp-entry {
+      padding: 20px 0;
+    }
+
+    .exp-entry:first-of-type {
+      padding-top: 0;
+    }
+
+    .exp-role {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      margin: 0 0 3px;
+      letter-spacing: -0.01em;
+    }
+
+    .exp-company {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0 0 3px;
+    }
+
+    .exp-dates {
+      font-size: 12px;
+      color: var(--muted);
+      opacity: 0.65;
+    }
+
+    .exp-skills {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .exp-skill-item {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 640px) {
+      .exp-grid {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+    }
+
+    /* =============================
+       My Stack
+    ============================== */
+    #stack {
+      position: relative;
+      padding-top: 72px;
+      padding-bottom: 72px;
+    }
+
+    #stack::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% + 48px);
+      height: 1px;
+      background: var(--divider);
+      pointer-events: none;
+    }
+
+    .stack-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .stack-item {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    /* Stack tooltip — matches contrib-tooltip style */
+    .stack-tooltip {
+      position: fixed;
+      background: #1c1c1e;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-size: 12px;
+      color: #f2f2f2;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      z-index: 9999;
+      white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+    }
+
+    .stack-tooltip.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stack-tooltip.is-instant {
+      transition-duration: 0ms;
+    }
+
+    .stack-tile {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      border: 1px solid var(--divider);
+      background: var(--card);
+      display: grid;
+      place-items: center;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.2s ease;
+    }
+
+    .stack-tile:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px var(--shadow);
+      border-color: color-mix(in srgb, var(--border) 72%, var(--text) 28%);
+    }
+
+    /* SVG icons: muted by default, full colour on hover */
+    .stack-tile svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--muted);
+      transition: fill 0.2s ease;
+    }
+    .stack-tile:hover svg { fill: var(--text); }
+
+    /* Image icons: white silhouette in dark, grey in light — colour on hover */
+    .stack-tile img {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      filter: grayscale(1) brightness(0) invert(1);
+      opacity: 0.65;
+      transition: filter 0.2s ease, opacity 0.2s ease;
+    }
+
+    :root[data-theme="light"] .stack-tile img {
+      filter: grayscale(1);
+      opacity: 0.55;
+    }
+
+    /* White-path icons need inversion in light mode to stay visible */
+    :root[data-theme="light"] .stack-tile--white img {
+      filter: grayscale(1) brightness(0);
+      opacity: 0.55;
+    }
+
+    :root[data-theme="light"] .stack-tile--white:hover img {
+      filter: none;
+      opacity: 1;
+    }
+
+
+    .stack-tile:hover img {
+      filter: none;
+      opacity: 1;
+    }
+
+    :root[data-theme="light"] .stack-tile:hover img {
+      filter: none;
+      opacity: 1;
+    }
+
+    /* =============================
+       Side Projects
+    ============================== */
+    #side-projects {
+      position: relative;
+      padding-top: 72px;
+      padding-bottom: 72px;
+    }
+
+    #side-projects::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% + 48px);
+      height: 1px;
+      background: var(--divider);
+      pointer-events: none;
+    }
+
+    .side-project-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 24px;
+    }
+
+    .side-project-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 20px 4px;
+      position: relative;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .side-project-row::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 1px;
+      width: 100%;
+      background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--accent) 0%, transparent) 0%,
+        var(--accent) 40%,
+        color-mix(in srgb, var(--accent) 0%, transparent) 100%
+      );
+      transform: scaleX(0);
+      transform-origin: center;
+      /* Exit: ease-in — slow start, accelerates away */
+      transition: transform 0.3s cubic-bezier(0.4, 0, 1, 1);
+    }
+
+    .side-project-row:hover::after {
+      transform: scaleX(1);
+      /* Enter: expo-out — bursts from centre, decelerates to edges */
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .side-project-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .side-project-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .side-project-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .side-project-tag {
+      text-transform: lowercase;
+    }
+
+    .side-project-arrow {
+      width: 16px;
+      height: 16px;
+      color: var(--muted);
+      flex-shrink: 0;
+      transition: transform 0.18s ease;
+    }
+
+    .side-project-row:hover .side-project-arrow {
+      color: var(--accent);
+      transform: translate(2px, -2px);
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s ease;
+    }
+
     /* Contribution graph */
     .contrib-wrap {
-      margin-bottom: 40px;
+      margin-top: 16px;
+      margin-bottom: 80px;
     }
 
     .contrib-total {
@@ -535,14 +950,16 @@
     }
 
     .footer-bottom {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      flex-wrap: wrap;
       font-size: 14px;
-      margin-top: 14px;
+      margin-top: 0;
       padding: 0 clamp(10px, 2.2vw, 20px);
+    }
+
+    .footer-bottom-right {
+      text-align: right;
     }
 
     .social-link {
@@ -606,7 +1023,7 @@
 
     .toast.is-visible {
       opacity: 1;
-      transform: translateX(-50%) translateY(0);
+      transform: translateX(-50%) translateY(-50%);
       pointer-events: auto;
       animation: toastBorderFlash 1.4s ease-out 1;
     }
@@ -625,6 +1042,23 @@
       border-radius: 999px;
       display: grid;
       place-items: center;
+    }
+
+    .toast-cta {
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: var(--text);
+      color: var(--bg);
+      text-decoration: none;
+      transition: opacity 0.15s ease;
+    }
+
+    .toast-cta:hover {
+      opacity: 0.75;
     }
 
     .toast-message {
@@ -680,7 +1114,7 @@
     .project-grid-actions {
       display: flex;
       justify-content: center;
-      margin-top: 24px;
+      margin-top: 48px;
     }
 
     .project-toggle {
@@ -988,10 +1422,19 @@
       .hero {
         margin-top: 40px;
       }
-      .footer-socials-row { margin-bottom: 8px; }
-      .footer-bottom { justify-content: center; text-align: center; }
+      .footer-bottom { grid-template-columns: 1fr; justify-items: center; gap: 12px; }
+      .footer-bottom-right { text-align: center; }
       .footer-wordmark-canvas-wrap { margin: 8px 0 -2px; }
       .top-bar { padding: 16px 0; }
+
+      /* Contribution graph — horizontal scroll on mobile */
+      .contrib-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .contrib-graph {
+        min-width: 560px;
+      }
     }
 
     @media (min-width: 900px) {
@@ -1036,7 +1479,7 @@
   <div class="wrap">
     <div class="top-bar">
       <div class="top-pill">
-        <a class="resume-link" href="https://docs.google.com/document/d/1l1KmHafoL8wiiYg8Wrxb333mRmp25JeiYmt-wvbD-48/edit?usp=sharing" target="_blank" rel="noopener" aria-label="Open resume">
+        <a class="resume-link" href="https://drive.google.com/file/d/1yfMmlyFbG9K3olSaruMokM6bHiJ3PrXs/view?usp=sharing" target="_blank" rel="noopener" aria-label="Open resume">
           <span class="icon material-symbols-outlined" aria-hidden="true">description</span>
         </a>
         <button id="rainToggle" class="rain-toggle" type="button" aria-label="Toggle rain">
@@ -1054,6 +1497,10 @@
     <section class="hero" aria-labelledby="hero-heading">
       <div class="hero-grid">
         <div class="hero-content">
+          <div class="avail-chip" aria-label="Available to work">
+            <span class="avail-dot" aria-hidden="true"></span>
+            Available to work
+          </div>
           <h1 class="hero-title" id="hero-heading">
             <span class="hero-word">Tawfik</span>
             <span class="hero-word">Manham</span>
@@ -1080,7 +1527,6 @@
             <li class="hero-status-item hero-reveal" style="--hero-delay: 0.66s;">0→1 Products</li>
             <li class="hero-status-item hero-reveal" style="--hero-delay: 0.74s;">Prototyping</li>
             <li class="hero-status-item hero-reveal" style="--hero-delay: 0.82s;">Figma → Code</li>
-            <li class="hero-status-item hero-reveal" style="--hero-delay: 0.9s;">Open to work</li>
             <li class="hero-status-item hero-reveal" style="--hero-delay: 0.98s;">London</li>
           </ul>
         </div>
@@ -1099,30 +1545,172 @@
       </div>
     </section>
 
+    <!-- Experience & Skills -->
+    <section id="experience">
+      <div class="exp-grid">
+
+        <div class="exp-list">
+          <h2 class="project-section-title">Experience</h2>
+          <div class="exp-entry">
+            <p class="exp-role">Product Designer</p>
+            <p class="exp-company">Seedlegals</p>
+            <p class="exp-dates">London</p>
+            <p class="exp-dates">Jun 2025 – Nov 2025</p>
+          </div>
+          <div class="exp-entry">
+            <p class="exp-role">Senior Product Designer</p>
+            <p class="exp-company">Storilabs UK Ltd</p>
+            <p class="exp-dates">London</p>
+            <p class="exp-dates">Jun 2024 – Jun 2025</p>
+          </div>
+          <div class="exp-entry">
+            <p class="exp-role">Lead Product Designer</p>
+            <p class="exp-company">Trimble Inc.</p>
+            <p class="exp-dates">Remote, North America & Europe</p>
+            <p class="exp-dates">Dec 2019 – Jul 2023</p>
+          </div>
+          <div class="exp-entry">
+            <p class="exp-role">Freelance Product Designer</p>
+            <p class="exp-company">Telal Group · Jonex Sports · Pearl Academy</p>
+            <p class="exp-dates">Dubai & India</p>
+            <p class="exp-dates">Mar 2019 – Nov 2019</p>
+          </div>
+          <div class="exp-entry">
+            <p class="exp-role">Senior Designer</p>
+            <p class="exp-company">Godrej and Boyce</p>
+            <p class="exp-dates">Mumbai</p>
+            <p class="exp-dates">Apr 2015 – Feb 2019</p>
+          </div>
+        </div>
+
+        <div class="exp-skills">
+          <h2 class="project-section-title">Skills</h2>
+          <p class="exp-skill-item">B2B SaaS</p>
+          <p class="exp-skill-item">Prototyping</p>
+          <p class="exp-skill-item">User Research</p>
+          <p class="exp-skill-item">Product Design</p>
+          <p class="exp-skill-item">Design Systems</p>
+          <p class="exp-skill-item">Micro Animation</p>
+          <p class="exp-skill-item">Usability Testing</p>
+          <p class="exp-skill-item">Design Mentorship</p>
+          <p class="exp-skill-item">Interaction Design</p>
+          <p class="exp-skill-item">Healthcare & Logistics</p>
+          <p class="exp-skill-item">Figma / FigJam / Figma Make</p>
+          <p class="exp-skill-item">Cross-functional Collaboration</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- My Stack -->
+    <section id="stack">
+      <h2 class="project-section-title">My Stack</h2>
+      <div class="stack-row">
+
+        <!-- Figma -->
+        <div class="stack-item" data-tooltip="Figma">
+          <div class="stack-tile">
+            <img src="icons/Figma Logo.svg.svg" alt="Figma" loading="eager" decoding="sync">
+          </div>
+        </div>
+
+        <!-- Adobe Creative Suite -->
+        <div class="stack-item" data-tooltip="Adobe Creative Suite">
+          <div class="stack-tile">
+            <img src="icons/Adobe logo 2.svg" alt="Adobe Creative Suite" loading="eager" decoding="sync">
+          </div>
+        </div>
+
+        <!-- ChatGPT -->
+        <div class="stack-item" data-tooltip="ChatGPT">
+          <div class="stack-tile">
+            <img src="icons/Chatgpt Logo.svg.svg" alt="ChatGPT" loading="eager" decoding="sync">
+          </div>
+        </div>
+
+        <!-- Claude -->
+        <div class="stack-item" data-tooltip="Claude">
+          <div class="stack-tile">
+            <img src="icons/Cluade logo.svg" alt="Claude" loading="eager" decoding="sync">
+          </div>
+        </div>
+
+        <!-- Miro -->
+        <div class="stack-item" data-tooltip="Miro">
+          <div class="stack-tile">
+            <img src="icons/Miro Icon 3.svg" alt="Miro" loading="eager" decoding="sync">
+          </div>
+        </div>
+
+        <!-- Adobe After Effects -->
+        <div class="stack-item" data-tooltip="Adobe After Effects">
+          <div class="stack-tile">
+            <img src="icons/After Effect.svg" alt="Adobe After Effects" loading="eager" decoding="sync">
+          </div>
+        </div>
+
+        <!-- Vercel -->
+        <div class="stack-item" data-tooltip="Vercel">
+          <div class="stack-tile">
+            <img src="icons/Vercel.svg.svg" alt="Vercel" loading="eager" decoding="sync">
+          </div>
+        </div>
+
+        <!-- Lovable -->
+        <div class="stack-item" data-tooltip="Lovable">
+          <div class="stack-tile">
+            <img src="icons/Lovable.svg.svg" alt="Lovable" loading="eager" decoding="sync">
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="side-projects">
+      <h2 class="section-label">Side Projects</h2>
+      <div class="side-project-list">
+
+        <a class="side-project-row" href="https://v0-token-flow-clinic-8d1xfdm1y-tawfikmanham-8427s-projects.vercel.app/" target="_blank" rel="noopener">
+          <div class="side-project-left">
+            <span class="side-project-name">Queue Management for Doctors</span>
+            <span class="side-project-desc">A clinic tool for managing daily patient tokens and queue slots, built at the Vercel London Hackathon</span>
+          </div>
+          <svg class="side-project-arrow" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+
+        <a class="side-project-row" href="https://stuck-lizard-71008355.figma.site/" target="_blank" rel="noopener">
+          <div class="side-project-left">
+            <span class="side-project-name">GitHub Commit Art</span>
+            <span class="side-project-desc">Type any word and watch it render across your GitHub contribution graph cells</span>
+          </div>
+          <svg class="side-project-arrow" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+
+        <a class="side-project-row" href="https://www.instagram.com/tawfikmanham/" target="_blank" rel="noopener">
+          <div class="side-project-left">
+            <span class="side-project-name side-project-tag">#postcardperday</span>
+            <span class="side-project-desc">3 × 365 days of painting postcards and mailing them to friends, family, and anyone who requests one</span>
+          </div>
+          <svg class="side-project-arrow" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+
+      </div>
+    </section>
+
     <footer>
       <div class="contrib-wrap">
         <p class="contrib-total" id="contribTotal"></p>
-        <div class="contrib-body">
-          <div class="contrib-day-labels">
-            <div class="contrib-month-spacer"></div>
-            <div class="contrib-days">
-              <span></span>
-              <span>Mon</span>
-              <span></span>
-              <span>Wed</span>
-              <span></span>
-              <span>Fri</span>
-              <span></span>
-            </div>
-          </div>
-          <div class="contrib-right">
-            <div class="contrib-month-row" id="contribMonths"></div>
-            <div class="contrib-graph" id="contribGraph"></div>
-          </div>
-        </div>
+        <div class="contrib-graph" id="contribGraph"></div>
       </div>
       <div class="contrib-tooltip" id="contribTooltip"></div>
-      <div class="footer-socials-row">
+      <div class="footer-bottom">
+        <div>Tawfik Manham © 2026</div>
         <div class="footer-socials">
           <a class="social-link" href="https://linkedin.com/in/tawfikmanham" target="_blank" rel="noopener" aria-label="LinkedIn">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1144,117 +1732,178 @@
             <span class="sr-only">GitHub</span>
           </a>
         </div>
-      </div>
-      <div class="footer-bottom">
-        <div>Tawfik Manham © 2026</div>
-        <div>Made with ❤️ London</div>
+        <div class="footer-bottom-right">Made with ❤️ London</div>
       </div>
     </footer>
   </div>
 
   <div class="toast" id="bottomToast" role="status" aria-live="polite">
-    <span class="toast-message">Hope you enjoyed exploring 👍</span>
+    <span class="toast-message">Thank you for visiting</span>
+    <a class="toast-cta" href="https://drive.google.com/uc?export=download&id=1yfMmlyFbG9K3olSaruMokM6bHiJ3PrXs" download aria-label="Download CV">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 2v8M8 10l-3-3M8 10l3-3M3 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
     <button type="button" aria-label="Dismiss message">×</button>
   </div>
 
   <script src="effects/rain/rain.js?v=20260303"></script>
-  <script src="scripts/site.js?v=20260317"></script>
+  <script src="scripts/site.js?v=20260325b"></script>
   <script>
     (async function loadContribGraph() {
       const graph = document.getElementById('contribGraph');
       const tooltip = document.getElementById('contribTooltip');
       const totalEl = document.getElementById('contribTotal');
-      const monthRow = document.getElementById('contribMonths');
       if (!graph || !tooltip) return;
 
-      try {
-        const res = await fetch('https://github-contributions-api.jogruber.de/v4/tawfikmanham?y=last');
-        if (!res.ok) return;
-        const data = await res.json();
-        const contribs = data.contributions;
+      function buildFallback() {
+        const days = [];
+        const today = new Date(); today.setHours(12, 0, 0, 0);
+        for (let i = 364; i >= 0; i--) {
+          const d = new Date(today.getTime() - i * 86400000);
+          const dow = d.getDay();
+          const busy = Math.random() < (dow === 0 || dow === 6 ? 0.18 : 0.34);
+          const count = busy ? Math.floor(Math.random() * 8) + 1 : 0;
+          days.push({ date: d.toISOString().slice(0, 10), count, level: count === 0 ? 0 : count <= 2 ? 1 : count <= 4 ? 2 : count <= 6 ? 3 : 4 });
+        }
+        return days;
+      }
 
-        // Total
-        const total = contribs.reduce((sum, d) => sum + d.count, 0);
+      function normalize(raw) {
+        if (!Array.isArray(raw) || !raw.length) return null;
+        return raw.map(item => {
+          if (!item?.date) return null;
+          const count = Math.max(0, Number(item.count) || 0);
+          const level = Number.isFinite(item.level) ? Math.min(4, item.level)
+            : count === 0 ? 0 : count <= 2 ? 1 : count <= 4 ? 2 : count <= 6 ? 3 : 4;
+          return { date: String(item.date).slice(0, 10), count, level };
+        }).filter(Boolean);
+      }
+
+      function toWeeks(days) {
+        const firstDow = new Date(days[0].date + 'T12:00:00').getDay();
+        const padded = [...Array(firstDow).fill(null), ...days];
+        const weeks = [];
+        for (let i = 0; i < padded.length; i += 7) weeks.push(padded.slice(i, i + 7));
+        return weeks;
+      }
+
+      function renderGraph(days) {
+        graph.innerHTML = '';
+        const weeks = toWeeks(days);
+        const total = days.reduce((s, d) => s + (d?.count || 0), 0);
         if (totalEl) totalEl.textContent = `${total} contributions in the last year`;
 
-        // Group into columns of 7 (weeks)
-        const weeks = [];
-        for (let i = 0; i < contribs.length; i += 7) {
-          weeks.push(contribs.slice(i, i + 7));
-        }
-
-        // Month labels
-        weeks.forEach((week, i) => {
-          const span = document.createElement('span');
-          const d = new Date(week[0].date + 'T12:00:00');
-          const prev = i > 0 ? new Date(weeks[i - 1][0].date + 'T12:00:00') : null;
-          if (!prev || d.getMonth() !== prev.getMonth()) {
-            span.textContent = d.toLocaleDateString('en-US', { month: 'short' });
-          }
-          monthRow.appendChild(span);
-        });
-
-        // Graph cells — start all at level 0, store actual levels for animation
-        const actualLevels = [];
         weeks.forEach(week => {
           const col = document.createElement('div');
           col.className = 'contrib-col';
-          const colLevels = [];
           week.forEach(day => {
             const cell = document.createElement('div');
             cell.className = 'contrib-cell';
-            cell.dataset.level = 0; // start empty
-
-            cell.addEventListener('mouseenter', e => {
-              const d = new Date(day.date + 'T12:00:00');
-              const label = day.count === 0
-                ? `No contributions on ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
-                : `${day.count} contribution${day.count !== 1 ? 's' : ''} on ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
-              tooltip.textContent = label;
-              tooltip.classList.add('visible');
-              moveTooltip(e);
-            });
-            cell.addEventListener('mousemove', moveTooltip);
-            cell.addEventListener('mouseleave', () => tooltip.classList.remove('visible'));
-
+            if (!day) {
+              cell.dataset.level = 0;
+              cell.style.visibility = 'hidden';
+            } else {
+              cell.dataset.level = day.level;
+              cell.addEventListener('mouseenter', e => {
+                const d = new Date(day.date + 'T12:00:00');
+                tooltip.textContent = day.count === 0
+                  ? `No contributions on ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`
+                  : `${day.count} contribution${day.count !== 1 ? 's' : ''} on ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+                tooltip.classList.add('visible');
+                moveTooltip(e);
+              });
+              cell.addEventListener('mousemove', moveTooltip);
+              cell.addEventListener('mouseleave', () => tooltip.classList.remove('visible'));
+            }
             col.appendChild(cell);
-            colLevels.push(day.level);
           });
           graph.appendChild(col);
-          actualLevels.push(colLevels);
         });
 
-        // Trigger matrix animation when graph scrolls into view
+        // Matrix reveal on scroll into view
         const observer = new IntersectionObserver(entries => {
           if (!entries[0].isIntersecting) return;
           observer.disconnect();
           const COL_DELAY = 15, ROW_DELAY = 35, FLASH_MS = 130;
-          for (let c = 0; c < actualLevels.length; c++) {
-            const col = graph.children[c];
-            for (let r = 0; r < actualLevels[c].length; r++) {
-              const cell = col.children[r];
-              const level = actualLevels[c][r];
-              const delay = c * COL_DELAY + r * ROW_DELAY;
+          Array.from(graph.children).forEach((col, c) => {
+            Array.from(col.children).forEach((cell, r) => {
+              const orig = cell.dataset.level;
+              cell.dataset.level = 0;
               setTimeout(() => {
                 cell.style.background = '#39d353';
                 cell.style.boxShadow = '0 0 6px rgba(57,211,83,0.7)';
                 setTimeout(() => {
                   cell.style.background = '';
                   cell.style.boxShadow = '';
-                  cell.dataset.level = level;
+                  cell.dataset.level = orig;
                 }, FLASH_MS);
-              }, delay);
-            }
-          }
+              }, c * COL_DELAY + r * ROW_DELAY);
+            });
+          });
         }, { threshold: 0.2 });
         observer.observe(graph);
-
-      } catch (_) {}
+      }
 
       function moveTooltip(e) {
         tooltip.style.left = Math.min(e.clientX - tooltip.offsetWidth / 2, window.innerWidth - tooltip.offsetWidth - 8) + 'px';
         tooltip.style.top = (e.clientY - tooltip.offsetHeight - 12) + 'px';
       }
+
+      try {
+        const res = await fetch('https://github-contributions-api.jogruber.de/v4/tawfikmanham?y=last');
+        const data = res.ok ? await res.json() : null;
+        renderGraph(normalize(data?.contributions) || buildFallback());
+      } catch (_) {
+        renderGraph(buildFallback());
+      }
+    })();
+  </script>
+  <script>
+    (() => {
+      const tip = document.createElement('div');
+      tip.className = 'stack-tooltip';
+      document.body.appendChild(tip);
+
+      let showTimer = null;
+      let idleTimer = null;
+      let instant = false;
+
+      document.querySelectorAll('.stack-item[data-tooltip]').forEach(item => {
+        item.addEventListener('mouseenter', () => {
+          clearTimeout(showTimer);
+          clearTimeout(idleTimer);
+
+          const show = () => {
+            tip.textContent = item.dataset.tooltip;
+            position();
+            tip.classList.toggle('is-instant', instant);
+            tip.classList.add('is-visible');
+            instant = true;
+          };
+
+          // First tooltip waits 400ms; once in instant mode show immediately
+          instant ? show() : (showTimer = setTimeout(show, 400));
+        });
+
+        item.addEventListener('mousemove', position);
+
+        item.addEventListener('mouseleave', () => {
+          clearTimeout(showTimer);
+          tip.classList.remove('is-visible');
+          // Reset instant mode after 400ms idle — next cold hover gets a delay again
+          idleTimer = setTimeout(() => {
+            instant = false;
+            tip.classList.remove('is-instant');
+          }, 400);
+        });
+
+        function position() {
+          const rect = item.getBoundingClientRect();
+          tip.style.left = (rect.left + rect.width / 2 - tip.offsetWidth / 2) + 'px';
+          tip.style.top  = (rect.bottom + 10) + 'px';
+        }
+      });
     })();
   </script>
 </body>
