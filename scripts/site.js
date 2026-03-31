@@ -1,6 +1,9 @@
 (() => {
-  // Always start in dark mode, independent of system preference.
-  document.documentElement.setAttribute("data-theme", "dark");
+  // Set initial theme (saved preference > dark default)
+  const saved = localStorage.getItem("theme");
+  const initialTheme = saved || "dark";
+
+  document.documentElement.setAttribute("data-theme", initialTheme);
 
   // Toggle on click
   const toggle = document.getElementById("themeToggle");
@@ -9,6 +12,7 @@
       const current = document.documentElement.getAttribute("data-theme") || "light";
       const next = current === "dark" ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
     });
   }
 })();
@@ -82,14 +86,6 @@
     if (scrollBottom) {
       hasFired = true;
       if (toast) {
-        const contrib = document.querySelector(".contrib-wrap");
-        if (contrib) {
-          const rect = contrib.getBoundingClientRect();
-          const center = rect.top + rect.height / 2;
-          toast.style.top = center + "px";
-          toast.style.bottom = "auto";
-          toast.style.transform = "translateX(-50%) translateY(-50%)";
-        }
         toast.classList.add("is-visible");
       }
     }
