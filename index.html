@@ -693,41 +693,6 @@
       opacity: 1;
     }
 
-    /* Miro: dual icon — default grayscale, colour on hover */
-    .stack-tile--miro {
-      position: relative;
-    }
-
-    .stack-tile--miro .icon-default,
-    .stack-tile--miro .icon-hover {
-      position: absolute;
-      width: 28px;
-      height: 28px;
-      object-fit: contain;
-      transition: opacity 0.2s ease;
-    }
-
-    .stack-tile--miro .icon-default {
-      filter: grayscale(1) brightness(0) invert(1);
-      opacity: 0.65;
-    }
-
-    :root[data-theme="light"] .stack-tile--miro .icon-default {
-      filter: grayscale(1) brightness(0);
-      opacity: 0.55;
-    }
-
-    .stack-tile--miro .icon-hover {
-      opacity: 0;
-    }
-
-    .stack-tile--miro:hover .icon-default {
-      opacity: 0;
-    }
-
-    .stack-tile--miro:hover .icon-hover {
-      opacity: 1;
-    }
 
     .stack-tile:hover img {
       filter: none;
@@ -1550,9 +1515,8 @@
 
         <!-- Miro -->
         <div class="stack-item" data-tooltip="Miro">
-          <div class="stack-tile stack-tile--miro">
-            <img class="icon-default" src="icons/Miro-Icon-White.svg.svg" alt="Miro">
-            <img class="icon-hover" src="icons/Miro Icon.svg.svg" alt="Miro">
+          <div class="stack-tile">
+            <img src="icons/Miro Icon.svg.svg" alt="Miro">
           </div>
         </div>
 
