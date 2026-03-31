@@ -682,6 +682,17 @@
       opacity: 0.55;
     }
 
+    /* White-path icons need inversion in light mode to stay visible */
+    :root[data-theme="light"] .stack-tile--white img {
+      filter: grayscale(1) brightness(0);
+      opacity: 0.55;
+    }
+
+    :root[data-theme="light"] .stack-tile--white:hover img {
+      filter: none;
+      opacity: 1;
+    }
+
     .stack-tile:hover img {
       filter: none;
       opacity: 1;
@@ -1503,8 +1514,8 @@
 
         <!-- Miro -->
         <div class="stack-item" data-tooltip="Miro">
-          <div class="stack-tile">
-            <img src="icons/Miro Icon.svg.svg" alt="Miro">
+          <div class="stack-tile stack-tile--white">
+            <img src="icons/Miro-Icon-White.svg.svg" alt="Miro">
           </div>
         </div>
 
