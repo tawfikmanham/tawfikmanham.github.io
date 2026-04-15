@@ -1553,7 +1553,7 @@
           <h2 class="project-section-title">Experience</h2>
           <div class="exp-entry">
             <p class="exp-role">Product Designer</p>
-            <p class="exp-company">Seedlegals</p>
+            <p class="exp-company"><a href="https://seedlegals.com/" target="_blank" rel="noopener noreferrer">Seedlegals</a></p>
             <p class="exp-dates">London</p>
             <p class="exp-dates">Jun 2025 – Nov 2025</p>
           </div>
@@ -1565,7 +1565,7 @@
           </div>
           <div class="exp-entry">
             <p class="exp-role">Lead Product Designer</p>
-            <p class="exp-company">Trimble Inc.</p>
+            <p class="exp-company"><a href="https://transportation.trimble.com/en" target="_blank" rel="noopener noreferrer">Trimble Inc.</a></p>
             <p class="exp-dates">Remote, North America & Europe</p>
             <p class="exp-dates">Dec 2019 – Jul 2023</p>
           </div>
@@ -1577,7 +1577,7 @@
           </div>
           <div class="exp-entry">
             <p class="exp-role">Senior Designer</p>
-            <p class="exp-company">Godrej and Boyce</p>
+            <p class="exp-company"><a href="https://www.godrejenterprises.com/home-appliances" target="_blank" rel="noopener noreferrer">Godrej and Boyce</a></p>
             <p class="exp-dates">Mumbai</p>
             <p class="exp-dates">Apr 2015 – Feb 2019</p>
           </div>
@@ -1745,7 +1745,7 @@
   </div>
 
   <div class="toast" id="bottomToast" role="status" aria-live="polite">
-    <span class="toast-message">Thank you for visiting</span>
+    <span class="toast-message">Download Tawfik's Resume</span>
     <a class="toast-cta" href="https://drive.google.com/uc?export=download&id=1yfMmlyFbG9K3olSaruMokM6bHiJ3PrXs" download aria-label="Download CV">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M8 2v8M8 10l-3-3M8 10l3-3M3 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1911,6 +1911,14 @@
           tip.style.top  = (rect.bottom + 10) + 'px';
         }
       });
+    })();
+
+    // Toast
+    (function () {
+      const toast = document.getElementById('bottomToast');
+      const dismiss = toast.querySelector('button');
+      setTimeout(() => toast.classList.add('is-visible'), 1500);
+      dismiss.addEventListener('click', () => toast.classList.remove('is-visible'));
     })();
   </script>
 </body>
