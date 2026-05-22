@@ -2,6 +2,37 @@
   // Always start in dark mode, independent of system preference.
   document.documentElement.setAttribute("data-theme", "dark");
 
+  let audioCtx;
+  const playClick = (goingDark) => {
+    try {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) return;
+      if (!audioCtx) audioCtx = new Ctx();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = "triangle";
+      const startFreq = goingDark ? 900 : 1300;
+      const endFreq = goingDark ? 420 : 620;
+      osc.frequency.setValueAtTime(startFreq, now);
+      osc.frequency.exponentialRampToValueAtTime(endFreq, now + 0.06);
+
+      gain.gain.setValueAtTime(0, now);
+      gain.gain.linearRampToValueAtTime(0.09, now + 0.003);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.09);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 0.1);
+    } catch (e) {
+      // Silently ignore audio errors (e.g. autoplay policy, unsupported)
+    }
+  };
+
   // Toggle on click
   const toggle = document.getElementById("themeToggle");
   if (toggle) {
@@ -9,6 +40,7 @@
       const current = document.documentElement.getAttribute("data-theme") || "light";
       const next = current === "dark" ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", next);
+      playClick(next === "dark");
     });
   }
 })();
