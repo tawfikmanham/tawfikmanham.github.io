@@ -1783,7 +1783,7 @@
   </div>
 
   <div class="toast" id="bottomToast" role="status" aria-live="polite">
-    <span class="toast-message">Download Tawfik's Resume</span>
+    <span class="toast-message">Download Resume</span>
     <a class="toast-cta" href="https://drive.google.com/uc?export=download&id=1yfMmlyFbG9K3olSaruMokM6bHiJ3PrXs" download aria-label="Download CV">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M8 2v8M8 10l-3-3M8 10l3-3M3 13h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1951,12 +1951,14 @@
       });
     })();
 
-    // Toast
+    // Toast (scroll-to-bottom trigger lives in scripts/site.js)
     (function () {
       const toast = document.getElementById('bottomToast');
+      if (!toast) return;
       const dismiss = toast.querySelector('button');
-      setTimeout(() => toast.classList.add('is-visible'), 1500);
-      dismiss.addEventListener('click', () => toast.classList.remove('is-visible'));
+      if (dismiss) {
+        dismiss.addEventListener('click', () => toast.classList.remove('is-visible'));
+      }
     })();
   </script>
 </body>
