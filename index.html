@@ -612,10 +612,39 @@
       pointer-events: none;
     }
 
+    .stack-marquee {
+      overflow: hidden;
+      mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
+    }
+
     .stack-row {
       display: flex;
-      flex-wrap: wrap;
+      width: max-content;
       gap: 12px;
+      animation: stack-scroll 32s linear infinite;
+    }
+
+    .stack-marquee:hover .stack-row,
+    .stack-marquee:focus-within .stack-row {
+      animation-play-state: paused;
+    }
+
+    @keyframes stack-scroll {
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(-50%, 0, 0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .stack-marquee {
+        mask-image: none;
+        -webkit-mask-image: none;
+      }
+      .stack-row {
+        flex-wrap: wrap;
+        width: auto;
+        animation: none;
+      }
     }
 
     .stack-item {
@@ -1620,7 +1649,8 @@
     <!-- My Stack -->
     <section id="stack">
       <h2 class="project-section-title">My Stack</h2>
-      <div class="stack-row">
+      <div class="stack-marquee">
+      <div class="stack-row" id="stackRow">
 
         <!-- Figma -->
         <div class="stack-item" data-tooltip="Figma">
@@ -1737,6 +1767,7 @@
           </div>
         </div>
 
+      </div>
       </div>
     </section>
 
@@ -1941,6 +1972,19 @@
       } catch (_) {
         renderGraph(buildFallback());
       }
+    })();
+  </script>
+  <script>
+    // Duplicate stack items so the marquee can loop seamlessly via translateX(-50%)
+    (() => {
+      const row = document.getElementById('stackRow');
+      if (!row) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      Array.from(row.children).forEach(child => {
+        const clone = child.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        row.appendChild(clone);
+      });
     })();
   </script>
   <script>
