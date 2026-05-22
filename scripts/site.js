@@ -2,7 +2,7 @@
   // Always start in dark mode, independent of system preference.
   document.documentElement.setAttribute("data-theme", "dark");
 
-  const clickSound = new Audio("assets/sounds/theme-click.mp3");
+  const clickSound = new Audio("assets/sounds/theme-click.mp3?v=2");
   clickSound.preload = "auto";
   clickSound.volume = 0.6;
 
