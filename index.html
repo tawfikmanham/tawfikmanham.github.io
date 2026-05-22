@@ -681,37 +681,24 @@
       width: 28px;
       height: 28px;
       object-fit: contain;
-      filter: grayscale(1) brightness(0) invert(1);
-      opacity: 0.65;
-      transition: filter 0.2s ease, opacity 0.2s ease;
+      opacity: 0.75;
+      transition: opacity 0.2s ease;
     }
 
-    :root[data-theme="light"] .stack-tile img {
-      filter: grayscale(1);
-      opacity: 0.55;
-    }
+    /* Hide all variants by default; theme/hover rules below pick one */
+    .stack-tile .icon-light,
+    .stack-tile .icon-dark,
+    .stack-tile .icon-color { display: none; }
 
-    /* White-path icons need inversion in light mode to stay visible */
-    :root[data-theme="light"] .stack-tile--white img {
-      filter: grayscale(1) brightness(0);
-      opacity: 0.55;
-    }
+    :root[data-theme="light"] .stack-tile .icon-light { display: block; }
+    :root[data-theme="dark"] .stack-tile .icon-dark { display: block; }
 
-    :root[data-theme="light"] .stack-tile--white:hover img {
-      filter: none;
-      opacity: 1;
-    }
+    .stack-tile:hover img { opacity: 1; }
 
-
-    .stack-tile:hover img {
-      filter: none;
-      opacity: 1;
-    }
-
-    :root[data-theme="light"] .stack-tile:hover img {
-      filter: none;
-      opacity: 1;
-    }
+    /* On hover, if a color variant exists, swap to it */
+    .stack-tile.has-color:hover .icon-light,
+    .stack-tile.has-color:hover .icon-dark { display: none; }
+    .stack-tile.has-color:hover .icon-color { display: block; }
 
     /* =============================
        Side Projects
@@ -1637,64 +1624,88 @@
 
         <!-- Figma -->
         <div class="stack-item" data-tooltip="Figma">
-          <div class="stack-tile">
-            <img src="icons/Figma Logo.svg.svg" alt="Figma" loading="eager" decoding="sync">
+          <div class="stack-tile has-color">
+            <img class="icon-light" src="icons/Figma Light.svg.svg" alt="Figma" loading="eager" decoding="sync">
+            <img class="icon-dark" src="icons/Figma Dark.svg.svg" alt="Figma" loading="eager" decoding="sync">
+            <img class="icon-color" src="icons/Figma Color.svg.svg" alt="Figma" loading="eager" decoding="sync">
           </div>
         </div>
 
         <!-- Adobe Creative Suite -->
         <div class="stack-item" data-tooltip="Adobe Creative Suite">
-          <div class="stack-tile">
-            <img src="icons/Adobe logo 2.svg" alt="Adobe Creative Suite" loading="eager" decoding="sync">
+          <div class="stack-tile has-color">
+            <img class="icon-light" src="icons/Adobe Light.svg" alt="Adobe Creative Suite" loading="eager" decoding="sync">
+            <img class="icon-dark" src="icons/Adobe Dark.svg" alt="Adobe Creative Suite" loading="eager" decoding="sync">
+            <img class="icon-color" src="icons/Adobe Color.svg" alt="Adobe Creative Suite" loading="eager" decoding="sync">
           </div>
         </div>
 
         <!-- ChatGPT -->
         <div class="stack-item" data-tooltip="ChatGPT">
           <div class="stack-tile">
-            <img src="icons/Chatgpt Logo.svg.svg" alt="ChatGPT" loading="eager" decoding="sync">
+            <img class="icon-light" src="icons/Chatgpt Logo Light.svg.svg" alt="ChatGPT" loading="eager" decoding="sync">
+            <img class="icon-dark" src="icons/Chatgpt Logo Dark.svg.svg" alt="ChatGPT" loading="eager" decoding="sync">
           </div>
         </div>
 
         <!-- Claude -->
         <div class="stack-item" data-tooltip="Claude">
-          <div class="stack-tile">
-            <img src="icons/Cluade logo.svg" alt="Claude" loading="eager" decoding="sync">
+          <div class="stack-tile has-color">
+            <img class="icon-light" src="icons/Cluade Color Light.svg" alt="Claude" loading="eager" decoding="sync">
+            <img class="icon-dark" src="icons/Cluade Color Dark.svg" alt="Claude" loading="eager" decoding="sync">
+            <img class="icon-color" src="icons/Cluade Color.svg" alt="Claude" loading="eager" decoding="sync">
           </div>
         </div>
 
         <!-- Miro -->
         <div class="stack-item" data-tooltip="Miro">
-          <div class="stack-tile">
-            <img src="icons/Miro Icon 3.svg" alt="Miro" loading="eager" decoding="sync">
+          <div class="stack-tile has-color">
+            <img class="icon-light" src="icons/Miro light.svg.svg" alt="Miro" loading="eager" decoding="sync">
+            <img class="icon-dark" src="icons/Miro Dark.svg.svg" alt="Miro" loading="eager" decoding="sync">
+            <img class="icon-color" src="icons/Miro Color.svg.svg" alt="Miro" loading="eager" decoding="sync">
           </div>
         </div>
 
         <!-- Adobe After Effects -->
         <div class="stack-item" data-tooltip="Adobe After Effects">
-          <div class="stack-tile">
-            <img src="icons/After Effect.svg" alt="Adobe After Effects" loading="eager" decoding="sync">
+          <div class="stack-tile has-color">
+            <img class="icon-light" src="icons/Adobe After Effects Light.svg" alt="Adobe After Effects" loading="eager" decoding="sync">
+            <img class="icon-dark" src="icons/Adobe After Effects Dark.svg" alt="Adobe After Effects" loading="eager" decoding="sync">
+            <img class="icon-color" src="icons/Adobe After Effects Color.svg" alt="Adobe After Effects" loading="eager" decoding="sync">
+          </div>
+        </div>
+
+        <!-- Adobe Photoshop -->
+        <div class="stack-item" data-tooltip="Adobe Photoshop">
+          <div class="stack-tile has-color">
+            <img class="icon-light" src="icons/photoshop_logo Light.svg.svg" alt="Adobe Photoshop" loading="eager" decoding="sync">
+            <img class="icon-dark" src="icons/photoshop_logo Dark.svg.svg" alt="Adobe Photoshop" loading="eager" decoding="sync">
+            <img class="icon-color" src="icons/photoshop_logo Color.svg.svg" alt="Adobe Photoshop" loading="eager" decoding="sync">
           </div>
         </div>
 
         <!-- Vercel -->
         <div class="stack-item" data-tooltip="Vercel">
           <div class="stack-tile">
-            <img src="icons/Vercel.svg.svg" alt="Vercel" loading="eager" decoding="sync">
+            <img class="icon-light" src="icons/Vercel Light.svg.svg" alt="Vercel" loading="eager" decoding="sync">
+            <img class="icon-dark" src="icons/Vercel Dark.svg.svg" alt="Vercel" loading="eager" decoding="sync">
           </div>
         </div>
 
         <!-- Lovable -->
         <div class="stack-item" data-tooltip="Lovable">
           <div class="stack-tile">
-            <img src="icons/Lovable.svg.svg" alt="Lovable" loading="eager" decoding="sync">
+            <img class="icon-light" src="icons/Lovable Light.svg.svg" alt="Lovable" loading="eager" decoding="sync">
+            <img class="icon-dark" src="icons/Lovable Dark.svg.svg" alt="Lovable" loading="eager" decoding="sync">
           </div>
         </div>
 
         <!-- Cursor -->
         <div class="stack-item" data-tooltip="Cursor">
-          <div class="stack-tile">
-            <img src="icons/Cursor_2D_DARK.svg" alt="Cursor" loading="eager" decoding="sync">
+          <div class="stack-tile has-color">
+            <img class="icon-light" src="icons/Cursor Light.svg" alt="Cursor" loading="eager" decoding="sync">
+            <img class="icon-dark" src="icons/Cursor Dark.svg" alt="Cursor" loading="eager" decoding="sync">
+            <img class="icon-color" src="icons/Cursor_25D.svg" alt="Cursor" loading="eager" decoding="sync">
           </div>
         </div>
 
