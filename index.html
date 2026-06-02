@@ -210,6 +210,39 @@
     :root[data-theme="dark"] .icon-sun  { opacity: 1; transform: scale(1); }
     :root[data-theme="dark"] .icon-moon { opacity: 0; transform: scale(0.85); }
 
+    .theme-toggle::after,
+    .resume-link::after,
+    .rain-toggle::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      background: #1c1c1e;
+      color: #f2f2f2;
+      padding: 7px 12px;
+      font-size: 12px;
+      line-height: 1;
+      white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      z-index: 1001;
+    }
+
+    .theme-toggle:hover::after,
+    .theme-toggle:focus-visible::after,
+    .resume-link:hover::after,
+    .resume-link:focus-visible::after,
+    .rain-toggle:hover::after,
+    .rain-toggle:focus-visible::after {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
     /* =============================
        Typography
     ============================== */
@@ -1075,6 +1108,19 @@
       border-radius: 999px;
       display: grid;
       place-items: center;
+      transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+    }
+
+    .toast button:hover {
+      transform: translateY(-1px);
+      background: color-mix(in srgb, var(--card) 68%, var(--text) 10%);
+      box-shadow: inset 0 0 0 1px var(--border);
+      color: var(--text);
+    }
+
+    .toast button:focus-visible {
+      outline: 2px solid color-mix(in srgb, var(--text) 40%, transparent);
+      outline-offset: 2px;
     }
 
     .toast-cta {
@@ -1097,6 +1143,7 @@
     .toast-message {
       flex: 1;
       min-width: 0;
+      padding-left: 4px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -1512,12 +1559,12 @@
   <div class="wrap">
     <div class="top-bar">
       <div class="top-pill">
-        <a class="resume-link" href="https://drive.google.com/file/d/1yfMmlyFbG9K3olSaruMokM6bHiJ3PrXs/view?usp=sharing" target="_blank" rel="noopener" aria-label="Open resume">
+        <a class="resume-link" href="https://drive.google.com/file/d/1yfMmlyFbG9K3olSaruMokM6bHiJ3PrXs/view?usp=sharing" target="_blank" rel="noopener" aria-label="Open resume" data-tooltip="Open resume">
           <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M6 22C5.16667 22 4.45833 21.7083 3.875 21.125C3.29167 20.5417 3 19.8333 3 19V16H6V2H21V19C21 19.8333 20.7083 20.5417 20.125 21.125C19.5417 21.7083 18.8333 22 18 22H6ZM18 20C18.2833 20 18.5208 19.9042 18.7125 19.7125C18.9042 19.5208 19 19.2833 19 19V4H8V16H17V19C17 19.2833 17.0958 19.5208 17.2875 19.7125C17.4792 19.9042 17.7167 20 18 20ZM9 9V7H18V9H9ZM9 12V10H18V12H9ZM6 20H15V18H5V19C5 19.2833 5.09583 19.5208 5.2875 19.7125C5.47917 19.9042 5.71667 20 6 20ZM6 20H5H15H6Z" fill="currentColor"/>
           </svg>
         </a>
-        <button id="rainToggle" class="rain-toggle" type="button" aria-label="Toggle rain">
+        <button id="rainToggle" class="rain-toggle" type="button" aria-label="Toggle rain" data-tooltip="Turn rain on">
           <svg class="icon icon-rain" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M13.95 21.9C13.7 22.0333 13.4458 22.0542 13.1875 21.9625C12.9292 21.8708 12.7333 21.7 12.6 21.45L11.1 18.45C10.9667 18.2 10.9458 17.9458 11.0375 17.6875C11.1292 17.4292 11.3 17.2333 11.55 17.1C11.8 16.9667 12.0542 16.9458 12.3125 17.0375C12.5708 17.1292 12.7667 17.3 12.9 17.55L14.4 20.55C14.5333 20.8 14.5542 21.0542 14.4625 21.3125C14.3708 21.5708 14.2 21.7667 13.95 21.9ZM19.95 21.9C19.7 22.0333 19.4458 22.0542 19.1875 21.9625C18.9292 21.8708 18.7333 21.7 18.6 21.45L17.1 18.45C16.9667 18.2 16.9458 17.9458 17.0375 17.6875C17.1292 17.4292 17.3 17.2333 17.55 17.1C17.8 16.9667 18.0542 16.9458 18.3125 17.0375C18.5708 17.1292 18.7667 17.3 18.9 17.55L20.4 20.55C20.5333 20.8 20.5542 21.0542 20.4625 21.3125C20.3708 21.5708 20.2 21.7667 19.95 21.9ZM7.95 21.9C7.7 22.0333 7.44583 22.0542 7.1875 21.9625C6.92917 21.8708 6.73333 21.7 6.6 21.45L5.1 18.45C4.96667 18.2 4.94583 17.9458 5.0375 17.6875C5.12917 17.4292 5.3 17.2333 5.55 17.1C5.8 16.9667 6.05417 16.9458 6.3125 17.0375C6.57083 17.1292 6.76667 17.3 6.9 17.55L8.4 20.55C8.53333 20.8 8.55417 21.0542 8.4625 21.3125C8.37083 21.5708 8.2 21.7667 7.95 21.9ZM7.5 16C5.98333 16 4.6875 15.4625 3.6125 14.3875C2.5375 13.3125 2 12.0167 2 10.5C2 9.11667 2.45833 7.90833 3.375 6.875C4.29167 5.84167 5.425 5.23333 6.775 5.05C7.30833 4.1 8.0375 3.35417 8.9625 2.8125C9.8875 2.27083 10.9 2 12 2C13.5 2 14.8042 2.47917 15.9125 3.4375C17.0208 4.39583 17.6917 5.59167 17.925 7.025C19.075 7.125 20.0417 7.6 20.825 8.45C21.6083 9.3 22 10.3167 22 11.5C22 12.75 21.5625 13.8125 20.6875 14.6875C19.8125 15.5625 18.75 16 17.5 16H7.5ZM7.5 14H17.5C18.2 14 18.7917 13.7583 19.275 13.275C19.7583 12.7917 20 12.2 20 11.5C20 10.8 19.7583 10.2083 19.275 9.725C18.7917 9.24167 18.2 9 17.5 9H16V8C16 6.9 15.6083 5.95833 14.825 5.175C14.0417 4.39167 13.1 4 12 4C11.2 4 10.4708 4.21667 9.8125 4.65C9.15417 5.08333 8.65833 5.66667 8.325 6.4L8.075 7H7.45C6.5 7.03333 5.6875 7.3875 5.0125 8.0625C4.3375 8.7375 4 9.55 4 10.5C4 11.4667 4.34167 12.2917 5.025 12.975C5.70833 13.6583 6.53333 14 7.5 14Z" fill="currentColor"/>
           </svg>
@@ -1525,7 +1572,7 @@
             <path d="M11.4375 21.8375C11.2625 21.7292 11.1333 21.5583 11.05 21.325L6 6.075L9.5 6.925L11 5.775V3.4C11 2.73333 11.2417 2.16667 11.725 1.7C12.2083 1.23333 12.8 1 13.5 1C14.2 1 14.7917 1.23333 15.275 1.7C15.7583 2.16667 16 2.73333 16 3.4V4H14V3.4C14 3.26667 13.95 3.15417 13.85 3.0625C13.75 2.97083 13.6333 2.925 13.5 2.925C13.3667 2.925 13.25 2.97083 13.15 3.0625C13.05 3.15417 13 3.26667 13 3.4V5.775L14.5 6.925L18 6.075L12.95 21.3C12.8667 21.5333 12.7375 21.7083 12.5625 21.825C12.3875 21.9417 12.2 22 12 22C11.8 22 11.6125 21.9458 11.4375 21.8375ZM13 14.8L14.95 8.85L14.05 9.075L13 8.3V14.8ZM11 14.8V8.3L9.95 9.1L9.025 8.85L11 14.8Z" fill="currentColor"/>
           </svg>
         </button>
-        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" data-tooltip="Switch to light mode">
           <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <path d="M14.125 14.125C14.7083 13.5417 15 12.8333 15 12C15 11.1667 14.7083 10.4583 14.125 9.875C13.5417 9.29167 12.8333 9 12 9C11.1667 9 10.4583 9.29167 9.875 9.875C9.29167 10.4583 9 11.1667 9 12C9 12.8333 9.29167 13.5417 9.875 14.125C10.4583 14.7083 11.1667 15 12 15C12.8333 15 13.5417 14.7083 14.125 14.125ZM8.4625 15.5375C7.4875 14.5625 7 13.3833 7 12C7 10.6167 7.4875 9.4375 8.4625 8.4625C9.4375 7.4875 10.6167 7 12 7C13.3833 7 14.5625 7.4875 15.5375 8.4625C16.5125 9.4375 17 10.6167 17 12C17 13.3833 16.5125 14.5625 15.5375 15.5375C14.5625 16.5125 13.3833 17 12 17C10.6167 17 9.4375 16.5125 8.4625 15.5375ZM5 13H1V11H5V13ZM23 13H19V11H23V13ZM11 5V1H13V5H11ZM11 23V19H13V23H11ZM6.4 7.75L3.875 5.325L5.3 3.85L7.7 6.35L6.4 7.75ZM18.7 20.15L16.275 17.625L17.6 16.25L20.125 18.675L18.7 20.15ZM16.25 6.4L18.675 3.875L20.15 5.3L17.65 7.7L16.25 6.4ZM3.85 18.7L6.375 16.275L7.75 17.6L5.325 20.125L3.85 18.7Z" fill="currentColor"/>
           </svg>
@@ -1836,8 +1883,8 @@
     <button type="button" aria-label="Dismiss message">×</button>
   </div>
 
-  <script src="effects/rain/rain.js?v=20260303"></script>
-  <script src="scripts/site.js?v=20260522d"></script>
+  <script src="effects/rain/rain.js?v=20260602a"></script>
+  <script src="scripts/site.js?v=20260602a"></script>
   <script>
     (async function loadContribGraph() {
       const graph = document.getElementById('contribGraph');

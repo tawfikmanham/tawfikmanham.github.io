@@ -301,13 +301,16 @@
       button.setAttribute("aria-pressed", "false");
       button.setAttribute("disabled", "true");
       button.setAttribute("aria-label", "Rain disabled");
+      button.setAttribute("data-tooltip", "Rain disabled");
       button.classList.remove("is-on");
       button.classList.add("is-off");
       return;
     }
     button.removeAttribute("disabled");
     button.setAttribute("aria-pressed", String(settings.enabled));
-    button.setAttribute("aria-label", settings.enabled ? "Turn rain off" : "Turn rain on");
+    const label = settings.enabled ? "Turn rain off" : "Turn rain on";
+    button.setAttribute("aria-label", label);
+    button.setAttribute("data-tooltip", label);
     button.classList.toggle("is-on", settings.enabled);
     button.classList.toggle("is-off", !settings.enabled);
   };

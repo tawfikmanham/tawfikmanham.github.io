@@ -18,11 +18,22 @@
 
   // Toggle on click
   const toggle = document.getElementById("themeToggle");
+  const updateThemeToggle = () => {
+    if (!toggle) return;
+    const current = document.documentElement.getAttribute("data-theme") || "light";
+    const label = current === "dark" ? "Switch to light mode" : "Switch to dark mode";
+    toggle.setAttribute("aria-label", label);
+    toggle.setAttribute("data-tooltip", label);
+  };
+
+  updateThemeToggle();
+
   if (toggle) {
     toggle.addEventListener("click", () => {
       const current = document.documentElement.getAttribute("data-theme") || "light";
       const next = current === "dark" ? "light" : "dark";
       document.documentElement.setAttribute("data-theme", next);
+      updateThemeToggle();
       playClick();
     });
   }
