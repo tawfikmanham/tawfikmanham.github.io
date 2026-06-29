@@ -800,6 +800,7 @@
       position: relative;
       text-decoration: none;
       color: var(--text);
+      max-width: 50%;
     }
 
     .side-project-row::after {
@@ -883,8 +884,61 @@
     .contrib-total {
       font-size: 13px;
       color: var(--muted);
-      margin: 0 0 14px;
+      margin: 0;
     }
+
+    .contrib-months {
+      display: flex;
+      gap: 3px;
+      width: 100%;
+      margin-bottom: 8px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .contrib-months span {
+      flex: 1;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: visible;
+      line-height: 1;
+    }
+
+    .contrib-footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 14px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .contrib-legend {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .contrib-legend-cell {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      display: inline-block;
+    }
+
+    :root .contrib-legend-cell[data-level="0"] { background: #ebedf0; }
+    :root .contrib-legend-cell[data-level="1"] { background: #9be9a8; }
+    :root .contrib-legend-cell[data-level="2"] { background: #40c463; }
+    :root .contrib-legend-cell[data-level="3"] { background: #30a14e; }
+    :root .contrib-legend-cell[data-level="4"] { background: #216e39; }
+
+    :root[data-theme="dark"] .contrib-legend-cell[data-level="0"] { background: #161b22; }
+    :root[data-theme="dark"] .contrib-legend-cell[data-level="1"] { background: #0e4429; }
+    :root[data-theme="dark"] .contrib-legend-cell[data-level="2"] { background: #006d32; }
+    :root[data-theme="dark"] .contrib-legend-cell[data-level="3"] { background: #26a641; }
+    :root[data-theme="dark"] .contrib-legend-cell[data-level="4"] { background: #39d353; }
 
     .contrib-body {
       display: flex;
@@ -1515,6 +1569,11 @@
       .contrib-graph {
         min-width: 560px;
       }
+
+      /* Side projects — full width on mobile */
+      .side-project-row {
+        max-width: none;
+      }
     }
 
     @media (min-width: 900px) {
@@ -1819,7 +1878,7 @@
         <a class="side-project-row" href="https://stuck-lizard-71008355.figma.site/" target="_blank" rel="noopener">
           <div class="side-project-left">
             <span class="side-project-name">GitHub Commit Art</span>
-            <span class="side-project-desc">Type any word and watch it render across your GitHub contribution graph cells</span>
+            <span class="side-project-desc">A typography toy that turns any word you type into pixel art on a GitHub contribution graph, one cell at a time</span>
           </div>
           <svg class="side-project-arrow" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M3 13L13 3M13 3H6M13 3V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1841,8 +1900,20 @@
 
     <footer>
       <div class="contrib-wrap">
-        <p class="contrib-total" id="contribTotal"></p>
+        <div class="contrib-months" id="contribMonths" aria-hidden="true"></div>
         <div class="contrib-graph" id="contribGraph"></div>
+        <div class="contrib-footer-row">
+          <p class="contrib-total" id="contribTotal"></p>
+          <div class="contrib-legend" aria-label="Contribution level scale">
+            <span>Less</span>
+            <span class="contrib-legend-cell" data-level="0"></span>
+            <span class="contrib-legend-cell" data-level="1"></span>
+            <span class="contrib-legend-cell" data-level="2"></span>
+            <span class="contrib-legend-cell" data-level="3"></span>
+            <span class="contrib-legend-cell" data-level="4"></span>
+            <span>More</span>
+          </div>
+        </div>
       </div>
       <div class="contrib-tooltip" id="contribTooltip"></div>
       <div class="footer-bottom">
@@ -1928,7 +1999,38 @@
         graph.innerHTML = '';
         const weeks = toWeeks(days);
         const total = days.reduce((s, d) => s + (d?.count || 0), 0);
-        if (totalEl) totalEl.textContent = `${total} contributions in the last year`;
+        if (totalEl) totalEl.textContent = `${total.toLocaleString('en-US')} contributions in the past 365 days.`;
+
+        const monthsRow = document.getElementById('contribMonths');
+        if (monthsRow) {
+          monthsRow.innerHTML = '';
+          const MIN_WEEKS_TO_LABEL = 2;
+          const colMonthKeys = weeks.map(week => {
+            const firstDay = week.find(d => d);
+            if (!firstDay) return null;
+            const d = new Date(firstDay.date + 'T12:00:00');
+            return `${d.getFullYear()}-${d.getMonth()}`;
+          });
+          const weekCounts = new Map();
+          colMonthKeys.forEach(k => {
+            if (k === null) return;
+            weekCounts.set(k, (weekCounts.get(k) || 0) + 1);
+          });
+          let lastKey = null;
+          weeks.forEach((week, colIdx) => {
+            const span = document.createElement('span');
+            const k = colMonthKeys[colIdx];
+            if (k !== null && k !== lastKey) {
+              if ((weekCounts.get(k) || 0) >= MIN_WEEKS_TO_LABEL) {
+                const firstDay = week.find(d => d);
+                const d = new Date(firstDay.date + 'T12:00:00');
+                span.textContent = d.toLocaleDateString('en-US', { month: 'short' });
+              }
+              lastKey = k;
+            }
+            monthsRow.appendChild(span);
+          });
+        }
 
         weeks.forEach(week => {
           const col = document.createElement('div');
