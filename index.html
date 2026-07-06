@@ -267,6 +267,12 @@
       margin-bottom: 28px;
     }
 
+    #projects > .project-section-title,
+    #stack > .project-section-title {
+      max-width: 960px;
+      margin: 0 auto 28px;
+    }
+
     p {
       font-size: 16px;
       color: var(--muted);
@@ -566,6 +572,8 @@
     }
 
     .exp-grid {
+      max-width: 960px;
+      margin: 0 auto;
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 64px;
@@ -646,6 +654,8 @@
     }
 
     .stack-marquee {
+      max-width: 960px;
+      margin: 0 auto;
       overflow: hidden;
       padding: 14px 0 24px;
       mask-image: linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%);
@@ -784,11 +794,17 @@
       pointer-events: none;
     }
 
+    .section-label {
+      max-width: 960px;
+      margin: 0 auto 16px;
+    }
+
     .side-project-list {
+      max-width: 960px;
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-top: 24px;
+      margin: 24px auto 0;
     }
 
     .side-project-row {
@@ -1232,6 +1248,8 @@
        Projects (big cards)
     ============================== */
     .project-grid {
+      max-width: 960px;
+      margin: 0 auto;
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 42px;
