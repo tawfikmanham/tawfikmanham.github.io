@@ -138,7 +138,7 @@
       impact:
         "60%+ faster CX review turnaround by preventing errors before submission.",
       link: "https://tawfikmanham.com/project/ai-health-check/",
-      imageSrc: "./assets/seedlegals-ai-health-check-11.png",
+      imageSrc: "./assets/seedlegals-ai-health-check-11.png?v=20261104a",
       imageAlt: "AI Application Health Check thumbnail",
       tags: ["B2B", "SaaS", "Startup", "Legal Tech"],
       cardClass: "project-card--with-impact",
@@ -153,7 +153,7 @@
       impact:
         "Unified rota planning, staff leave, medication tracking, and resident oversight into a single source of truth.",
       link: "https://tawfikmanham.com/project/naza-care-connect-2/",
-      imageSrc: "./assets/naza-care-01.png",
+      imageSrc: "./assets/naza-care-01.png?v=20261104a",
       imageAlt: "Naza Care Connect thumbnail",
       tags: ["B2B", "SaaS", "Healthcare"],
       cardClass: "project-card--with-impact",
