@@ -137,7 +137,7 @@
         "Embedded AI into the SEIS workflow to prevent errors before submission.",
       impact:
         "60%+ faster CX review turnaround by preventing errors before submission.",
-      link: "https://tawfikmanham.com/project/ai-health-check-for-seis-eis-advance-assurance-applications/",
+      link: "https://tawfikmanham.com/project/ai-health-check/",
       imageSrc: "./assets/seedlegals-ai-health-check-11.png",
       imageAlt: "AI Application Health Check thumbnail",
       tags: ["B2B", "SaaS", "Startup", "Legal Tech"],
@@ -152,7 +152,7 @@
         "Designed a 0→1 B2B care management platform replacing fragmented Google Drive workflows.",
       impact:
         "Unified rota planning, staff leave, medication tracking, and resident oversight into a single source of truth.",
-      link: "https://tawfikmanham.com/project/naza-care-connect-web/",
+      link: "https://tawfikmanham.com/project/naza-care-connect-2/",
       imageSrc: "./assets/naza-care-01.png",
       imageAlt: "Naza Care Connect thumbnail",
       tags: ["B2B", "SaaS", "Healthcare"],
