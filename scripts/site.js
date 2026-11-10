@@ -152,7 +152,7 @@
         "Designed a 0→1 B2B care management platform replacing fragmented Google Drive workflows.",
       impact:
         "Unified rota planning, staff leave, medication tracking, and resident oversight into a single source of truth.",
-      link: "https://tawfikmanham.com/project/naza-care-connect-2/",
+      link: "https://tawfikmanham.com/project/naza-care-connect/",
       imageSrc: "./assets/naza-care-01.png?v=20261104a",
       imageAlt: "Naza Care Connect thumbnail",
       tags: ["B2B", "SaaS", "Healthcare"],
